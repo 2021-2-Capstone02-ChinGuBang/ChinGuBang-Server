@@ -11,6 +11,7 @@ import Message from "./Message";
 import MessageRoom from "./MessageRoom";
 import Participant from "./Participant";
 import Like from "./Like";
+import Code from "./Code";
 
 const db: any = {};
 
@@ -43,6 +44,7 @@ sequelize.addModels([
   Message,
   MessageRoom,
   Participant,
+  Code,
 ]);
 
 export {
@@ -57,6 +59,7 @@ export {
   Message,
   MessageRoom,
   Participant,
+  Code,
 };
 
 export default sequelize;

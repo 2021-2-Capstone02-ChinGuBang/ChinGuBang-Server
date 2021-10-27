@@ -1,4 +1,11 @@
 namespace authDTO {
+    export interface emailReqDTO {
+        email: string;
+    }
+
+    export interface emailResDTO {
+        code: string;
+    }
     // export interface signupReqDTO {
     //   email: string;
     //   password: string;
