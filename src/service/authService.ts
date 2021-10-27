@@ -20,7 +20,7 @@ import nanoid from "nanoid";
  *      2. 이미 가입한 email
  *      3. 이메일 전송 실패
  */
-const POST_auth_email_Service = async (body: authDTO.emailReqDTO) => {
+const POSTemailService = async (body: authDTO.emailReqDTO) => {
   const { email } = body;
 
   // 1. 요청 바디 부족
@@ -80,8 +80,43 @@ const POST_auth_email_Service = async (body: authDTO.emailReqDTO) => {
   return resData;
 };
 
+/**
+ *  @인증번호_인증
+ *  @route Post api/v1/auth/code
+ *  @body email, code
+ *  @error
+ *      1. 요청 바디 부족
+ *      2. 인증 시도 하지 않은 이메일
+ *      3. 인증번호 인증 실패
+ */
+
+export async function POSTcodeService(body: authDTO.codeReqDTO) {
+  const { email, code } = body;
+
+  // 1. 요청 바디 부족
+  if (!email || !code) {
+    return -1;
+  }
+
+  const emailCode = await Code.findOne({ where: { email } });
+
+  // 2. 인증 시도 하지 않은 이메일
+  if (!emailCode) {
+    return -2;
+  }
+
+  // 3. 인증번호 인증 실패
+  if (code !== emailCode.code) {
+    return -3;
+  }
+
+  // 인증번호 일치
+  return undefined;
+}
+
 const authService = {
-  POST_auth_email_Service,
+  POSTemailService,
+  POSTcodeService,
 };
 
 export default authService;

@@ -18,21 +18,21 @@ import { authDTO } from "../DTO";
  *      3. 이메일 전송 실패
  */
 
-const POST_auth_email_Controller = async (req: Request, res: Response) => {
+const POSTemailController = async (req: Request, res: Response) => {
   // 이메일 형식이 잘못된 경우
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return response.basicResponse(
       res,
       returnCode.BAD_REQUEST,
-      "요청 값이 올바르지 않습니다"
+      "요청 값이 올바르지 않습니다."
     );
   }
 
   try {
     const reqData: authDTO.emailReqDTO = req.body;
     const resData: authDTO.emailResDTO | -1 | -2 | -3 =
-      await authService.POST_auth_email_Service(reqData);
+      await authService.POSTemailService(reqData);
 
     // 요청 바디가 부족할 경우
     if (resData === -1) {
@@ -73,8 +73,67 @@ const POST_auth_email_Controller = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ *  @인증번호_인증
+ *  @route Post api/v1/auth/code
+ *  @body email, code
+ *  @error
+ *      1. 요청 바디 부족
+ *      2. 인증 시도 하지 않은 이메일
+ *      3. 인증번호 인증 실패
+ */
+
+const POSTcodeController = async (req: Request, res: Response) => {
+  // 이메일 형식이 잘못된 경우
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return response.basicResponse(
+      res,
+      returnCode.BAD_REQUEST,
+      "요청 값이 올바르지 않습니다."
+    );
+  }
+
+  try {
+    const reqData: authDTO.codeReqDTO = req.body;
+    const resData: undefined | -1 | -2 | -3 = await authService.POSTcodeService(
+      reqData
+    );
+
+    // 1. 요청 바디가 부족할 경우
+    if (resData === -1) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "요청 값이 올바르지 않습니다."
+      );
+    }
+    // 2. email이 DB에 없을 경우
+    if (resData === -2) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "인증 요청 하지 않은 이메일입니다."
+      );
+    }
+    // 인증번호가 올바르지 않은 경우
+    if (resData === -3) {
+      response.dataResponse(res, returnCode.OK, "인증번호 인증 실패", {
+        isOkay: false,
+      });
+    }
+    // 인증번호 인증 성공
+    response.dataResponse(res, returnCode.OK, "인증번호 인증 성공", {
+      isOkay: true,
+    });
+  } catch (err) {
+    console.error(err.message);
+    response.basicResponse(res, returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
+  }
+};
 const authController = {
-  POST_auth_email_Controller,
+  POSTemailController,
+  POSTcodeController,
 };
 
 export default authController;

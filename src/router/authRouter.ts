@@ -5,9 +5,9 @@ import { typeCheckMiddleware } from "../middleware";
 const router = express.Router();
 
 router.post(
-    "/email",
-    typeCheckMiddleware[0],
-    authController.POST_auth_email_Controller,
+  "/email",
+  typeCheckMiddleware[0],
+  authController.POSTemailController
 );
-
+router.post("/code", typeCheckMiddleware[0], authController.POSTcodeController);
 export default router;
