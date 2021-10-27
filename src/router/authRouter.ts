@@ -11,3 +11,8 @@ router.post(
 );
 router.post("/code", typeCheckMiddleware[0], authController.POSTcodeController);
 export default router;
+router.post(
+  "/signup",
+  typeCheckMiddleware,
+  authController.POSTsignupController
+);

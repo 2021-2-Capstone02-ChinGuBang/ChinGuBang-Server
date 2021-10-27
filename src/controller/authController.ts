@@ -11,7 +11,7 @@ import { authDTO } from "../DTO";
  *  @이메일_인증번호_전송
  *  @route Post api/v1/auth/email
  *  @desc post email code for certification
- *  @access Public
+ *  @access public
  *  @error
  *      1. 요청 바디 부족
  *      2. 이미 가입한 email
@@ -77,6 +77,7 @@ const POSTemailController = async (req: Request, res: Response) => {
  *  @인증번호_인증
  *  @route Post api/v1/auth/code
  *  @body email, code
+ *  @access public
  *  @error
  *      1. 요청 바디 부족
  *      2. 인증 시도 하지 않은 이메일
@@ -131,9 +132,54 @@ const POSTcodeController = async (req: Request, res: Response) => {
     response.basicResponse(res, returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
   }
 };
+
+/**
+ *  @회원가입
+ *  @route Post api/v1/auth/signup
+ *  @body email,password, nickname, university
+ *  @access public
+ *  @error
+ *      1. 요청 바디 부족
+ */
+
+const POSTsignupController = async (req: Request, res: Response) => {
+  // 이메일 형식이 잘못된 경우
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return response.basicResponse(
+      res,
+      returnCode.BAD_REQUEST,
+      "요청 값이 올바르지 않습니다"
+    );
+  }
+
+  try {
+    const reqData: authDTO.signupReqDTO = req.body;
+    const data = await authService.POSTsignupService(reqData);
+
+    // 요청 바디가 부족할 경우
+    if (data === -1) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "요청 값이 올바르지 않습니다"
+      );
+    }
+    // 회원가입 성공
+    else {
+      const { user, token } = data;
+      response.tokenResponse(res, returnCode.CREATED, "회원가입 성공", token);
+    }
+  } catch (err) {
+    console.error(err.message);
+    response.basicResponse(res, returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
+  }
+};
+
 const authController = {
   POSTemailController,
   POSTcodeController,
+  POSTsignupController,
 };
 
 export default authController;

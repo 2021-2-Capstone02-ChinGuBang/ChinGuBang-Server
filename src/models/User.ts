@@ -41,9 +41,6 @@ export default class User extends Model {
   @Column
   nickname: string;
 
-  @Column
-  code: string;
-
   @CreatedAt
   createdAt!: Date;
 
