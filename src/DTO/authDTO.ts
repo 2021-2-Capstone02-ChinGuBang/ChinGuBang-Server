@@ -18,6 +18,18 @@ namespace authDTO {
     nickname: string;
     university: string;
   }
+
+  export interface signinReqDTO {
+    email: string;
+    password: string;
+  }
+
+  export interface signinResDTO {
+    userState: number;
+    nickname: string;
+    university: string | null;
+  }
+
   // export interface signupReqDTO {
   //   email: string;
   //   password: string;

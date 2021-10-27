@@ -161,10 +161,76 @@ const POSTsignupService = async (data: authDTO.signupReqDTO) => {
   return { user, token };
 };
 
+/**
+ *  @로그인
+ *  @route Post api/v1/auth/siginin
+ *  @body email,password
+ *  @error
+ *      1. 요청 바디 부족
+ *      2. 아이디가 존재하지 않음
+ *      3. 패스워드가 올바르지 않음
+ *  @response
+ *      0 : 학교 인증 미완료 회원
+ *      1 : 학교 인증 완료 회원
+ *
+ */
+
+async function POSTsigninService(reqData: authDTO.signinReqDTO) {
+  const { email, password } = reqData;
+
+  // 1. 요청 바디 부족
+  if (!email || !password) {
+    return -1;
+  }
+
+  // 2. email이 DB에 존재하지 않음
+  const user = await User.findOne({ where: { email: email } });
+  if (!user) {
+    return -2;
+  }
+
+  // 3. password가 올바르지 않음
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch) {
+    return -3;
+  }
+
+  await user.save();
+
+  const payload = {
+    user: {
+      userID: user.userID,
+    },
+  };
+
+  const certification = await Certification.findOne({
+    where: { userID: user.userID },
+  });
+  let userState = 0;
+  let university = null;
+  if (certification) {
+    userState = 1;
+    university = certification.university;
+  }
+  // access 토큰 발급
+  // 유효기간 14일
+  let token = jwt.sign(payload, config.jwtSecret, { expiresIn: "14d" });
+
+  const userData: authDTO.signinResDTO = {
+    userState,
+    nickname: user.nickname,
+    university,
+  };
+
+  return { userData, token };
+}
+
 const authService = {
   POSTemailService,
   POSTcodeService,
   POSTsignupService,
+  POSTsigninService,
 };
 
 export default authService;

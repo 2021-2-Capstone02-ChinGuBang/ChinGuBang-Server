@@ -16,3 +16,8 @@ router.post(
   typeCheckMiddleware,
   authController.POSTsignupController
 );
+router.post(
+  "/signin",
+  typeCheckMiddleware,
+  authController.POSTsigninController
+);

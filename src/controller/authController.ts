@@ -176,10 +176,81 @@ const POSTsignupController = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ *  @로그인
+ *  @route Post api/v1/auth/siginin
+ *  @body email,password
+ *  @error
+ *      1. 요청 바디 부족
+ *      2. 아이디가 존재하지 않음
+ *      3. 패스워드가 올바르지 않음
+ *  @response
+ *      0 : 학교 인증 미완료 회원
+ *      1 : 학교 인증 완료 회원
+ *
+ */
+
+const POSTsigninController = async (req: Request, res: Response) => {
+  // 이메일 형식이 잘못된 경우
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return response.basicResponse(
+      res,
+      returnCode.BAD_REQUEST,
+      "요청 값이 올바르지 않습니다"
+    );
+  }
+
+  try {
+    const reqData: authDTO.signinReqDTO = req.body;
+    const data = await authService.POSTsigninService(reqData);
+
+    // 요청 바디가 부족할 경우
+    if (data == -1) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "요청 값이 올바르지 않습니다"
+      );
+    }
+    // email이 DB에 없을 경우
+    else if (data == -2) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "아이디가 존재하지 않습니다"
+      );
+    }
+    // password가 틀렸을 경우
+    else if (data == -3) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "비밀번호가 틀렸습니다"
+      );
+    }
+    // 로그인 성공
+    else {
+      const { userData, token } = data;
+      response.dataTokenResponse(
+        res,
+        returnCode.OK,
+        "로그인 성공",
+        userData,
+        token
+      );
+    }
+  } catch (err) {
+    console.error(err.message);
+    response.basicResponse(res, returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
+  }
+};
+
 const authController = {
   POSTemailController,
   POSTcodeController,
   POSTsignupController,
+  POSTsigninController,
 };
 
 export default authController;
