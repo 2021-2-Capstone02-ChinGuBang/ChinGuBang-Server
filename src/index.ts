@@ -1,42 +1,46 @@
-import express from "express";
-const app = express();
-import config from "./config";
-import cors from "cors";
+import express from "express"; 
 import { sequelize } from "./models";
 import router from "./router";
-import path from "path";
-// Connect Database
-connectDB();
 
-app.use(express.urlencoded());
-app.use(express.json());
+const app = express(); 
 
-// Define Routes
-app.use("/api/v1/user", require("./api/user"));
-app.use("/api/v1/group", require("./api/group"));
-app.use("/api/v1/schedule", require("./api/schedule"));
+sequelize.sync({ force: false }).catch((error) => {
+    console.error(error);
+  });
+  
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());  
 
-
+app.use('/', router);   //라우터 
 // error handler
 app.use(function (err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get("env") === "production" ? err : {};
 
-    // render the error page
-    res.status(err.status || 500);
-    res.render("error");
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "production" ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.json({ error: err });
 });
 
-app
-    .listen(5000, () => {
-        console.log(`
+app 
+  .listen(process.env.PORT, () => {
+    console.log(`
     ################################################
-    🛡️  Server listening on port: 5000 🛡️
+    🛡️  Server listening on port: ${process.env.PORT} 🛡️
     ################################################
   `);
-    })
-    .on("error", (err) => {
-        console.error(err);
-        process.exit(1);
-    });
+  sequelize
+      // .sync({ alter: true })
+      .authenticate()
+      .then(async () => {
+        console.log("MySQL Connected ...");
+      })
+      .catch((err) => {
+        console.log("TT : ", err);
+      });
+  })
+  .on("error", (error) => {
+    console.error(error);
+    process.exit(1);
+  });
