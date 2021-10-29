@@ -1,21 +1,11 @@
 namespace roomDTO {
   export interface postRoomReqDTO {
     type: roomTypeDTO;
-    address: string;
-    information: roomInfoStringDTO;
-    rentPeriod: rentPeriodStringDTO;
-    options: roomOptionStringDTO;
-    conditions: roomConditionStringDTO;
-    description: string;
+    information: roomInfoReqDTO;
+    rentPeriod: rentPeriodReqDTO;
+    options: roomOptionReqDTO;
+    conditions: roomConditionReqDTO;
   }
-
-  export interface testReqDTO {
-    type: roomTypeDTO;
-    conditions: roomConditionDTO;
-    description: string;
-  }
-
-  export interface postRoomResDTO {}
 
   export interface userInfoDTO {
     userID: string;
@@ -36,15 +26,19 @@ namespace roomDTO {
     area: number | null;
     floor: number | null;
     construction: number | null;
+    description: string;
+    address: string;
   }
 
-  export interface roomInfoStringDTO {
+  export interface roomInfoReqDTO {
     deposit: string | null;
     monthly: string | null;
     control: string | null;
     area: string | null;
     floor: string | null;
     construction: string | null;
+    description: string;
+    address: string;
   }
 
   export interface roomConditionDTO {
@@ -52,7 +46,7 @@ namespace roomDTO {
     smoking: Boolean;
   }
 
-  export interface roomConditionStringDTO {
+  export interface roomConditionReqDTO {
     gender: string;
     smoking: string;
   }
@@ -62,7 +56,7 @@ namespace roomDTO {
     endDate: Date | null;
   }
 
-  export interface rentPeriodStringDTO {
+  export interface rentPeriodReqDTO {
     startDate: string;
     endDate: string | null;
   }
@@ -84,7 +78,7 @@ namespace roomDTO {
     parking: Boolean;
     elevator: Boolean;
   }
-  export interface roomOptionStringDTO {
+  export interface roomOptionReqDTO {
     bed: string;
     table: string;
     chair: string;

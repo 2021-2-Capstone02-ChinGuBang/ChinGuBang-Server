@@ -16,50 +16,26 @@ import {
 import { Room } from ".";
 
 @Table({
-  tableName: "RoomInformation",
+  tableName: "RoomPeriod",
   freezeTableName: true,
   underscored: false,
   timestamps: true,
   charset: "utf8", // 한국어 설정
   collate: "utf8_general_ci", // 한국어 설정
 })
-export default class RoomInformation extends Model {
+export default class RoomPeriod extends Model {
   @PrimaryKey
   @ForeignKey(() => Room)
   @Unique
   @Column
   roomID: number;
 
-  @AllowNull
   @Column
-  deposit!: number;
+  startDate: Date;
 
   @AllowNull
   @Column
-  monthly!: number;
-
-  @AllowNull
-  @Column
-  control!: number;
-
-  @AllowNull
-  @Column
-  area!: number;
-
-  @AllowNull
-  @Column
-  floor!: number;
-
-  @AllowNull
-  @Column
-  construction!: number;
-
-  @Column
-  address: string;
-
-  @AllowNull
-  @Column
-  description!: string;
+  endDate!: Date;
 
   @BelongsTo(() => Room)
   room: Room;

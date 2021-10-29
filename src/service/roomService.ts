@@ -7,6 +7,8 @@ import {
   RoomCondition,
   RoomPhoto,
   RoomOption,
+  RoomType,
+  RoomPeriod,
   Like,
 } from "../models";
 // DTO
@@ -35,28 +37,10 @@ const POSTroomService = async (
   reqData: roomDTO.postRoomReqDTO,
   url?
 ) => {
-  const {
-    type,
-    address,
-    information,
-    rentPeriod,
-    options,
-    conditions,
-    description,
-  } = reqData;
+  const { type, information, rentPeriod, options, conditions } = reqData;
 
-  console.log(reqData);
   // 1. 요청 바디 부족
-  if (
-    !type ||
-    !address ||
-    !information ||
-    !rentPeriod ||
-    !options ||
-    !conditions ||
-    !description
-  ) {
-    console.log("here!");
+  if (!type || !information || !rentPeriod || !options || !conditions) {
     return -1;
   }
 
@@ -77,24 +61,31 @@ const POSTroomService = async (
   // room 생성
   const newRoom = await Room.create({
     uploader: userID,
+    university: certification.university,
   });
 
-  await RoomInformation.create({
+  await RoomType.create({
     roomID: newRoom.roomID,
     roomType: type.roomType,
     category: type.category,
     rentType: type.rentType,
+  });
+  await RoomInformation.create({
+    roomID: newRoom.roomID,
     deposit: cast.stringToNumber(information.deposit),
     monthly: cast.stringToNumber(information.monthly),
     control: cast.stringToNumber(information.control),
     area: cast.stringToNumber(information.area),
     floor: cast.stringToNumber(information.floor),
     construction: cast.stringToNumber(information.construction),
+    address: information.address,
+    description: information.description,
+  });
+
+  await RoomPeriod.create({
+    roomID: newRoom.roomID,
     startDate: date.stringToDate(rentPeriod.startDate),
     endDate: date.stringToDate(rentPeriod.endDate),
-    address,
-    description,
-    university: certification.university,
   });
 
   await RoomCondition.create({
@@ -142,10 +133,11 @@ const POSTroomService = async (
         model: User,
         attributes: ["userID", "nickname"],
       },
+      RoomType,
       RoomInformation,
+      RoomOption,
       RoomCondition,
       RoomPhoto,
-      RoomOption,
     ],
     attributes: ["roomID", "createdAt", "updatedAt", "isDeleted"],
   });

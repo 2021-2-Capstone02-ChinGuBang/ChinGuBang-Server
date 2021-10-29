@@ -97,7 +97,6 @@ export async function POSTcodeService(body: authDTO.codeReqDTO) {
   if (!email || !code) {
     return -1;
   }
-
   const emailCode = await Code.findOne({ where: { email } });
 
   // 2. 인증 시도 하지 않은 이메일
@@ -142,11 +141,12 @@ const POSTsignupService = async (data: authDTO.signupReqDTO) => {
     nickname,
   });
   // Certification 생성
-  const certification = await Certification.create({
+  await Certification.create({
     userID: user.userID,
     university,
   });
 
+  await Code.destroy({ where: { email } });
   // Return jsonwebtoken
   const payload = {
     user: {

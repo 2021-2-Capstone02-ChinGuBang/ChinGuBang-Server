@@ -14,7 +14,15 @@ import {
   HasMany,
   AllowNull,
 } from "sequelize-typescript";
-import { User, RoomInformation, RoomCondition, RoomPhoto, RoomOption } from ".";
+import {
+  User,
+  RoomInformation,
+  RoomCondition,
+  RoomPhoto,
+  RoomOption,
+  RoomType,
+  RoomPeriod,
+} from ".";
 
 @Table({
   tableName: "Room",
@@ -41,6 +49,9 @@ export default class Room extends Model {
   @Column
   uploader: number;
 
+  @Column
+  university: string;
+
   @Default(false)
   @Column
   isDeleted: Boolean;
@@ -48,6 +59,10 @@ export default class Room extends Model {
   @BelongsTo(() => User)
   user: User;
 
+  @HasOne(() => RoomType)
+  type: RoomType;
+  @HasOne(() => RoomPeriod)
+  rentPeriod: RoomPeriod;
   @HasOne(() => RoomInformation)
   information: RoomInformation;
   @HasOne(() => RoomCondition)
