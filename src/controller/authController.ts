@@ -9,7 +9,7 @@ import { authDTO } from "../DTO";
 
 /**
  *  @이메일_인증번호_전송
- *  @route Post api/v1/auth/email
+ *  @route Post /api/v1/auth/email
  *  @desc post email code for certification
  *  @access public
  *  @error
@@ -75,7 +75,7 @@ const POSTemailController = async (req: Request, res: Response) => {
 
 /**
  *  @인증번호_인증
- *  @route Post api/v1/auth/code
+ *  @route Post /api/v1/auth/code
  *  @body email, code
  *  @access public
  *  @error
@@ -135,7 +135,7 @@ const POSTcodeController = async (req: Request, res: Response) => {
 
 /**
  *  @회원가입
- *  @route Post api/v1/auth/signup
+ *  @route Post /api/v1/auth/signup
  *  @body email,password, nickname, university
  *  @access public
  *  @error
@@ -178,7 +178,7 @@ const POSTsignupController = async (req: Request, res: Response) => {
 
 /**
  *  @로그인
- *  @route Post api/v1/auth/siginin
+ *  @route Post /api/v1/auth/siginin
  *  @body email,password
  *  @error
  *      1. 요청 바디 부족

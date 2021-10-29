@@ -2,6 +2,7 @@ import { Route53RecoveryCluster } from "aws-sdk";
 import express, { Request, Response } from "express";
 
 import authRouter from "./authRouter";
+import roomRouter from "./roomRouter";
 
 import { response, returnCode } from "../library";
 
@@ -16,5 +17,5 @@ router.get("", async (req: Request, res: Response) => {
 });
 
 router.use("/api/v1/auth", authRouter);
-
+router.use("/api/v1/room", roomRouter);
 export default router;

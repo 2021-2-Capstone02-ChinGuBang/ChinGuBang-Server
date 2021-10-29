@@ -29,12 +29,6 @@ namespace authDTO {
     nickname: string;
     university: string | null;
   }
-
-  // export interface signupReqDTO {
-  //   email: string;
-  //   password: string;
-  //   nickname: string;
-  // }
 }
 
 export default authDTO;

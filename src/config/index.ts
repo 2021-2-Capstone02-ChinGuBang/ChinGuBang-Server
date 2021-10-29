@@ -7,22 +7,22 @@ const envFound = dotenv.config();
 if (envFound.error) {
   // This error should crash whole process
 
-    throw new Error("⚠️  Couldn't find .env file  ⚠️");
+  throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
 
 export default {
-    /**
+  /**
    * Your favorite port
    */
-    port: parseInt(process.env.PORT, 10),
+  port: parseInt(process.env.PORT, 10),
 
-    /**
+  /**
    * Your secret sauce
    */
-    jwtSecret: process.env.JWT_SECRET,
-    jwtAlgorithm: process.env.JWT_ALGO,
+  jwtSecret: process.env.JWT_SECRET,
+  jwtAlgorithm: process.env.JWT_ALGO,
 
-    // awsBucket: process.env.AWS_BUCKET,
-    // awsS3AccessKey: process.env.AWS_ACCESS_KEY,
-    // awsS3SecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  awsBucket: process.env.AWS_BUCKET,
+  awsS3AccessKey: process.env.AWS_ACCESS_KEY,
+  awsS3SecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 };

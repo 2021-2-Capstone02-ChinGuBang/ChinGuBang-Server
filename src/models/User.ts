@@ -13,7 +13,7 @@ import {
   HasMany,
   HasOne,
 } from "sequelize-typescript";
-import { Certification } from ".";
+import { Certification, Room } from ".";
 
 @Table({
   tableName: "User",
@@ -57,4 +57,7 @@ export default class User extends Model {
 
   @HasOne(() => Certification)
   certification: Certification;
+
+  @HasMany(() => Room)
+  rooms: Room[];
 }

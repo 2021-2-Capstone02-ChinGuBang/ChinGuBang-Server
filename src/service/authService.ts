@@ -13,7 +13,7 @@ import nanoid from "nanoid";
 
 /**
  *  @이메일_인증번호_전송
- *  @route Post api/v1/auth/email
+ *  @route Post /api/v1/auth/email
  *  @body email
  *  @error
  *      1. 요청 바디 부족
@@ -82,7 +82,7 @@ const POSTemailService = async (body: authDTO.emailReqDTO) => {
 
 /**
  *  @인증번호_인증
- *  @route Post api/v1/auth/code
+ *  @route Post /api/v1/auth/code
  *  @body email, code
  *  @error
  *      1. 요청 바디 부족
@@ -116,7 +116,7 @@ export async function POSTcodeService(body: authDTO.codeReqDTO) {
 
 /**
  *  @회원가입
- *  @route Post api/v1/auth/signup
+ *  @route Post /api/v1/auth/signup
  *  @body email,password, nickname, university
  *  @access public
  *  @error
@@ -163,7 +163,7 @@ const POSTsignupService = async (data: authDTO.signupReqDTO) => {
 
 /**
  *  @로그인
- *  @route Post api/v1/auth/siginin
+ *  @route Post /api/v1/auth/siginin
  *  @body email,password
  *  @error
  *      1. 요청 바디 부족

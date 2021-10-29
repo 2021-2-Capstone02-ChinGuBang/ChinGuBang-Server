@@ -1,86 +1,85 @@
 import {
-    Model,
-    Column,
-    CreatedAt,
-    UpdatedAt,
-    Table,
-    PrimaryKey,
-    AutoIncrement,
-    Unique,
-    Default,
-    BelongsTo,
-    ForeignKey,
-    HasMany,
-    AllowNull,
-  } from "sequelize-typescript";
-  import { Room } from ".";
-  
-  @Table({
-    tableName: "RoomInformation",
-    freezeTableName: true,
-    underscored: false,
-    timestamps: true,
-    charset: "utf8", // 한국어 설정
-    collate: "utf8_general_ci", // 한국어 설정
-  })
-  export default class RoomInformation extends Model {
-    @PrimaryKey
-    @ForeignKey(() => Room)
-    @Unique
-    @Column
-    roomID: number;
+  Model,
+  Column,
+  CreatedAt,
+  UpdatedAt,
+  Table,
+  PrimaryKey,
+  AutoIncrement,
+  Unique,
+  Default,
+  BelongsTo,
+  ForeignKey,
+  HasMany,
+  AllowNull,
+} from "sequelize-typescript";
+import { Room } from ".";
 
-    @Column
-    roomType: string;
+@Table({
+  tableName: "RoomInformation",
+  freezeTableName: true,
+  underscored: false,
+  timestamps: true,
+  charset: "utf8", // 한국어 설정
+  collate: "utf8_general_ci", // 한국어 설정
+})
+export default class RoomInformation extends Model {
+  @PrimaryKey
+  @ForeignKey(() => Room)
+  @Unique
+  @Column
+  roomID: number;
 
-    @Column
-    category: string;
+  @Column
+  roomType: string;
 
-    @Column
-    rentType: string;
+  @Column
+  category: string;
 
-    @AllowNull
-    @Column
-    deposit!: number;
+  @Column
+  rentType: string;
 
-    @AllowNull
-    @Column
-    monthly!: number;
+  @AllowNull
+  @Column
+  deposit!: number;
 
-    @AllowNull
-    @Column
-    control!: number;
+  @AllowNull
+  @Column
+  monthly!: number;
 
-    @AllowNull
-    @Column
-    area!: number;
+  @AllowNull
+  @Column
+  control!: number;
 
-    @AllowNull
-    @Column
-    floor!: number;
+  @AllowNull
+  @Column
+  area!: number;
 
-    @AllowNull
-    @Column
-    construction!: number;
+  @AllowNull
+  @Column
+  floor!: number;
 
-    @Column
-    startDate: Date;
-    
-    @AllowNull
-    @Column
-    endDate!: Date;
+  @AllowNull
+  @Column
+  construction!: number;
 
-    @Column
-    address: string;
+  @Column
+  startDate: Date;
 
-    @AllowNull
-    @Column
-    description!: string;
+  @AllowNull
+  @Column
+  endDate!: Date;
 
-    @Column
-    university: string;
+  @Column
+  address: string;
 
-    @BelongsTo(() => Room)
-    room: Room;
-  }
-  
+  @AllowNull
+  @Column
+  description!: string;
+
+  @Column
+  university: string;
+
+  @BelongsTo(() => Room)
+  room: Room;
+}
