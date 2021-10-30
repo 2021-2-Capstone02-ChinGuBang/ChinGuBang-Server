@@ -16,14 +16,14 @@ import {
 import { Room } from ".";
 
 @Table({
-  tableName: "RoomInformation",
+  tableName: "RoomPrice",
   freezeTableName: true,
   underscored: false,
   timestamps: true,
   charset: "utf8", // 한국어 설정
   collate: "utf8_general_ci", // 한국어 설정
 })
-export default class RoomInformation extends Model {
+export default class RoomPrice extends Model {
   @PrimaryKey
   @ForeignKey(() => Room)
   @Unique
@@ -32,22 +32,15 @@ export default class RoomInformation extends Model {
 
   @AllowNull
   @Column
-  area!: number;
+  deposit!: number;
 
   @AllowNull
   @Column
-  floor!: number;
+  monthly!: number;
 
   @AllowNull
   @Column
-  construction!: number;
-
-  @Column
-  address: string;
-
-  @AllowNull
-  @Column
-  description!: string;
+  control!: number;
 
   @BelongsTo(() => Room)
   room: Room;

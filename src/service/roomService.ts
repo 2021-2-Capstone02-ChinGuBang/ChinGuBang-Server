@@ -9,6 +9,7 @@ import {
   RoomOption,
   RoomType,
   RoomPeriod,
+  RoomPrice,
   Like,
 } from "../models";
 // DTO
@@ -37,7 +38,7 @@ const POSTroomService = async (
   reqData: roomDTO.postRoomReqDTO,
   url?
 ) => {
-  const { type, information, rentPeriod, options, conditions } = reqData;
+  const { type, price, information, rentPeriod, options, conditions } = reqData;
 
   // 1. 요청 바디 부족
   if (!type || !information || !rentPeriod || !options || !conditions) {
@@ -70,16 +71,21 @@ const POSTroomService = async (
     category: type.category,
     rentType: type.rentType,
   });
+
   await RoomInformation.create({
     roomID: newRoom.roomID,
-    deposit: cast.stringToNumber(information.deposit),
-    monthly: cast.stringToNumber(information.monthly),
-    control: cast.stringToNumber(information.control),
     area: cast.stringToNumber(information.area),
     floor: cast.stringToNumber(information.floor),
     construction: cast.stringToNumber(information.construction),
     address: information.address,
     description: information.description,
+  });
+
+  await RoomPrice.create({
+    roomID: newRoom.roomID,
+    deposit: cast.stringToNumber(price.deposit),
+    monthly: cast.stringToNumber(price.monthly),
+    control: cast.stringToNumber(price.control),
   });
 
   await RoomPeriod.create({
@@ -133,11 +139,53 @@ const POSTroomService = async (
         model: User,
         attributes: ["userID", "nickname"],
       },
-      RoomType,
-      RoomInformation,
-      RoomOption,
-      RoomCondition,
-      RoomPhoto,
+      {
+        model: RoomType,
+        attributes: ["roomType", "category", "rentType"],
+      },
+      {
+        model: RoomPrice,
+        attributes: ["deposit", "monthly", "control"],
+      },
+      {
+        model: RoomInformation,
+        attributes: ["area", "floor", "construction", "address", "description"],
+      },
+      {
+        model: RoomOption,
+        attributes: [
+          "bed",
+          "table",
+          "chair",
+          "closet",
+          "airconditioner",
+          "induction",
+          "refrigerator",
+          "tv",
+          "doorlock",
+          "microwave",
+          "washingmashine",
+          "cctv",
+          "wifi",
+          "parking",
+          "elevator",
+        ],
+      },
+      {
+        model: RoomCondition,
+        attributes: ["gender", "smoking"],
+      },
+      {
+        model: RoomPhoto,
+        attributes: [
+          "main",
+          "restroom",
+          "kitchen",
+          "photo1",
+          "photo2",
+          "photo3",
+        ],
+      },
     ],
     attributes: ["roomID", "createdAt", "updatedAt", "isDeleted"],
   });
