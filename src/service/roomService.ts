@@ -202,8 +202,62 @@ const POSTroomService = async (
   return resData;
 };
 
+/**
+ *  @모든_방_보기
+ *  @route GET api/v1/room?offset=@&limit=
+ *  @access private
+ *  @error
+ *    1. no limit
+ */
+
+const GETallRoomService = async (
+  userID: number,
+  offset?: number,
+  limit?: number
+) => {
+  if (!offset) {
+    offset = 0;
+  }
+
+  // 1. No limit
+  if (!limit) {
+    return -1;
+  }
+  const userCertification = await Certification.findOne({ where: { userID } });
+  const university = await userCertification.university;
+
+  const rooms = await Room.findAll({
+    order: [["createdAt", "DESC"]],
+    where: { isDeleted: false, university },
+    include: [
+      {
+        model: User,
+        where: { isDeleted: false },
+        attributes: [],
+        required: true,
+      },
+      { model: RoomType, attributes: ["roomType", "category"] },
+      { model: RoomPrice, attributes: ["monthly", "deposit"] },
+      { model: RoomPeriod, attributes: ["startDate", "endDate"] },
+      { model: RoomInformation, attributes: ["area", "floor"] },
+      { model: RoomPhoto, attributes: ["main"] },
+      { model: Like, where: { userID }, required: false },
+    ],
+    attributes: ["roomID", "createdAt"],
+    offset,
+    limit,
+  });
+
+  const totalRoomNum = await Room.count({
+    where: { isDeleted: false, university },
+  });
+  const resData = { rooms, totalRoomNum };
+  return resData;
+};
+
 const roomService = {
   POSTroomService,
+  GETallRoomService,
 };
 
 export default roomService;

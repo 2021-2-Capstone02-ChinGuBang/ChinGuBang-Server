@@ -83,8 +83,41 @@ const POSTroomController = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ *  @모든_방_보기
+ *  @route GET api/v1/room?offset=@&limit=
+ *  @access private
+ *  @error
+ *    1. no limit
+ */
+
+const GETallRoomController = async (req: Request, res: Response) => {
+  try {
+    const data = await roomService.GETallRoomService(
+      req.body.userID.userID,
+      Number(req.query.offset),
+      Number(req.query.limit)
+    );
+
+    // 1. No limit
+    if (data === -1) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "요청 값이 올바르지 않습니다."
+      );
+    }
+
+    response.dataResponse(res, returnCode.OK, "모든 방 보기 성공", data);
+  } catch (err) {
+    console.error(err.message);
+    response.basicResponse(res, returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
+  }
+};
+
 const roomController = {
   POSTroomController,
+  GETallRoomController,
 };
 
 export default roomController;

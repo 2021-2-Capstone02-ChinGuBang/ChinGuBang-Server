@@ -23,6 +23,7 @@ import {
   RoomType,
   RoomPeriod,
   RoomPrice,
+  Like,
 } from ".";
 
 @Table({
@@ -74,4 +75,6 @@ export default class Room extends Model {
   options: RoomOption;
   @HasOne(() => RoomPrice)
   price: RoomPrice;
+  @HasMany(() => Like)
+  likes: Like[];
 }

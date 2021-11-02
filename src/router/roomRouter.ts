@@ -19,4 +19,6 @@ router.post(
   roomController.POSTroomController
 );
 
+router.get("", authMiddleware, roomController.GETallRoomController);
+
 export default router;

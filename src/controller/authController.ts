@@ -51,13 +51,13 @@ const POSTemailController = async (req: Request, res: Response) => {
       );
     }
     // 이메일 전송이 실패한 경우
-    else if (resData === -3) {
-      response.basicResponse(
-        res,
-        returnCode.SERVICE_UNAVAILABLE,
-        "이메일 전송이 실패하였습니다."
-      );
-    }
+    // else if (resData === -3) {
+    //   response.basicResponse(
+    //     res,
+    //     returnCode.SERVICE_UNAVAILABLE,
+    //     "이메일 전송이 실패하였습니다."
+    //   );
+    // }
     // 성공
     else {
       response.dataResponse(
