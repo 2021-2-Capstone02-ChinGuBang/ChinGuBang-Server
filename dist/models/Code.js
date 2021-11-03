@@ -14,7 +14,12 @@ let Code = class Code extends sequelize_typescript_1.Model {
 };
 __decorate([
     sequelize_typescript_1.PrimaryKey,
+    sequelize_typescript_1.AutoIncrement,
     sequelize_typescript_1.Unique,
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Number)
+], Code.prototype, "codeID", void 0);
+__decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Code.prototype, "email", void 0);
@@ -23,6 +28,11 @@ __decorate([
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], Code.prototype, "code", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Default)(false),
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Boolean)
+], Code.prototype, "isDeleted", void 0);
 Code = __decorate([
     (0, sequelize_typescript_1.Table)({
         tableName: "Code",

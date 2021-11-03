@@ -68,13 +68,11 @@ const POSTemailService = (body) => __awaiter(void 0, void 0, void 0, function* (
         }
         library_1.emailSender.close();
     });
-    const emailCode = yield models_1.Code.findOne({ where: { email } });
+    const emailCode = yield models_1.Code.findOne({ where: { email, isDeleted: false } });
     if (emailCode) {
-        yield models_1.Code.update({ code: certificationCode }, { where: { email } });
+        yield models_1.Code.update({ isDeleted: true }, { where: { codeID: emailCode.codeID } });
     }
-    else {
-        yield models_1.Code.create({ email, code: certificationCode });
-    }
+    yield models_1.Code.create({ email, code: certificationCode });
     const resData = {
         code: certificationCode,
     };
@@ -102,7 +100,10 @@ function POSTcodeService(body) {
             return -2;
         }
         // 3. 인증번호 인증 실패
-        if (code !== emailCode.code) {
+        else if (code !== emailCode.code) {
+            return -3;
+        }
+        else if (emailCode.isDeleted) {
             return -3;
         }
         // 인증번호 일치
@@ -138,7 +139,7 @@ const POSTsignupService = (data) => __awaiter(void 0, void 0, void 0, function* 
         userID: user.userID,
         university,
     });
-    yield models_1.Code.destroy({ where: { email } });
+    yield models_1.Code.update({ isDeleted: true }, { where: { email } });
     // Return jsonwebtoken
     const payload = {
         user: {
