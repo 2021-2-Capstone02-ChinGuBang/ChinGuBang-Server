@@ -110,7 +110,7 @@ const POSTcodeController = async (req: Request, res: Response) => {
       );
     }
     // 2. email이 DB에 없을 경우
-    if (resData === -2) {
+    else if (resData === -2) {
       response.basicResponse(
         res,
         returnCode.BAD_REQUEST,
@@ -118,15 +118,17 @@ const POSTcodeController = async (req: Request, res: Response) => {
       );
     }
     // 인증번호가 올바르지 않은 경우
-    if (resData === -3) {
+    else if (resData === -3) {
       response.dataResponse(res, returnCode.OK, "인증번호 인증 실패", {
         isOkay: false,
       });
     }
     // 인증번호 인증 성공
-    response.dataResponse(res, returnCode.OK, "인증번호 인증 성공", {
-      isOkay: true,
-    });
+    else {
+      response.dataResponse(res, returnCode.OK, "인증번호 인증 성공", {
+        isOkay: true,
+      });
+    }
   } catch (err) {
     console.error(err.message);
     response.basicResponse(res, returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
