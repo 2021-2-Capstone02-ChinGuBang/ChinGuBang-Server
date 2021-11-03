@@ -67,12 +67,14 @@ const POSTemailService = async (body: authDTO.emailReqDTO) => {
     emailSender.close();
   });
 
-  const emailCode = await Code.findOne({ where: { email } });
+  const emailCode = await Code.findOne({ where: { email, isDeleted: false } });
   if (emailCode) {
-    await Code.update({ code: certificationCode }, { where: { email } });
-  } else {
-    await Code.create({ email, code: certificationCode });
+    await Code.update(
+      { isDeleted: true },
+      { where: { codeID: emailCode.codeID } }
+    );
   }
+  await Code.create({ email, code: certificationCode });
 
   const resData: authDTO.emailResDTO = {
     code: certificationCode,
@@ -105,7 +107,9 @@ export async function POSTcodeService(body: authDTO.codeReqDTO) {
   }
 
   // 3. 인증번호 인증 실패
-  if (code !== emailCode.code) {
+  else if (code !== emailCode.code) {
+    return -3;
+  } else if (emailCode.isDeleted) {
     return -3;
   }
 
@@ -146,7 +150,7 @@ const POSTsignupService = async (data: authDTO.signupReqDTO) => {
     university,
   });
 
-  await Code.destroy({ where: { email } });
+  await Code.update({ isDeleted: true }, { where: { email } });
   // Return jsonwebtoken
   const payload = {
     user: {
