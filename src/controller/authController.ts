@@ -43,7 +43,7 @@ const POSTemailController = async (req: Request, res: Response) => {
         "요청 값이 올바르지 않습니다."
       );
     }
-    // email이 DB에 없을 경우
+    // 2. 이미 가입한 email
     else if (resData === -2) {
       response.basicResponse(
         res,
@@ -99,9 +99,8 @@ const POSTcodeController = async (req: Request, res: Response) => {
 
   try {
     const reqData: authDTO.codeReqDTO = req.body;
-    const resData: undefined | -1 | -2 | -3 = await authService.POSTcodeService(
-      reqData
-    );
+    const resData: undefined | -1 | -2 | -3 | -4 =
+      await authService.POSTcodeService(reqData);
 
     // 1. 요청 바디가 부족할 경우
     if (resData === -1) {
@@ -124,6 +123,12 @@ const POSTcodeController = async (req: Request, res: Response) => {
       response.dataResponse(res, returnCode.OK, "인증번호 인증 실패", {
         isOkay: false,
       });
+    } else if (resData === -4) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "이미 가입된 이메일입니다."
+      );
     }
     // 인증번호 인증 성공
     else {
@@ -169,7 +174,14 @@ const POSTsignupController = async (req: Request, res: Response) => {
         returnCode.BAD_REQUEST,
         "요청 값이 올바르지 않습니다"
       );
+    } else if (data === -2) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "이미 가입된 이메일입니다."
+      );
     }
+
     // 회원가입 성공
     else {
       const { user, token } = data;

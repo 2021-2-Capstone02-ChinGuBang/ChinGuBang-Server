@@ -103,6 +103,11 @@ function POSTcodeService(body) {
         else if (code !== emailCode.code) {
             return -3;
         }
+        // 4. 이미 가입한 email
+        const emailUser = yield models_1.User.findOne({ where: { email, isDeleted: false } });
+        if (emailUser) {
+            return -4;
+        }
         // 인증번호 일치
         return undefined;
     });
@@ -115,12 +120,18 @@ exports.POSTcodeService = POSTcodeService;
  *  @access public
  *  @error
  *      1. 요청 바디 부족
+ *      2. 이미 가입한 이메일
  */
 const POSTsignupService = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password, nickname, university } = data;
     // 1. 요청 바디 부족
     if (!email || !password || !nickname || !university) {
         return -1;
+    }
+    // 2. 이미 가입한 email
+    const emailUser = yield models_1.User.findOne({ where: { email, isDeleted: false } });
+    if (emailUser) {
+        return -2;
     }
     // password 암호화
     const salt = yield bcryptjs_1.default.genSalt(10);

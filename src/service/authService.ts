@@ -110,6 +110,11 @@ export async function POSTcodeService(body: authDTO.codeReqDTO) {
   else if (code !== emailCode.code) {
     return -3;
   }
+  // 4. 이미 가입한 email
+  const emailUser = await User.findOne({ where: { email, isDeleted: false } });
+  if (emailUser) {
+    return -4;
+  }
 
   // 인증번호 일치
   return undefined;
@@ -122,6 +127,7 @@ export async function POSTcodeService(body: authDTO.codeReqDTO) {
  *  @access public
  *  @error
  *      1. 요청 바디 부족
+ *      2. 이미 가입한 이메일
  */
 
 const POSTsignupService = async (data: authDTO.signupReqDTO) => {
@@ -131,7 +137,11 @@ const POSTsignupService = async (data: authDTO.signupReqDTO) => {
   if (!email || !password || !nickname || !university) {
     return -1;
   }
-
+  // 2. 이미 가입한 email
+  const emailUser = await User.findOne({ where: { email, isDeleted: false } });
+  if (emailUser) {
+    return -2;
+  }
   // password 암호화
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(password, salt);
