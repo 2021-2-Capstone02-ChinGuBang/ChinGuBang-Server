@@ -18,6 +18,7 @@ import { roomDTO } from "../DTO";
  */
 
 const POSTroomController = async (req: Request, res: Response) => {
+  console.log(req.body);
   try {
     const url = {
       main: (req as any).files.main
@@ -92,6 +93,7 @@ const POSTroomController = async (req: Request, res: Response) => {
  */
 
 const GETallRoomController = async (req: Request, res: Response) => {
+  console.log(req.body);
   try {
     const data = await roomService.GETallRoomService(
       req.body.userID.userID,

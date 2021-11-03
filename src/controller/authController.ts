@@ -19,6 +19,7 @@ import { authDTO } from "../DTO";
  */
 
 const POSTemailController = async (req: Request, res: Response) => {
+  console.log(req.body);
   // 이메일 형식이 잘못된 경우
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -85,6 +86,7 @@ const POSTemailController = async (req: Request, res: Response) => {
  */
 
 const POSTcodeController = async (req: Request, res: Response) => {
+  console.log(req.body);
   // 이메일 형식이 잘못된 경우
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -145,6 +147,7 @@ const POSTcodeController = async (req: Request, res: Response) => {
  */
 
 const POSTsignupController = async (req: Request, res: Response) => {
+  console.log(req.body);
   // 이메일 형식이 잘못된 경우
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -193,6 +196,7 @@ const POSTsignupController = async (req: Request, res: Response) => {
  */
 
 const POSTsigninController = async (req: Request, res: Response) => {
+  console.log(req.body);
   // 이메일 형식이 잘못된 경우
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
