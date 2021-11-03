@@ -94,16 +94,13 @@ function POSTcodeService(body) {
         if (!email || !code) {
             return -1;
         }
-        const emailCode = yield models_1.Code.findOne({ where: { email } });
+        const emailCode = yield models_1.Code.findOne({ where: { email, isDeleted: false } });
         // 2. 인증 시도 하지 않은 이메일
         if (!emailCode) {
             return -2;
         }
         // 3. 인증번호 인증 실패
         else if (code !== emailCode.code) {
-            return -3;
-        }
-        else if (emailCode.isDeleted) {
             return -3;
         }
         // 인증번호 일치

@@ -99,7 +99,7 @@ export async function POSTcodeService(body: authDTO.codeReqDTO) {
   if (!email || !code) {
     return -1;
   }
-  const emailCode = await Code.findOne({ where: { email } });
+  const emailCode = await Code.findOne({ where: { email, isDeleted: false } });
 
   // 2. 인증 시도 하지 않은 이메일
   if (!emailCode) {
@@ -108,8 +108,6 @@ export async function POSTcodeService(body: authDTO.codeReqDTO) {
 
   // 3. 인증번호 인증 실패
   else if (code !== emailCode.code) {
-    return -3;
-  } else if (emailCode.isDeleted) {
     return -3;
   }
 
