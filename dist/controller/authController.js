@@ -83,19 +83,21 @@ const POSTcodeController = (req, res) => __awaiter(void 0, void 0, void 0, funct
             library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "요청 값이 올바르지 않습니다.");
         }
         // 2. email이 DB에 없을 경우
-        if (resData === -2) {
+        else if (resData === -2) {
             library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "인증 요청 하지 않은 이메일입니다.");
         }
         // 인증번호가 올바르지 않은 경우
-        if (resData === -3) {
+        else if (resData === -3) {
             library_1.response.dataResponse(res, library_1.returnCode.OK, "인증번호 인증 실패", {
                 isOkay: false,
             });
         }
         // 인증번호 인증 성공
-        library_1.response.dataResponse(res, library_1.returnCode.OK, "인증번호 인증 성공", {
-            isOkay: true,
-        });
+        else {
+            library_1.response.dataResponse(res, library_1.returnCode.OK, "인증번호 인증 성공", {
+                isOkay: true,
+            });
+        }
     }
     catch (err) {
         console.error(err.message);
