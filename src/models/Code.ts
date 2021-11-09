@@ -25,11 +25,19 @@ import { User } from ".";
 })
 export default class Code extends Model {
   @PrimaryKey
+  @AutoIncrement
   @Unique
+  @Column
+  codeID: number;
+
   @Column
   email: string;
 
   @Unique
   @Column
   code: string;
+
+  @Default(false)
+  @Column
+  isDeleted: Boolean;
 }

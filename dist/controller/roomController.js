@@ -23,6 +23,7 @@ const service_1 = require("../service");
  *      3. 유저 권한 없음
  */
 const POSTroomController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
     try {
         const url = {
             main: req.files.main
@@ -76,6 +77,7 @@ const POSTroomController = (req, res) => __awaiter(void 0, void 0, void 0, funct
  *    1. no limit
  */
 const GETallRoomController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
     try {
         const data = yield service_1.roomService.GETallRoomService(req.body.userID.userID, Number(req.query.offset), Number(req.query.limit));
         // 1. No limit

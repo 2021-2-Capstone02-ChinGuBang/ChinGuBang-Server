@@ -67,12 +67,14 @@ const POSTemailService = async (body: authDTO.emailReqDTO) => {
     emailSender.close();
   });
 
-  const emailCode = await Code.findOne({ where: { email } });
+  const emailCode = await Code.findOne({ where: { email, isDeleted: false } });
   if (emailCode) {
-    await Code.update({ code: certificationCode }, { where: { email } });
-  } else {
-    await Code.create({ email, code: certificationCode });
+    await Code.update(
+      { isDeleted: true },
+      { where: { codeID: emailCode.codeID } }
+    );
   }
+  await Code.create({ email, code: certificationCode });
 
   const resData: authDTO.emailResDTO = {
     code: certificationCode,
@@ -97,7 +99,7 @@ export async function POSTcodeService(body: authDTO.codeReqDTO) {
   if (!email || !code) {
     return -1;
   }
-  const emailCode = await Code.findOne({ where: { email } });
+  const emailCode = await Code.findOne({ where: { email, isDeleted: false } });
 
   // 2. 인증 시도 하지 않은 이메일
   if (!emailCode) {
@@ -105,8 +107,13 @@ export async function POSTcodeService(body: authDTO.codeReqDTO) {
   }
 
   // 3. 인증번호 인증 실패
-  if (code !== emailCode.code) {
+  else if (code !== emailCode.code) {
     return -3;
+  }
+  // 4. 이미 가입한 email
+  const emailUser = await User.findOne({ where: { email, isDeleted: false } });
+  if (emailUser) {
+    return -4;
   }
 
   // 인증번호 일치
@@ -120,6 +127,7 @@ export async function POSTcodeService(body: authDTO.codeReqDTO) {
  *  @access public
  *  @error
  *      1. 요청 바디 부족
+ *      2. 이미 가입한 이메일
  */
 
 const POSTsignupService = async (data: authDTO.signupReqDTO) => {
@@ -129,7 +137,11 @@ const POSTsignupService = async (data: authDTO.signupReqDTO) => {
   if (!email || !password || !nickname || !university) {
     return -1;
   }
-
+  // 2. 이미 가입한 email
+  const emailUser = await User.findOne({ where: { email, isDeleted: false } });
+  if (emailUser) {
+    return -2;
+  }
   // password 암호화
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(password, salt);
@@ -146,7 +158,7 @@ const POSTsignupService = async (data: authDTO.signupReqDTO) => {
     university,
   });
 
-  await Code.destroy({ where: { email } });
+  await Code.update({ isDeleted: true }, { where: { email } });
   // Return jsonwebtoken
   const payload = {
     user: {

@@ -25,6 +25,7 @@ const service_1 = require("../service");
  *      3. 이메일 전송 실패
  */
 const POSTemailController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
     // 이메일 형식이 잘못된 경우
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
@@ -37,7 +38,7 @@ const POSTemailController = (req, res) => __awaiter(void 0, void 0, void 0, func
         if (resData === -1) {
             library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "요청 값이 올바르지 않습니다.");
         }
-        // email이 DB에 없을 경우
+        // 2. 이미 가입한 email
         else if (resData === -2) {
             library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "이미 가입된 이메일 입니다.");
         }
@@ -70,6 +71,7 @@ const POSTemailController = (req, res) => __awaiter(void 0, void 0, void 0, func
  *      3. 인증번호 인증 실패
  */
 const POSTcodeController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
     // 이메일 형식이 잘못된 경우
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
@@ -83,19 +85,24 @@ const POSTcodeController = (req, res) => __awaiter(void 0, void 0, void 0, funct
             library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "요청 값이 올바르지 않습니다.");
         }
         // 2. email이 DB에 없을 경우
-        if (resData === -2) {
+        else if (resData === -2) {
             library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "인증 요청 하지 않은 이메일입니다.");
         }
         // 인증번호가 올바르지 않은 경우
-        if (resData === -3) {
+        else if (resData === -3) {
             library_1.response.dataResponse(res, library_1.returnCode.OK, "인증번호 인증 실패", {
                 isOkay: false,
             });
         }
+        else if (resData === -4) {
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "이미 가입된 이메일입니다.");
+        }
         // 인증번호 인증 성공
-        library_1.response.dataResponse(res, library_1.returnCode.OK, "인증번호 인증 성공", {
-            isOkay: true,
-        });
+        else {
+            library_1.response.dataResponse(res, library_1.returnCode.OK, "인증번호 인증 성공", {
+                isOkay: true,
+            });
+        }
     }
     catch (err) {
         console.error(err.message);
@@ -111,6 +118,7 @@ const POSTcodeController = (req, res) => __awaiter(void 0, void 0, void 0, funct
  *      1. 요청 바디 부족
  */
 const POSTsignupController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
     // 이메일 형식이 잘못된 경우
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
@@ -122,6 +130,9 @@ const POSTsignupController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         // 요청 바디가 부족할 경우
         if (data === -1) {
             library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "요청 값이 올바르지 않습니다");
+        }
+        else if (data === -2) {
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "이미 가입된 이메일입니다.");
         }
         // 회원가입 성공
         else {
@@ -148,6 +159,7 @@ const POSTsignupController = (req, res) => __awaiter(void 0, void 0, void 0, fun
  *
  */
 const POSTsigninController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
     // 이메일 형식이 잘못된 경우
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {

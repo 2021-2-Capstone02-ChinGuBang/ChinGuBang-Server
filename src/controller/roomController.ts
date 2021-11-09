@@ -18,6 +18,7 @@ import { roomDTO } from "../DTO";
  */
 
 const POSTroomController = async (req: Request, res: Response) => {
+  console.log(req.body);
   try {
     const reqData: roomDTO.postRoomReqDTO = req.body;
     const resData = await roomService.POSTroomService(
@@ -136,6 +137,7 @@ const POSTroomController = async (req: Request, res: Response) => {
  */
 
 const GETallRoomController = async (req: Request, res: Response) => {
+  console.log(req.body);
   try {
     const data = await roomService.GETallRoomService(
       req.body.userID.userID,
