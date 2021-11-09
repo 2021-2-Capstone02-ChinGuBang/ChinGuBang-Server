@@ -18,8 +18,9 @@ import { roomDTO } from "../DTO";
  */
 
 const POSTroomController = async (req: Request, res: Response) => {
-  console.log(req.body);
   try {
+    console.log(req.body);
+
     const reqData: roomDTO.postRoomReqDTO = req.body;
     const resData = await roomService.POSTroomService(
       req.body.userID.userID,
