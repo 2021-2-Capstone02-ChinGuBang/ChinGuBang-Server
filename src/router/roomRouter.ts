@@ -21,5 +21,5 @@ const router = express.Router();
 
 router.post("", authMiddleware, roomController.POSTroomController);
 router.get("", authMiddleware, roomController.GETallRoomController);
-
+router.get("/:roomID", authMiddleware, roomController.GETroomDetailController);
 export default router;

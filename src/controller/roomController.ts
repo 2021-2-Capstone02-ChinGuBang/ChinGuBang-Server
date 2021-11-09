@@ -161,9 +161,60 @@ const GETallRoomController = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ *  @방_보기_deail
+ *  @route GET api/v1/room/:roomID
+ *  @access private
+ *  @error
+ *    1. 요청 바디 부족
+ *    2. no user
+ *    3. no room
+ */
+
+const GETroomDetailController = async (req: Request, res: Response) => {
+  console.log(req.body);
+  try {
+    const data = await roomService.GETroomDetailService(
+      req.body.userID.userID,
+      Number(req.params.roomID)
+    );
+
+    // 1. 요청 바디 부족
+    if (data === -1) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "요청 값이 올바르지 않습니다."
+      );
+    }
+    // 2. no user
+    else if (data === -2) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "존재하지 않는 사용자입니다."
+      );
+    }
+    // 3. no room
+    else if (data === -3) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "존재하지 않는 방입니다."
+      );
+    }
+
+    response.dataResponse(res, returnCode.OK, "방 Detail 보기 성공", data);
+  } catch (err) {
+    console.error(err.message);
+    response.basicResponse(res, returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
+  }
+};
+
 const roomController = {
   POSTroomController,
   GETallRoomController,
+  GETroomDetailController,
 };
 
 export default roomController;

@@ -9,14 +9,15 @@ namespace roomDTO {
     photo: photoDTO;
   }
 
-  // export interface postRoomReqDTO {
-  //   type: roomTypeDTO;
-  //   price: roomPriceReqDTO;
-  //   information: roomInfoReqDTO;
-  //   rentPeriod: rentPeriodReqDTO;
-  //   options: roomOptionReqDTO;
-  //   conditions: roomConditionReqDTO;
-  // }
+  export interface getRoomDetailResDTO {
+    type: roomTypeDTO;
+    price: roomPriceReqDTO;
+    information: roomInfoReqDTO;
+    rentPeriod: rentPeriodReqDTO;
+    options: roomOptionReqDTO;
+    conditions: roomConditionReqDTO;
+    photo: photoDTO;
+  }
 
   export interface photoDTO {
     main: string;
@@ -47,7 +48,7 @@ namespace roomDTO {
   }
 
   export interface roomInfoReqDTO {
-    deposit: string | null;
+    deposit: number | null;
     monthly: string | null;
     control: string | null;
     area: string | null;
