@@ -6,6 +6,25 @@ namespace roomDTO {
     rentPeriod: rentPeriodReqDTO;
     options: roomOptionReqDTO;
     conditions: roomConditionReqDTO;
+    photo: photoDTO;
+  }
+
+  // export interface postRoomReqDTO {
+  //   type: roomTypeDTO;
+  //   price: roomPriceReqDTO;
+  //   information: roomInfoReqDTO;
+  //   rentPeriod: rentPeriodReqDTO;
+  //   options: roomOptionReqDTO;
+  //   conditions: roomConditionReqDTO;
+  // }
+
+  export interface photoDTO {
+    main: string;
+    restroom: string;
+    kitchen: string;
+    photo1: string;
+    photo2: string;
+    photo3: string;
   }
 
   export interface userInfoDTO {
