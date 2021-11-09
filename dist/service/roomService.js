@@ -21,10 +21,15 @@ const library_1 = require("../library");
  *      2. 유저 id 잘못됨
  *      3. 유저 권한 없음
  */
-const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void 0, function* () {
-    const { type, price, information, rentPeriod, options, conditions } = reqData;
+const POSTroomService = (userID, reqData) => __awaiter(void 0, void 0, void 0, function* () {
+    const { type, price, information, rentPeriod, options, conditions, photo } = reqData;
     // 1. 요청 바디 부족
-    if (!type || !information || !rentPeriod || !options || !conditions) {
+    if (!type ||
+        !information ||
+        !rentPeriod ||
+        !options ||
+        !conditions ||
+        !photo) {
         return -1;
     }
     const user = yield models_1.User.findOne({ where: { userID } });
@@ -74,12 +79,12 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
     });
     yield models_1.RoomPhoto.create({
         roomID: newRoom.roomID,
-        main: url.main,
-        restroom: url.restroom,
-        kitchen: url.kitchen,
-        photo1: url.photo1,
-        photo2: url.photo2,
-        photo3: url.photo3,
+        main: photo.main,
+        restroom: photo.restroom,
+        kitchen: photo.kitchen,
+        photo1: photo.photo1,
+        photo2: photo.photo2,
+        photo3: photo.photo3,
     });
     yield models_1.RoomOption.create({
         roomID: newRoom.roomID,
@@ -160,12 +165,6 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
         attributes: ["roomID", "createdAt", "updatedAt", "isDeleted"],
     });
     const resData = room;
-    // // data 형식에 맞게 변경
-    // const resData: roomDTO.postRoomResDTO = {
-    //   roomID: room.roomID,
-    //   createdAt: room.createdAt,
-    //   uploader: room.upl
-    // };
     return resData;
 });
 /**
@@ -212,9 +211,96 @@ const GETallRoomService = (userID, offset, limit) => __awaiter(void 0, void 0, v
     const resData = { rooms, totalRoomNum };
     return resData;
 });
+/**
+ *  @방_보기_deail
+ *  @route GET api/v1/room/:roomID
+ *  @access private
+ *  @error
+ *    1. 요청 바디 부족
+ *    2. no user
+ *    3. no room
+ */
+const GETroomDetailService = (userID, roomID) => __awaiter(void 0, void 0, void 0, function* () {
+    // 1. 요청 바디 부족
+    if (!userID || !roomID)
+        return -1;
+    const user = yield models_1.User.findOne({ where: { userID, isDeleted: false } });
+    // 2. no user
+    if (!user)
+        return -2;
+    const userCertification = yield models_1.Certification.findOne({ where: { userID } });
+    const university = yield userCertification.university;
+    // table join
+    const room = yield models_1.Room.findOne({
+        where: {
+            roomID,
+            isDeleted: false,
+        },
+        include: [
+            {
+                model: models_1.User,
+                attributes: ["userID", "nickname"],
+            },
+            {
+                model: models_1.RoomType,
+                attributes: ["roomType", "category", "rentType"],
+            },
+            {
+                model: models_1.RoomPrice,
+                attributes: ["deposit", "monthly", "control"],
+            },
+            {
+                model: models_1.RoomInformation,
+                attributes: ["area", "floor", "construction", "address", "description"],
+            },
+            {
+                model: models_1.RoomOption,
+                attributes: [
+                    "bed",
+                    "table",
+                    "chair",
+                    "closet",
+                    "airconditioner",
+                    "induction",
+                    "refrigerator",
+                    "tv",
+                    "doorlock",
+                    "microwave",
+                    "washingmashine",
+                    "cctv",
+                    "wifi",
+                    "parking",
+                    "elevator",
+                ],
+            },
+            {
+                model: models_1.RoomCondition,
+                attributes: ["gender", "smoking"],
+            },
+            {
+                model: models_1.RoomPhoto,
+                attributes: [
+                    "main",
+                    "restroom",
+                    "kitchen",
+                    "photo1",
+                    "photo2",
+                    "photo3",
+                ],
+            },
+        ],
+        attributes: ["roomID", "createdAt", "updatedAt", "isDeleted"],
+    });
+    // 3. no room
+    if (!room)
+        return -3;
+    const resData = room;
+    return resData;
+});
 const roomService = {
     POSTroomService,
     GETallRoomService,
+    GETroomDetailService,
 };
 exports.default = roomService;
 //# sourceMappingURL=roomService.js.map
