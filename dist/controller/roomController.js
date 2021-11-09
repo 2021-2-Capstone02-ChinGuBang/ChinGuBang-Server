@@ -23,8 +23,8 @@ const service_1 = require("../service");
  *      3. 유저 권한 없음
  */
 const POSTroomController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.body);
     try {
+        console.log(req.body);
         const reqData = req.body;
         const resData = yield service_1.roomService.POSTroomService(req.body.userID.userID, reqData);
         // 요청 바디가 부족할 경우
