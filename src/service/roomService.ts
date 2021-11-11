@@ -79,24 +79,24 @@ const POSTroomService = async (userID: number, reqData) => {
 
   await RoomInformation.create({
     roomID: newRoom.roomID,
-    area: cast.stringToNumber(information.area),
-    floor: cast.stringToNumber(information.floor),
-    construction: cast.stringToNumber(information.construction),
+    area: information.area,
+    floor: information.floor,
+    construction: information.construction,
     address: information.address,
     description: information.description,
   });
 
   await RoomPrice.create({
     roomID: newRoom.roomID,
-    deposit: cast.stringToNumber(price.deposit),
-    monthly: cast.stringToNumber(price.monthly),
-    control: cast.stringToNumber(price.control),
+    deposit: price.deposit,
+    monthly: price.monthly,
+    control: price.control,
   });
 
   await RoomPeriod.create({
     roomID: newRoom.roomID,
-    startDate: date.stringToDate(rentPeriod.startDate),
-    endDate: date.stringToDate(rentPeriod.endDate),
+    startDate: rentPeriod.startDate,
+    endDate: rentPeriod.endDate,
   });
 
   await RoomCondition.create({

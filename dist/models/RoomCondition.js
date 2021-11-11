@@ -21,13 +21,14 @@ __decorate([
     __metadata("design:type", Number)
 ], RoomCondition.prototype, "roomID", void 0);
 __decorate([
+    (0, sequelize_typescript_1.Default)("무관"),
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], RoomCondition.prototype, "gender", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Default)(true),
+    (0, sequelize_typescript_1.Default)("무관"),
     sequelize_typescript_1.Column,
-    __metadata("design:type", Boolean)
+    __metadata("design:type", String)
 ], RoomCondition.prototype, "smoking", void 0);
 __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => _1.Room),

@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 // models
 const models_1 = require("../models");
-const library_1 = require("../library");
 /**
  *  @방_내놓기
  *  @route Post /api/v1/room
@@ -56,22 +55,22 @@ const POSTroomService = (userID, reqData) => __awaiter(void 0, void 0, void 0, f
     });
     yield models_1.RoomInformation.create({
         roomID: newRoom.roomID,
-        area: library_1.cast.stringToNumber(information.area),
-        floor: library_1.cast.stringToNumber(information.floor),
-        construction: library_1.cast.stringToNumber(information.construction),
+        area: information.area,
+        floor: information.floor,
+        construction: information.construction,
         address: information.address,
         description: information.description,
     });
     yield models_1.RoomPrice.create({
         roomID: newRoom.roomID,
-        deposit: library_1.cast.stringToNumber(price.deposit),
-        monthly: library_1.cast.stringToNumber(price.monthly),
-        control: library_1.cast.stringToNumber(price.control),
+        deposit: price.deposit,
+        monthly: price.monthly,
+        control: price.control,
     });
     yield models_1.RoomPeriod.create({
         roomID: newRoom.roomID,
-        startDate: library_1.date.stringToDate(rentPeriod.startDate),
-        endDate: library_1.date.stringToDate(rentPeriod.endDate),
+        startDate: rentPeriod.startDate,
+        endDate: rentPeriod.endDate,
     });
     yield models_1.RoomCondition.create({
         roomID: newRoom.roomID,
