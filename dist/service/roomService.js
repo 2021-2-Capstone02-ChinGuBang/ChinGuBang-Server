@@ -37,9 +37,9 @@ const POSTroomService = (userID, reqData) => __awaiter(void 0, void 0, void 0, f
     if (!user) {
         return -2;
     }
-    // 3. 유저 권한 없음
     const certification = yield models_1.Certification.findOne({ where: { userID } });
-    if (!certification) {
+    // 3. 유저 권한 없음
+    if (!user.certificated) {
         return -3;
     }
     // room 생성

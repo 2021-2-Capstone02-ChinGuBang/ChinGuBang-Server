@@ -22,16 +22,19 @@ __decorate([
     __metadata("design:type", Number)
 ], User.prototype, "userID", void 0);
 __decorate([
+    sequelize_typescript_1.AllowNull,
     sequelize_typescript_1.Unique,
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
+    sequelize_typescript_1.AllowNull,
     sequelize_typescript_1.Unique,
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
+    sequelize_typescript_1.AllowNull,
     sequelize_typescript_1.Column,
     __metadata("design:type", String)
 ], User.prototype, "nickname", void 0);

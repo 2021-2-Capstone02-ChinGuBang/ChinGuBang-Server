@@ -191,11 +191,39 @@ const POSTsigninController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         library_1.response.basicResponse(res, library_1.returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
     }
 });
+/**
+ *  @인증없이_보러가기
+ *  @route Post /api/v1/auth/public
+ *  @body university
+ *  @error
+ *      1. 요청 바디 부족
+ */
+const POSTpublicController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
+    try {
+        const reqData = req.body;
+        const data = yield service_1.authService.POSTpublicService(reqData);
+        // 요청 바디가 부족할 경우
+        if (data === -1) {
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "요청 값이 올바르지 않습니다");
+        }
+        // 인증없이 보러가기 성공
+        else {
+            const { token } = data;
+            library_1.response.tokenResponse(res, library_1.returnCode.CREATED, "인증없이 보러가기 성공", token);
+        }
+    }
+    catch (err) {
+        console.error(err.message);
+        library_1.response.basicResponse(res, library_1.returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
+    }
+});
 const authController = {
     POSTemailController,
     POSTcodeController,
     POSTsignupController,
     POSTsigninController,
+    POSTpublicController,
 };
 exports.default = authController;
 //# sourceMappingURL=authController.js.map

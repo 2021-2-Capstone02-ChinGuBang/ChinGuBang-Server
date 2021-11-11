@@ -11,5 +11,6 @@ router.post("/email", middleware_1.typeCheckMiddleware[0], controller_1.authCont
 router.post("/code", middleware_1.typeCheckMiddleware[0], controller_1.authController.POSTcodeController);
 router.post("/signup", middleware_1.typeCheckMiddleware, controller_1.authController.POSTsignupController);
 router.post("/signin", middleware_1.typeCheckMiddleware, controller_1.authController.POSTsigninController);
+router.post("/public", controller_1.authController.POSTpublicController);
 exports.default = router;
 //# sourceMappingURL=authRouter.js.map

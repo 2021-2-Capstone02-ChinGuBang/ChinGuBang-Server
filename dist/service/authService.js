@@ -215,11 +215,47 @@ function POSTsigninService(reqData) {
         return { userData, token };
     });
 }
+/**
+ *  @인증없이_보러가기
+ *  @route Post /api/v1/auth/public
+ *  @body university
+ *  @error
+ *      1. 요청 바디 부족
+ */
+function POSTpublicService(reqData) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { university } = reqData;
+        // 1. 요청 바디 부족
+        if (!university) {
+            return -1;
+        }
+        // User 생성
+        const user = yield models_1.User.create({
+            certificated: false,
+        });
+        // Certification 생성
+        yield models_1.Certification.create({
+            userID: user.userID,
+            university,
+        });
+        // Return jsonwebtoken
+        const payload = {
+            user: {
+                userID: user.userID,
+            },
+        };
+        // access 토큰 발급
+        // 유효기간 14일
+        let token = jsonwebtoken_1.default.sign(payload, config_1.default.jwtSecret, { expiresIn: "14d" });
+        return { token };
+    });
+}
 const authService = {
     POSTemailService,
     POSTcodeService,
     POSTsignupService,
     POSTsigninService,
+    POSTpublicService,
 };
 exports.default = authService;
 //# sourceMappingURL=authService.js.map
