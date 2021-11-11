@@ -234,7 +234,7 @@ const GETallRoomService = async (
         attributes: [],
         required: true,
       },
-      { model: RoomType, attributes: ["roomType", "category"] },
+      { model: RoomType, attributes: ["roomType", "category", "rentType"] },
       { model: RoomPrice, attributes: ["monthly", "deposit"] },
       { model: RoomPeriod, attributes: ["startDate", "endDate"] },
       { model: RoomInformation, attributes: ["area", "floor"] },

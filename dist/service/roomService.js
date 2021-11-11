@@ -194,7 +194,7 @@ const GETallRoomService = (userID, offset, limit) => __awaiter(void 0, void 0, v
                 attributes: [],
                 required: true,
             },
-            { model: models_1.RoomType, attributes: ["roomType", "category"] },
+            { model: models_1.RoomType, attributes: ["roomType", "category", "rentType"] },
             { model: models_1.RoomPrice, attributes: ["monthly", "deposit"] },
             { model: models_1.RoomPeriod, attributes: ["startDate", "endDate"] },
             { model: models_1.RoomInformation, attributes: ["area", "floor"] },
