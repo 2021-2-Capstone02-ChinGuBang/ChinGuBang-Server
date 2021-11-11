@@ -238,11 +238,53 @@ async function POSTsigninService(reqData: authDTO.signinReqDTO) {
   return { userData, token };
 }
 
+/**
+ *  @인증없이_보러가기
+ *  @route Post /api/v1/auth/public
+ *  @body university
+ *  @error
+ *      1. 요청 바디 부족
+ */
+
+async function POSTpublicService(reqData: authDTO.publicReqDTO) {
+  const { university } = reqData;
+
+  // 1. 요청 바디 부족
+  if (!university) {
+    return -1;
+  }
+
+  // User 생성
+  const user = await User.create({
+    certificated: false,
+  });
+
+  // Certification 생성
+  await Certification.create({
+    userID: user.userID,
+    university,
+  });
+
+  // Return jsonwebtoken
+  const payload = {
+    user: {
+      userID: user.userID,
+    },
+  };
+
+  // access 토큰 발급
+  // 유효기간 14일
+  let token = jwt.sign(payload, config.jwtSecret, { expiresIn: "14d" });
+
+  return { token };
+}
+
 const authService = {
   POSTemailService,
   POSTcodeService,
   POSTsignupService,
   POSTsigninService,
+  POSTpublicService,
 };
 
 export default authService;

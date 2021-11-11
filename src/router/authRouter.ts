@@ -22,4 +22,6 @@ router.post(
   authController.POSTsigninController
 );
 
+router.post("/public", authController.POSTpublicController);
+
 export default router;

@@ -57,10 +57,10 @@ const POSTroomService = async (userID: number, reqData) => {
     return -2;
   }
 
-  // 3. 유저 권한 없음
   const certification = await Certification.findOne({ where: { userID } });
 
-  if (!certification) {
+  // 3. 유저 권한 없음
+  if (!user.certificated) {
     return -3;
   }
 

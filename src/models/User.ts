@@ -30,14 +30,17 @@ export default class User extends Model {
   @Column
   userID: number;
 
+  @AllowNull
   @Unique
   @Column
   email: string;
 
+  @AllowNull
   @Unique
   @Column
   password: string;
 
+  @AllowNull
   @Column
   nickname: string;
 

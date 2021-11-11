@@ -29,6 +29,10 @@ namespace authDTO {
     nickname: string;
     university: string | null;
   }
+
+  export interface publicReqDTO {
+    university: string;
+  }
 }
 
 export default authDTO;
