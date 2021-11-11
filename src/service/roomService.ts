@@ -40,6 +40,7 @@ const POSTroomService = async (userID: number, reqData) => {
   // 1. 요청 바디 부족
   if (
     !type ||
+    !price ||
     !information ||
     !rentPeriod ||
     !options ||
@@ -101,7 +102,7 @@ const POSTroomService = async (userID: number, reqData) => {
   await RoomCondition.create({
     roomID: newRoom.roomID,
     gender: conditions.gender,
-    smoking: cast.stringToBoolean(conditions.smoking),
+    smoking: conditions.smoking,
   });
 
   await RoomPhoto.create({
@@ -341,6 +342,62 @@ const GETroomDetailService = async (userID: number, roomID: number) => {
   const resData = room;
   return resData;
 };
+
+/**
+ *  @필터링_방_보기
+ *  @route POST api/v1/room/filter
+ *  @access private
+ *  @error
+ *    1. 요청 바디 부족
+ *    2. no user
+ *    3. no room
+ */
+
+const POSTroomFilterService = async (
+  userID: number,
+  offset?: number,
+  limit?: number
+) => {
+  if (!offset) {
+    offset = 0;
+  }
+
+  // 1. No limit
+  if (!limit) {
+    return -1;
+  }
+  const userCertification = await Certification.findOne({ where: { userID } });
+  const university = await userCertification.university;
+
+  const rooms = await Room.findAll({
+    order: [["createdAt", "DESC"]],
+    where: { isDeleted: false, university },
+    include: [
+      {
+        model: User,
+        where: { isDeleted: false },
+        attributes: [],
+        required: true,
+      },
+      { model: RoomType, attributes: ["roomType", "category"] },
+      { model: RoomPrice, attributes: ["monthly", "deposit"] },
+      { model: RoomPeriod, attributes: ["startDate", "endDate"] },
+      { model: RoomInformation, attributes: ["area", "floor"] },
+      { model: RoomPhoto, attributes: ["main"] },
+      { model: Like, where: { userID }, required: false },
+    ],
+    attributes: ["roomID", "createdAt"],
+    offset,
+    limit,
+  });
+
+  const totalRoomNum = await Room.count({
+    where: { isDeleted: false, university },
+  });
+  const resData = { rooms, totalRoomNum };
+  return resData;
+};
+
 const roomService = {
   POSTroomService,
   GETallRoomService,

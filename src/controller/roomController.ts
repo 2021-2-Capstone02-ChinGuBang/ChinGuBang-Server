@@ -32,7 +32,7 @@ const POSTroomController = async (req: Request, res: Response) => {
       response.basicResponse(
         res,
         returnCode.BAD_REQUEST,
-        "요청 값이 올바르지 않습니다"
+        "요청 값이 올바르지 않습니다."
       );
     }
     // 유저 id 잘못된 경우
