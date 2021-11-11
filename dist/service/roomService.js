@@ -25,6 +25,7 @@ const POSTroomService = (userID, reqData) => __awaiter(void 0, void 0, void 0, f
     const { type, price, information, rentPeriod, options, conditions, photo } = reqData;
     // 1. 요청 바디 부족
     if (!type ||
+        !price ||
         !information ||
         !rentPeriod ||
         !options ||
@@ -75,7 +76,7 @@ const POSTroomService = (userID, reqData) => __awaiter(void 0, void 0, void 0, f
     yield models_1.RoomCondition.create({
         roomID: newRoom.roomID,
         gender: conditions.gender,
-        smoking: library_1.cast.stringToBoolean(conditions.smoking),
+        smoking: conditions.smoking,
     });
     yield models_1.RoomPhoto.create({
         roomID: newRoom.roomID,
@@ -295,6 +296,52 @@ const GETroomDetailService = (userID, roomID) => __awaiter(void 0, void 0, void 
     if (!room)
         return -3;
     const resData = room;
+    return resData;
+});
+/**
+ *  @필터링_방_보기
+ *  @route POST api/v1/room/filter
+ *  @access private
+ *  @error
+ *    1. 요청 바디 부족
+ *    2. no user
+ *    3. no room
+ */
+const POSTroomFilterService = (userID, offset, limit) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!offset) {
+        offset = 0;
+    }
+    // 1. No limit
+    if (!limit) {
+        return -1;
+    }
+    const userCertification = yield models_1.Certification.findOne({ where: { userID } });
+    const university = yield userCertification.university;
+    const rooms = yield models_1.Room.findAll({
+        order: [["createdAt", "DESC"]],
+        where: { isDeleted: false, university },
+        include: [
+            {
+                model: models_1.User,
+                where: { isDeleted: false },
+                attributes: [],
+                required: true,
+            },
+            { model: models_1.RoomType, attributes: ["roomType", "category"] },
+            { model: models_1.RoomPrice, attributes: ["monthly", "deposit"] },
+            { model: models_1.RoomPeriod, attributes: ["startDate", "endDate"] },
+            { model: models_1.RoomInformation, attributes: ["area", "floor"] },
+            { model: models_1.RoomPhoto, attributes: ["main"] },
+            { model: models_1.Like, where: { userID }, required: false },
+        ],
+        attributes: ["roomID", "createdAt"],
+        offset,
+        limit,
+    });
+    const totalRoomNum = yield models_1.Room.count({
+        where: { isDeleted: false, university },
+    });
+    const resData = { rooms, totalRoomNum };
     return resData;
 });
 const roomService = {

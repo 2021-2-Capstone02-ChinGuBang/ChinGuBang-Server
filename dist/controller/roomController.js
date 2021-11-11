@@ -29,7 +29,7 @@ const POSTroomController = (req, res) => __awaiter(void 0, void 0, void 0, funct
         const resData = yield service_1.roomService.POSTroomService(req.body.userID.userID, reqData);
         // 요청 바디가 부족할 경우
         if (resData === -1) {
-            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "요청 값이 올바르지 않습니다");
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "요청 값이 올바르지 않습니다.");
         }
         // 유저 id 잘못된 경우
         else if (resData === -2) {
