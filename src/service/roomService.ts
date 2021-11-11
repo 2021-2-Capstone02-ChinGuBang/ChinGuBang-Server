@@ -299,6 +299,10 @@ const GETroomDetailService = async (userID: number, roomID: number) => {
         attributes: ["area", "floor", "construction", "address", "description"],
       },
       {
+        model: RoomPeriod,
+        attributes: ["startDate", "endDate"],
+      },
+      {
         model: RoomOption,
         attributes: [
           "bed",
