@@ -254,6 +254,10 @@ const GETroomDetailService = (userID, roomID) => __awaiter(void 0, void 0, void 
                 attributes: ["area", "floor", "construction", "address", "description"],
             },
             {
+                model: models_1.RoomPeriod,
+                attributes: ["startDate", "endDate"],
+            },
+            {
                 model: models_1.RoomOption,
                 attributes: [
                     "bed",
