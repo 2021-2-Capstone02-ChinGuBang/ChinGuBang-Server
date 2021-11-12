@@ -33,107 +33,255 @@ import nanoid from "nanoid";
  *      3. 유저 권한 없음
  */
 
-const POSTroomService = async (userID: number, reqData) => {
-  const { type, price, information, rentPeriod, options, conditions, photo } =
-    reqData;
+// const POSTroomService = async (userID: number, reqData) => {
+//   const { type, price, information, rentPeriod, options, conditions, photo } =
+//     reqData;
 
+//   // 1. 요청 바디 부족
+//   if (
+//     !type ||
+//     !price ||
+//     !information ||
+//     !rentPeriod ||
+//     !options ||
+//     !conditions ||
+//     !photo
+//   ) {
+//     return -1;
+//   }
+
+//   const user = await User.findOne({ where: { userID } });
+
+//   // 2. 유저 id 잘못됨
+//   if (!user) {
+//     return -2;
+//   }
+
+//   const certification = await Certification.findOne({ where: { userID } });
+
+//   // 3. 유저 권한 없음
+//   if (!user.certificated) {
+//     return -3;
+//   }
+
+//   // room 생성
+//   const newRoom = await Room.create({
+//     uploader: userID,
+//     university: certification.university,
+//   });
+
+//   await RoomType.create({
+//     roomID: newRoom.roomID,
+//     roomType: type.roomType,
+//     category: type.category,
+//     rentType: type.rentType,
+//   });
+
+//   await RoomInformation.create({
+//     roomID: newRoom.roomID,
+//     area: information.area,
+//     floor: information.floor,
+//     construction: information.construction,
+//     address: information.address,
+//     description: information.description,
+//   });
+
+//   await RoomPrice.create({
+//     roomID: newRoom.roomID,
+//     deposit: price.deposit,
+//     monthly: price.monthly,
+//     control: price.control,
+//   });
+
+//   await RoomPeriod.create({
+//     roomID: newRoom.roomID,
+//     startDate: rentPeriod.startDate,
+//     endDate: rentPeriod.endDate,
+//   });
+
+//   await RoomCondition.create({
+//     roomID: newRoom.roomID,
+//     gender: conditions.gender,
+//     smoking: conditions.smoking,
+//   });
+
+//   await RoomPhoto.create({
+//     roomID: newRoom.roomID,
+//     main: photo.main,
+//     restroom: photo.restroom,
+//     kitchen: photo.kitchen,
+//     photo1: photo.photo1,
+//     photo2: photo.photo2,
+//     photo3: photo.photo3,
+//   });
+
+//   await RoomOption.create({
+//     roomID: newRoom.roomID,
+//     bed: options.bed,
+//     table: options.table,
+//     chair: options.chair,
+//     closet: options.closet,
+//     airconditioner: options.airconditioner,
+//     induction: options.induction,
+//     refrigerator: options.refrigerator,
+//     tv: options.tv,
+//     doorlock: options.doorlock,
+//     microwave: options.microwave,
+//     washingmachine: options.washingmachine,
+//     cctv: options.cctv,
+//     wifi: options.wifi,
+//     parking: options.parking,
+//     elevator: options.elevator,
+//   });
+
+//   // table join
+//   const room = await Room.findOne({
+//     where: {
+//       roomID: newRoom.roomID,
+//     },
+//     include: [
+//       {
+//         model: User,
+//         attributes: ["userID", "nickname"],
+//       },
+//       {
+//         model: RoomType,
+//         attributes: ["roomType", "category", "rentType"],
+//       },
+//       {
+//         model: RoomPrice,
+//         attributes: ["deposit", "monthly", "control"],
+//       },
+//       {
+//         model: RoomInformation,
+//         attributes: ["area", "floor", "construction", "address", "description"],
+//       },
+//       {
+//         model: RoomOption,
+//         attributes: [
+//           "bed",
+//           "table",
+//           "chair",
+//           "closet",
+//           "airconditioner",
+//           "induction",
+//           "refrigerator",
+//           "tv",
+//           "doorlock",
+//           "microwave",
+//           "washingmashine",
+//           "cctv",
+//           "wifi",
+//           "parking",
+//           "elevator",
+//         ],
+//       },
+//       {
+//         model: RoomCondition,
+//         attributes: ["gender", "smoking"],
+//       },
+//       {
+//         model: RoomPhoto,
+//         attributes: [
+//           "main",
+//           "restroom",
+//           "kitchen",
+//           "photo1",
+//           "photo2",
+//           "photo3",
+//         ],
+//       },
+//     ],
+//     attributes: ["roomID", "createdAt", "updatedAt", "isDeleted"],
+//   });
+
+//   const resData = room;
+
+//   return resData;
+// };
+
+const POSTroomService = async (
+  userID: number,
+  reqData: roomDTO.postRoomReqDTO,
+  url?
+) => {
+  const { type, price, information, rentPeriod, options, conditions } = reqData;
   // 1. 요청 바디 부족
-  if (
-    !type ||
-    !price ||
-    !information ||
-    !rentPeriod ||
-    !options ||
-    !conditions ||
-    !photo
-  ) {
+  if (!type || !information || !rentPeriod || !options || !conditions) {
     return -1;
   }
-
   const user = await User.findOne({ where: { userID } });
-
   // 2. 유저 id 잘못됨
   if (!user) {
     return -2;
   }
-
-  const certification = await Certification.findOne({ where: { userID } });
-
   // 3. 유저 권한 없음
-  if (!user.certificated) {
+  const certification = await Certification.findOne({ where: { userID } });
+  if (!certification) {
     return -3;
   }
-
   // room 생성
   const newRoom = await Room.create({
     uploader: userID,
     university: certification.university,
   });
-
   await RoomType.create({
     roomID: newRoom.roomID,
     roomType: type.roomType,
     category: type.category,
     rentType: type.rentType,
   });
-
   await RoomInformation.create({
     roomID: newRoom.roomID,
-    area: information.area,
-    floor: information.floor,
-    construction: information.construction,
+    area: cast.stringToNumber(information.area),
+    floor: cast.stringToNumber(information.floor),
+    construction: cast.stringToNumber(information.construction),
     address: information.address,
     description: information.description,
   });
-
   await RoomPrice.create({
     roomID: newRoom.roomID,
-    deposit: price.deposit,
-    monthly: price.monthly,
-    control: price.control,
+    deposit: cast.stringToNumber(price.deposit),
+    monthly: cast.stringToNumber(price.monthly),
+    control: cast.stringToNumber(price.control),
   });
-
   await RoomPeriod.create({
     roomID: newRoom.roomID,
-    startDate: rentPeriod.startDate,
-    endDate: rentPeriod.endDate,
+    startDate: date.stringToDate(rentPeriod.startDate),
+    endDate: date.stringToDate(rentPeriod.endDate),
   });
-
   await RoomCondition.create({
     roomID: newRoom.roomID,
     gender: conditions.gender,
-    smoking: conditions.smoking,
+    smoking: cast.stringToBoolean(conditions.smoking),
   });
-
   await RoomPhoto.create({
     roomID: newRoom.roomID,
-    main: photo.main,
-    restroom: photo.restroom,
-    kitchen: photo.kitchen,
-    photo1: photo.photo1,
-    photo2: photo.photo2,
-    photo3: photo.photo3,
+    main: url.main,
+    restroom: url.restroom,
+    kitchen: url.kitchen,
+    photo1: url.photo1,
+    photo2: url.photo2,
+    photo3: url.photo3,
   });
-
   await RoomOption.create({
     roomID: newRoom.roomID,
-    bed: options.bed,
-    table: options.table,
-    chair: options.chair,
-    closet: options.closet,
-    airconditioner: options.airconditioner,
-    induction: options.induction,
-    refrigerator: options.refrigerator,
-    tv: options.tv,
-    doorlock: options.doorlock,
-    microwave: options.microwave,
-    washingmachine: options.washingmachine,
-    cctv: options.cctv,
-    wifi: options.wifi,
-    parking: options.parking,
-    elevator: options.elevator,
+    bed: cast.stringToBoolean(options.bed),
+    table: cast.stringToBoolean(options.table),
+    chair: cast.stringToBoolean(options.chair),
+    closet: cast.stringToBoolean(options.closet),
+    airconditioner: cast.stringToBoolean(options.airconditioner),
+    induction: cast.stringToBoolean(options.induction),
+    refrigerator: cast.stringToBoolean(options.refrigerator),
+    tv: cast.stringToBoolean(options.tv),
+    doorlock: cast.stringToBoolean(options.doorlock),
+    microwave: cast.stringToBoolean(options.microwave),
+    washingmachine: cast.stringToBoolean(options.washingmachine),
+    cctv: cast.stringToBoolean(options.cctv),
+    wifi: cast.stringToBoolean(options.wifi),
+    parking: cast.stringToBoolean(options.parking),
+    elevator: cast.stringToBoolean(options.elevator),
   });
-
   // table join
   const room = await Room.findOne({
     where: {
@@ -194,9 +342,13 @@ const POSTroomService = async (userID: number, reqData) => {
     ],
     attributes: ["roomID", "createdAt", "updatedAt", "isDeleted"],
   });
-
   const resData = room;
-
+  // // data 형식에 맞게 변경
+  // const resData: roomDTO.postRoomResDTO = {
+  //   roomID: room.roomID,
+  //   createdAt: room.createdAt,
+  //   uploader: room.upl
+  // };
   return resData;
 };
 
