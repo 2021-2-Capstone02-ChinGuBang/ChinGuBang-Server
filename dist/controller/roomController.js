@@ -64,7 +64,7 @@ const service_1 = require("../service");
 //   }
 // };
 const POSTroomController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req);
+    console.log(req.body);
     try {
         const url = {
             main: req.files.main
