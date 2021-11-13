@@ -164,10 +164,48 @@ const GETroomDetailController = (req, res) => __awaiter(void 0, void 0, void 0, 
         library_1.response.basicResponse(res, library_1.returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
     }
 });
+/**
+ *  @방_좋아요
+ *  @route POST api/v1/room/like
+ *  @access private
+ *  @error
+ *    1. 요청 바디 부족
+ *    2. 권한이 없는 user
+ *    3. no room
+ */
+const POSTlikeController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
+    try {
+        const data = yield service_1.roomService.POSTlikeService(req.body.userID.userID, Number(req.params.roomID));
+        // 1. 요청 바디 부족
+        if (data === -1) {
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "요청 값이 올바르지 않습니다.");
+        }
+        // 2. 권한이 없는 user
+        else if (data === -2) {
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "권한이 없는 사용자입니다.");
+        }
+        // 3. no room
+        else if (data === -3) {
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "존재하지 않는 방입니다.");
+        }
+        else if (data === 1) {
+            library_1.response.basicResponse(res, library_1.returnCode.OK, "좋아요 성공");
+        }
+        else {
+            library_1.response.basicResponse(res, library_1.returnCode.OK, "좋아요 취소 성공");
+        }
+    }
+    catch (err) {
+        console.error(err.message);
+        library_1.response.basicResponse(res, library_1.returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
+    }
+});
 const roomController = {
     POSTroomController,
     GETallRoomController,
     GETroomDetailController,
+    POSTlikeController,
 };
 exports.default = roomController;
 //# sourceMappingURL=roomController.js.map
