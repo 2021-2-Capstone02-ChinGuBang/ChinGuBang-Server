@@ -207,7 +207,15 @@ const POSTroomService = async (
 ) => {
   const { type, price, information, rentPeriod, options, conditions } = reqData;
   // 1. 요청 바디 부족
-  if (!type || !information || !rentPeriod || !options || !conditions) {
+  if (
+    !type ||
+    !price ||
+    !information ||
+    !rentPeriod ||
+    !options ||
+    !conditions
+  ) {
+    console.log("!!!!!!!!!!!!!!!");
     return -1;
   }
   const user = await User.findOne({ where: { userID } });
@@ -253,7 +261,7 @@ const POSTroomService = async (
   await RoomCondition.create({
     roomID: newRoom.roomID,
     gender: conditions.gender,
-    smoking: cast.stringToBoolean(conditions.smoking),
+    smoking: conditions.smoking,
   });
   await RoomPhoto.create({
     roomID: newRoom.roomID,
@@ -304,6 +312,7 @@ const POSTroomService = async (
         model: RoomInformation,
         attributes: ["area", "floor", "construction", "address", "description"],
       },
+      { model: RoomPeriod, attributes: ["startDate", "endDate"] },
       {
         model: RoomOption,
         attributes: [
@@ -391,7 +400,7 @@ const GETallRoomService = async (
       { model: RoomPeriod, attributes: ["startDate", "endDate"] },
       { model: RoomInformation, attributes: ["area", "floor"] },
       { model: RoomPhoto, attributes: ["main"] },
-      { model: Like, where: { userID }, required: false },
+      { model: Like, where: { userID, isLike: true }, required: false },
     ],
     attributes: ["roomID", "createdAt"],
     offset,
@@ -540,7 +549,7 @@ const POSTroomFilterService = async (
       { model: RoomPeriod, attributes: ["startDate", "endDate"] },
       { model: RoomInformation, attributes: ["area", "floor"] },
       { model: RoomPhoto, attributes: ["main"] },
-      { model: Like, where: { userID }, required: false },
+      { model: Like, where: { userID, isLike: true }, required: false },
     ],
     attributes: ["roomID", "createdAt"],
     offset,
@@ -554,10 +563,53 @@ const POSTroomFilterService = async (
   return resData;
 };
 
+/**
+ *  @방_좋아요
+ *  @route POST api/v1/room/like
+ *  @access private
+ *  @error
+ *    1. 요청 바디 부족
+ *    2. 권한이 없는 user
+ *    3. no room
+ */
+
+const POSTlikeService = async (userID: number, roomID: number) => {
+  // 1. 요청 바디 부족
+  if (!userID || !roomID) return -1;
+
+  const user = await User.findOne({ where: { userID, isDeleted: false } });
+
+  // 2. 권한이 없는 user
+  if (!user.certificated) return -2;
+
+  const userCertification = await Certification.findOne({ where: { userID } });
+  const university = await userCertification.university;
+
+  const room = await Room.findOne({ where: { roomID, isDeleted: false } });
+  // 3. no room
+  if (!room) return -3;
+
+  let like = await Like.findOne({ where: { userID, roomID } });
+
+  if (!like) {
+    await Like.create({ roomID, userID, isLike: true });
+    return 1;
+  } else {
+    if (!like.isLike) {
+      await Like.update({ isLike: true }, { where: { userID, roomID } });
+      return 1;
+    } else {
+      await Like.update({ isLike: false }, { where: { userID, roomID } });
+      return 2;
+    }
+  }
+};
+
 const roomService = {
   POSTroomService,
   GETallRoomService,
   GETroomDetailService,
+  POSTlikeService,
 };
 
 export default roomService;
