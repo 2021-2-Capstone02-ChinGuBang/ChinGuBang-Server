@@ -100,7 +100,6 @@ const sequelize_1 = require("sequelize");
 //     induction: options.induction,
 //     refrigerator: options.refrigerator,
 //     tv: options.tv,
-//     doorlock: options.doorlock,
 //     microwave: options.microwave,
 //     washingmachine: options.washingmachine,
 //     cctv: options.cctv,
@@ -141,7 +140,6 @@ const sequelize_1 = require("sequelize");
 //           "induction",
 //           "refrigerator",
 //           "tv",
-//           "doorlock",
 //           "microwave",
 //           "washingmachine",
 //           "cctv",
@@ -246,7 +244,6 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
         induction: library_1.cast.stringToBoolean(options.induction),
         refrigerator: library_1.cast.stringToBoolean(options.refrigerator),
         tv: library_1.cast.stringToBoolean(options.tv),
-        doorlock: library_1.cast.stringToBoolean(options.doorlock),
         microwave: library_1.cast.stringToBoolean(options.microwave),
         washingmachine: library_1.cast.stringToBoolean(options.washingmachine),
         cctv: library_1.cast.stringToBoolean(options.cctv),
@@ -585,7 +582,7 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
             },
             {
                 model: models_1.RoomType,
-                attributes: ["roomType", "category"],
+                attributes: ["roomType", "category", "rentType"],
                 where: {
                     roomType: { [sequelize_1.Op.in]: type.roomType },
                     category: { [sequelize_1.Op.in]: type.category },

@@ -647,7 +647,7 @@ const POSTroomFilterService = async (userID: number, reqData) => {
       },
       {
         model: RoomType,
-        attributes: ["roomType", "category"],
+        attributes: ["roomType", "category", "rentType"],
         where: {
           roomType: { [Op.in]: type.roomType },
           category: { [Op.in]: type.category },

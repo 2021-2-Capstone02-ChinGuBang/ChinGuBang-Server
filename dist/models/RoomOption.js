@@ -64,11 +64,6 @@ __decorate([
     (0, sequelize_typescript_1.Default)(false),
     sequelize_typescript_1.Column,
     __metadata("design:type", Boolean)
-], RoomOption.prototype, "doorlock", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Default)(false),
-    sequelize_typescript_1.Column,
-    __metadata("design:type", Boolean)
 ], RoomOption.prototype, "microwave", void 0);
 __decorate([
     (0, sequelize_typescript_1.Default)(false),
