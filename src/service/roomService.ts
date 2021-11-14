@@ -216,7 +216,6 @@ const POSTroomService = async (
     !options ||
     !conditions
   ) {
-    console.log("!!!!!!!!!!!!!!!");
     return -1;
   }
   const user = await User.findOne({ where: { userID } });

@@ -181,7 +181,6 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
         !rentPeriod ||
         !options ||
         !conditions) {
-        console.log("!!!!!!!!!!!!!!!");
         return -1;
     }
     const user = yield models_1.User.findOne({ where: { userID } });
