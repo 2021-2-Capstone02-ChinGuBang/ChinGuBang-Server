@@ -43,6 +43,8 @@ namespace roomDTO {
     floor: number | null;
     construction: number | null;
     description: string;
+    query: string;
+    post: string;
     address: string;
   }
 
@@ -54,6 +56,8 @@ namespace roomDTO {
     floor: string | null;
     construction: string | null;
     description: string;
+    query: string;
+    post: string;
     address: string;
   }
 

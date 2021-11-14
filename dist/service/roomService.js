@@ -207,6 +207,8 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
         area: library_1.cast.stringToNumber(information.area),
         floor: library_1.cast.stringToNumber(information.floor),
         construction: library_1.cast.stringToNumber(information.construction),
+        query: information.query,
+        post: information.post,
         address: information.address,
         description: information.description,
     });
@@ -272,7 +274,15 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
             },
             {
                 model: models_1.RoomInformation,
-                attributes: ["area", "floor", "construction", "address", "description"],
+                attributes: [
+                    "area",
+                    "floor",
+                    "construction",
+                    "query",
+                    "post",
+                    "address",
+                    "description",
+                ],
             },
             { model: models_1.RoomPeriod, attributes: ["startDate", "endDate"] },
             {
@@ -399,7 +409,15 @@ const GETroomDetailService = (userID, roomID) => __awaiter(void 0, void 0, void 
             },
             {
                 model: models_1.RoomInformation,
-                attributes: ["area", "floor", "construction", "address", "description"],
+                attributes: [
+                    "area",
+                    "floor",
+                    "construction",
+                    "query",
+                    "post",
+                    "address",
+                    "description",
+                ],
             },
             {
                 model: models_1.RoomPeriod,

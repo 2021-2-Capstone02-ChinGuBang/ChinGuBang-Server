@@ -242,6 +242,8 @@ const POSTroomService = async (
     area: cast.stringToNumber(information.area),
     floor: cast.stringToNumber(information.floor),
     construction: cast.stringToNumber(information.construction),
+    query: information.query,
+    post: information.post,
     address: information.address,
     description: information.description,
   });
@@ -307,7 +309,15 @@ const POSTroomService = async (
       },
       {
         model: RoomInformation,
-        attributes: ["area", "floor", "construction", "address", "description"],
+        attributes: [
+          "area",
+          "floor",
+          "construction",
+          "query",
+          "post",
+          "address",
+          "description",
+        ],
       },
       { model: RoomPeriod, attributes: ["startDate", "endDate"] },
       {
@@ -447,7 +457,15 @@ const GETroomDetailService = async (userID: number, roomID: number) => {
       },
       {
         model: RoomInformation,
-        attributes: ["area", "floor", "construction", "address", "description"],
+        attributes: [
+          "area",
+          "floor",
+          "construction",
+          "query",
+          "post",
+          "address",
+          "description",
+        ],
       },
       {
         model: RoomPeriod,

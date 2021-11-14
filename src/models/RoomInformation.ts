@@ -43,6 +43,12 @@ export default class RoomInformation extends Model {
   construction!: number;
 
   @Column
+  query: string;
+
+  @Column
+  post: string;
+
+  @Column
   address: string;
 
   @AllowNull
