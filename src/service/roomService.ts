@@ -525,7 +525,9 @@ const POSTroomFilterService = async (userID: number, reqData) => {
   if (!price.deposit) {
     price.deposit = 9999999;
   }
-
+  if (!price.monthly) {
+    price.monthly = 9999999;
+  }
   let bed,
     table,
     chair,
@@ -588,12 +590,6 @@ const POSTroomFilterService = async (userID: number, reqData) => {
     tv = [true];
   } else {
     tv = [true, false];
-  }
-
-  if (options.doorlock) {
-    doorlock = [true];
-  } else {
-    doorlock = [true, false];
   }
 
   if (options.microwave) {
@@ -695,7 +691,6 @@ const POSTroomFilterService = async (userID: number, reqData) => {
           induction: { [Op.in]: induction },
           refrigerator: { [Op.in]: refrigerator },
           tv: { [Op.in]: tv },
-          doorlock: { [Op.in]: doorlock },
           microwave: { [Op.in]: microwave },
           washingmachine: { [Op.in]: washingmachine },
           cctv: { [Op.in]: cctv },

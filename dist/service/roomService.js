@@ -477,6 +477,9 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
     if (!price.deposit) {
         price.deposit = 9999999;
     }
+    if (!price.monthly) {
+        price.monthly = 9999999;
+    }
     let bed, table, chair, closet, airconditioner, induction, refrigerator, tv, doorlock, microwave, washingmachine, cctv, wifi, parking, elevator;
     if (options.bed) {
         bed = [true];
@@ -525,12 +528,6 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
     }
     else {
         tv = [true, false];
-    }
-    if (options.doorlock) {
-        doorlock = [true];
-    }
-    else {
-        doorlock = [true, false];
     }
     if (options.microwave) {
         microwave = [true];
@@ -628,7 +625,6 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
                     induction: { [sequelize_1.Op.in]: induction },
                     refrigerator: { [sequelize_1.Op.in]: refrigerator },
                     tv: { [sequelize_1.Op.in]: tv },
-                    doorlock: { [sequelize_1.Op.in]: doorlock },
                     microwave: { [sequelize_1.Op.in]: microwave },
                     washingmachine: { [sequelize_1.Op.in]: washingmachine },
                     cctv: { [sequelize_1.Op.in]: cctv },
