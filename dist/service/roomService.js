@@ -600,7 +600,10 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
             {
                 model: models_1.RoomPrice,
                 attributes: ["monthly", "deposit"],
-                where: { deposit: { [sequelize_1.Op.lte]: price.deposit } },
+                where: {
+                    deposit: { [sequelize_1.Op.lte]: price.deposit },
+                    monthly: { [sequelize_1.Op.lte]: price.monthly },
+                },
             },
             {
                 model: models_1.RoomPeriod,

@@ -667,7 +667,10 @@ const POSTroomFilterService = async (userID: number, reqData) => {
       {
         model: RoomPrice,
         attributes: ["monthly", "deposit"],
-        where: { deposit: { [Op.lte]: price.deposit } },
+        where: {
+          deposit: { [Op.lte]: price.deposit },
+          monthly: { [Op.lte]: price.monthly },
+        },
       },
       {
         model: RoomPeriod,
