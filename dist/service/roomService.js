@@ -327,19 +327,11 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
 });
 /**
  *  @모든_방_보기
- *  @route GET api/v1/room?offset=@&limit=
+ *  @route GET api/v1/room
  *  @access private
  *  @error
- *    1. no limit
  */
-const GETallRoomService = (userID, offset, limit) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!offset) {
-        offset = 0;
-    }
-    // 1. No limit
-    if (!limit) {
-        return -1;
-    }
+const GETallRoomService = (userID) => __awaiter(void 0, void 0, void 0, function* () {
     const userCertification = yield models_1.Certification.findOne({ where: { userID } });
     const university = yield userCertification.university;
     const rooms = yield models_1.Room.findAll({
@@ -360,8 +352,6 @@ const GETallRoomService = (userID, offset, limit) => __awaiter(void 0, void 0, v
             { model: models_1.Like, where: { userID, isLike: true }, required: false },
         ],
         attributes: ["roomID", "createdAt"],
-        offset,
-        limit,
     });
     const totalRoomNum = yield models_1.Room.count({
         where: { isDeleted: false, university },

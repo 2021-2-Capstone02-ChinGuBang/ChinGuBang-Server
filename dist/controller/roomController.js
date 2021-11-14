@@ -109,19 +109,14 @@ const POSTroomController = (req, res) => __awaiter(void 0, void 0, void 0, funct
 });
 /**
  *  @모든_방_보기
- *  @route GET api/v1/room?offset=@&limit=
+ *  @route GET api/v1/room
  *  @access private
  *  @error
- *    1. no limit
  */
 const GETallRoomController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.body);
     try {
-        const data = yield service_1.roomService.GETallRoomService(req.body.userID.userID, Number(req.query.offset), Number(req.query.limit));
-        // 1. No limit
-        if (data === -1) {
-            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "요청 값이 올바르지 않습니다.");
-        }
+        const data = yield service_1.roomService.GETallRoomService(req.body.userID.userID);
         library_1.response.dataResponse(res, library_1.returnCode.OK, "모든 방 보기 성공", data);
     }
     catch (err) {
