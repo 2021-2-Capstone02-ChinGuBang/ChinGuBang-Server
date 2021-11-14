@@ -82,9 +82,6 @@ const POSTroomController = async (req: Request, res: Response) => {
       photo2: (req as any).files.photo2
         ? (req as any).files.photo2[0].location
         : null,
-      photo3: (req as any).files.photo3
-        ? (req as any).files.photo3[0].location
-        : null,
     };
 
     const reqData: roomDTO.postRoomReqDTO = req.body;

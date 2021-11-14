@@ -113,7 +113,6 @@ import { ConnectionTimedOutError, Op, QueryTypes, Sequelize } from "sequelize";
 //     kitchen: photo.kitchen,
 //     photo1: photo.photo1,
 //     photo2: photo.photo2,
-//     photo3: photo.photo3,
 //   });
 
 //   await RoomOption.create({
@@ -189,7 +188,6 @@ import { ConnectionTimedOutError, Op, QueryTypes, Sequelize } from "sequelize";
 //           "kitchen",
 //           "photo1",
 //           "photo2",
-//           "photo3",
 //         ],
 //       },
 //     ],
@@ -270,7 +268,6 @@ const POSTroomService = async (
     kitchen: url.kitchen,
     photo1: url.photo1,
     photo2: url.photo2,
-    photo3: url.photo3,
   });
   await RoomOption.create({
     roomID: newRoom.roomID,
@@ -339,14 +336,7 @@ const POSTroomService = async (
       },
       {
         model: RoomPhoto,
-        attributes: [
-          "main",
-          "restroom",
-          "kitchen",
-          "photo1",
-          "photo2",
-          "photo3",
-        ],
+        attributes: ["main", "restroom", "kitchen", "photo1", "photo2"],
       },
     ],
     attributes: ["roomID", "createdAt", "updatedAt", "isDeleted"],
@@ -489,14 +479,7 @@ const GETroomDetailService = async (userID: number, roomID: number) => {
       },
       {
         model: RoomPhoto,
-        attributes: [
-          "main",
-          "restroom",
-          "kitchen",
-          "photo1",
-          "photo2",
-          "photo3",
-        ],
+        attributes: ["main", "restroom", "kitchen", "photo1", "photo2"],
       },
     ],
     attributes: ["roomID", "createdAt", "updatedAt", "isDeleted"],

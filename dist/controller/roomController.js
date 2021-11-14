@@ -82,9 +82,6 @@ const POSTroomController = (req, res) => __awaiter(void 0, void 0, void 0, funct
             photo2: req.files.photo2
                 ? req.files.photo2[0].location
                 : null,
-            photo3: req.files.photo3
-                ? req.files.photo3[0].location
-                : null,
         };
         const reqData = req.body;
         const resData = yield service_1.roomService.POSTroomService(req.body.userID.userID, reqData, url);

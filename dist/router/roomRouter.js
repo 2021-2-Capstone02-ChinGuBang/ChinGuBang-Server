@@ -14,7 +14,6 @@ router.post("", upload.fields([
     { name: "kitchen", maxCount: 1 },
     { name: "photo1", maxCount: 1 },
     { name: "photo2", maxCount: 1 },
-    { name: "photo3", maxCount: 1 },
 ]), middleware_1.authMiddleware, controller_1.roomController.POSTroomController);
 // router.post("", authMiddleware, roomController.POSTroomController);
 router.get("", middleware_1.authMiddleware, controller_1.roomController.GETallRoomController);

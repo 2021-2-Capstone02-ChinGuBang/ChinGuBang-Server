@@ -46,11 +46,6 @@ __decorate([
     __metadata("design:type", String)
 ], RoomPhoto.prototype, "photo2", void 0);
 __decorate([
-    sequelize_typescript_1.AllowNull,
-    sequelize_typescript_1.Column,
-    __metadata("design:type", String)
-], RoomPhoto.prototype, "photo3", void 0);
-__decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => _1.Room),
     __metadata("design:type", _1.Room)
 ], RoomPhoto.prototype, "room", void 0);

@@ -25,7 +25,6 @@ namespace roomDTO {
     kitchen: string;
     photo1: string;
     photo2: string;
-    photo3: string;
   }
 
   export interface userInfoDTO {
@@ -131,7 +130,6 @@ namespace roomDTO {
     kitchen: string | null;
     photo1: string | null;
     photo2: string | null;
-    photo3: string | null;
   }
 }
 

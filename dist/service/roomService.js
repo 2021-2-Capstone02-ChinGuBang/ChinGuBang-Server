@@ -89,7 +89,6 @@ const sequelize_1 = require("sequelize");
 //     kitchen: photo.kitchen,
 //     photo1: photo.photo1,
 //     photo2: photo.photo2,
-//     photo3: photo.photo3,
 //   });
 //   await RoomOption.create({
 //     roomID: newRoom.roomID,
@@ -163,7 +162,6 @@ const sequelize_1 = require("sequelize");
 //           "kitchen",
 //           "photo1",
 //           "photo2",
-//           "photo3",
 //         ],
 //       },
 //     ],
@@ -235,7 +233,6 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
         kitchen: url.kitchen,
         photo1: url.photo1,
         photo2: url.photo2,
-        photo3: url.photo3,
     });
     yield models_1.RoomOption.create({
         roomID: newRoom.roomID,
@@ -304,14 +301,7 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
             },
             {
                 model: models_1.RoomPhoto,
-                attributes: [
-                    "main",
-                    "restroom",
-                    "kitchen",
-                    "photo1",
-                    "photo2",
-                    "photo3",
-                ],
+                attributes: ["main", "restroom", "kitchen", "photo1", "photo2"],
             },
         ],
         attributes: ["roomID", "createdAt", "updatedAt", "isDeleted"],
@@ -441,14 +431,7 @@ const GETroomDetailService = (userID, roomID) => __awaiter(void 0, void 0, void 
             },
             {
                 model: models_1.RoomPhoto,
-                attributes: [
-                    "main",
-                    "restroom",
-                    "kitchen",
-                    "photo1",
-                    "photo2",
-                    "photo3",
-                ],
+                attributes: ["main", "restroom", "kitchen", "photo1", "photo2"],
             },
         ],
         attributes: ["roomID", "createdAt", "updatedAt", "isDeleted"],

@@ -13,7 +13,6 @@ router.post(
     { name: "kitchen", maxCount: 1 },
     { name: "photo1", maxCount: 1 },
     { name: "photo2", maxCount: 1 },
-    { name: "photo3", maxCount: 1 },
   ]),
   authMiddleware,
   roomController.POSTroomController
