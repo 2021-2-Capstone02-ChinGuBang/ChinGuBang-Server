@@ -10,7 +10,7 @@ const s3 = new aws.S3({
 
 export const upload = multer({
   storage: multerS3({
-    limits: { fieldSize: 25 * 1024 * 1024 },
+    limits: { fieldSize: 1024 * 1024 * 1024 },
     s3: s3,
     bucket: config.awsBucket,
     acl: "public-read",

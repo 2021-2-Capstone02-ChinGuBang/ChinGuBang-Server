@@ -14,7 +14,7 @@ const s3 = new aws_sdk_1.default.S3({
 });
 exports.upload = (0, multer_1.default)({
     storage: (0, multer_s3_1.default)({
-        limits: { fieldSize: 25 * 1024 * 1024 },
+        limits: { fieldSize: 1024 * 1024 * 1024 },
         s3: s3,
         bucket: config_1.default.awsBucket,
         acl: "public-read",
