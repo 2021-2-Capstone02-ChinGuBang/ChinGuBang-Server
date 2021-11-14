@@ -555,123 +555,96 @@ const POSTroomFilterService = async (userID: number, reqData) => {
     cctv,
     wifi,
     parking,
+    elevator;
+
+  if (options.bed) {
+    bed = [true];
+  } else {
+    bed = [true, false];
+  }
+
+  if (options.table) {
+    table = [true];
+  } else {
+    table = [true, false];
+  }
+
+  if (options.chair) {
+    chair = [true];
+  } else {
+    chair = [true, false];
+  }
+
+  if (options.closet) {
+    closet = [true];
+  } else {
+    closet = [true, false];
+  }
+
+  if (options.airconditioner) {
+    airconditioner = [true];
+  } else {
+    airconditioner = [true, false];
+  }
+
+  if (options.induction) {
+    induction = [true];
+  } else {
+    induction = [true, false];
+  }
+
+  if (options.refrigerator) {
+    refrigerator = [true];
+  } else {
+    refrigerator = [true, false];
+  }
+
+  if (options.tv) {
+    tv = [true];
+  } else {
+    tv = [true, false];
+  }
+
+  if (options.doorlock) {
+    doorlock = [true];
+  } else {
+    doorlock = [true, false];
+  }
+
+  if (options.microwave) {
+    microwave = [true];
+  } else {
+    microwave = [true, false];
+  }
+
+  if (options.washingmachine) {
+    washingmachine = [true];
+  } else {
+    washingmachine = [true, false];
+  }
+
+  if (options.cctv) {
+    cctv = [true];
+  } else {
+    cctv = [true, false];
+  }
+
+  if (options.wifi) {
+    wifi = [true];
+  } else {
+    wifi = [true, false];
+  }
+
+  if (options.parking) {
+    parking = [true];
+  } else {
+    parking = [true, false];
+  }
+
+  if (options.elevator) {
+    elevator = [true];
+  } else {
     elevator = [true, false];
-  if (options.bed || options.bed.length == 0 || !options.bed[0]) {
-    options.bed = [true, false];
-  } else {
-    options.bed = [true];
-  }
-
-  if (!options.table || options.table.length === 0 || !options.table[0]) {
-    options.table = [true, false];
-  } else {
-    options.table = [true];
-  }
-
-  if (!options.chair || options.chair.length === 0 || !options.chair[0]) {
-    options.chair = [true, false];
-  } else {
-    options.chair = [true];
-  }
-
-  if (!options.closet || options.closet.length === 0 || !options.closet[0]) {
-    options.closet = [true, false];
-  } else {
-    options.closet = [true];
-  }
-
-  if (
-    !options.airconditioner ||
-    options.airconditioner.length === 0 ||
-    !options.airconditioner[0]
-  ) {
-    options.airconditioner = [true, false];
-  } else {
-    options.airconditioner = [true];
-  }
-
-  if (
-    !options.induction ||
-    options.induction.length === 0 ||
-    !options.induction[0]
-  ) {
-    options.induction = [true, false];
-  } else {
-    options.induction = [true];
-  }
-
-  if (
-    !options.refrigerator ||
-    options.refrigerator.length === 0 ||
-    !options.refrigerator[0]
-  ) {
-    options.refrigerator = [true, false];
-  } else {
-    options.refrigerator = [true];
-  }
-
-  if (!options.tv || options.tv.length === 0 || !options.tv[0]) {
-    options.tv = [true, false];
-  } else {
-    options.tv = [true];
-  }
-
-  if (
-    !options.doorlock ||
-    options.doorlock.length === 0 ||
-    !options.doorlock[0]
-  ) {
-    options.doorlock = [true, false];
-  } else {
-    options.doorlock = [true];
-  }
-
-  if (
-    !options.microwave ||
-    options.microwave.length === 0 ||
-    !options.microwave[0]
-  ) {
-    options.microwave = [true, false];
-  } else {
-    options.microwave = [true];
-  }
-
-  if (
-    !options.washingmachine ||
-    options.washingmachine.length === 0 ||
-    !options.washingmachine[0]
-  ) {
-    options.washingmachine = [true, false];
-  } else {
-    options.washingmachine = [true];
-  }
-
-  if (!options.cctv || options.cctv.length === 0 || !options.cctv[0]) {
-    options.cctv = [true, false];
-  } else {
-    options.cctv = [true];
-  }
-
-  if (!options.wifi || options.wifi.length === 0 || !options.wifi[0]) {
-    options.wifi = [true, false];
-  } else {
-    options.wifi = [true];
-  }
-
-  if (!options.parking || options.parking.length === 0 || !options.parking[0]) {
-    options.parking = [true, false];
-  } else {
-    options.parking = [true];
-  }
-
-  if (
-    !options.elevator ||
-    options.elevator.length === 0 ||
-    !options.elevator[0]
-  ) {
-    options.elevator = [true, false];
-  } else {
-    options.elevator = [true];
   }
 
   if (!conditions.gender || conditions.gender.length === 0) {
@@ -726,20 +699,21 @@ const POSTroomFilterService = async (userID: number, reqData) => {
         model: RoomOption,
         attributes: [],
         where: {
-          bed: { [Op.in]: options.bed },
-          table: { [Op.in]: options.table },
-          chair: { [Op.in]: options.chair },
-          closet: { [Op.in]: options.closet },
-          airconditioner: { [Op.in]: options.airconditioner },
-          induction: { [Op.in]: options.induction },
-          refrigerator: { [Op.in]: options.refrigerator },
-          tv: { [Op.in]: options.tv },
-          doorlock: { [Op.in]: options.doorlock },
-          washingmachine: { [Op.in]: options.washingmachine },
-          cctv: { [Op.in]: options.cctv },
-          wifi: { [Op.in]: options.wifi },
-          parking: { [Op.in]: options.parking },
-          elevator: { [Op.in]: options.elevator },
+          bed: { [Op.in]: bed },
+          table: { [Op.in]: table },
+          chair: { [Op.in]: chair },
+          closet: { [Op.in]: closet },
+          airconditioner: { [Op.in]: airconditioner },
+          induction: { [Op.in]: induction },
+          refrigerator: { [Op.in]: refrigerator },
+          tv: { [Op.in]: tv },
+          doorlock: { [Op.in]: doorlock },
+          microwave: { [Op.in]: microwave },
+          washingmachine: { [Op.in]: washingmachine },
+          cctv: { [Op.in]: cctv },
+          wifi: { [Op.in]: wifi },
+          parking: { [Op.in]: parking },
+          elevator: { [Op.in]: elevator },
         },
       },
       {

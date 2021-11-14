@@ -487,109 +487,96 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
     if (!price.deposit) {
         price.deposit = 9999999;
     }
-    if (!options.bed || options.bed.length === 0 || !options.bed[0]) {
-        options.bed = [true, false];
+    let bed, table, chair, closet, airconditioner, induction, refrigerator, tv, doorlock, microwave, washingmachine, cctv, wifi, parking, elevator;
+    if (options.bed) {
+        bed = [true];
     }
     else {
-        options.bed = [true];
+        bed = [true, false];
     }
-    if (!options.table || options.table.length === 0 || !options.table[0]) {
-        options.table = [true, false];
-    }
-    else {
-        options.table = [true];
-    }
-    if (!options.chair || options.chair.length === 0 || !options.chair[0]) {
-        options.chair = [true, false];
+    if (options.table) {
+        table = [true];
     }
     else {
-        options.chair = [true];
+        table = [true, false];
     }
-    if (!options.closet || options.closet.length === 0 || !options.closet[0]) {
-        options.closet = [true, false];
-    }
-    else {
-        options.closet = [true];
-    }
-    if (!options.airconditioner ||
-        options.airconditioner.length === 0 ||
-        !options.airconditioner[0]) {
-        options.airconditioner = [true, false];
+    if (options.chair) {
+        chair = [true];
     }
     else {
-        options.airconditioner = [true];
+        chair = [true, false];
     }
-    if (!options.induction ||
-        options.induction.length === 0 ||
-        !options.induction[0]) {
-        options.induction = [true, false];
+    if (options.closet) {
+        closet = [true];
     }
     else {
-        options.induction = [true];
+        closet = [true, false];
     }
-    if (!options.refrigerator ||
-        options.refrigerator.length === 0 ||
-        !options.refrigerator[0]) {
-        options.refrigerator = [true, false];
+    if (options.airconditioner) {
+        airconditioner = [true];
     }
     else {
-        options.refrigerator = [true];
+        airconditioner = [true, false];
     }
-    if (!options.tv || options.tv.length === 0 || !options.tv[0]) {
-        options.tv = [true, false];
-    }
-    else {
-        options.tv = [true];
-    }
-    if (!options.doorlock ||
-        options.doorlock.length === 0 ||
-        !options.doorlock[0]) {
-        options.doorlock = [true, false];
+    if (options.induction) {
+        induction = [true];
     }
     else {
-        options.doorlock = [true];
+        induction = [true, false];
     }
-    if (!options.microwave ||
-        options.microwave.length === 0 ||
-        !options.microwave[0]) {
-        options.microwave = [true, false];
+    if (options.refrigerator) {
+        refrigerator = [true];
     }
     else {
-        options.microwave = [true];
+        refrigerator = [true, false];
     }
-    if (!options.washingmachine ||
-        options.washingmachine.length === 0 ||
-        !options.washingmachine[0]) {
-        options.washingmachine = [true, false];
+    if (options.tv) {
+        tv = [true];
     }
     else {
-        options.washingmachine = [true];
+        tv = [true, false];
     }
-    if (!options.cctv || options.cctv.length === 0 || !options.cctv[0]) {
-        options.cctv = [true, false];
-    }
-    else {
-        options.cctv = [true];
-    }
-    if (!options.wifi || options.wifi.length === 0 || !options.wifi[0]) {
-        options.wifi = [true, false];
+    if (options.doorlock) {
+        doorlock = [true];
     }
     else {
-        options.wifi = [true];
+        doorlock = [true, false];
     }
-    if (!options.parking || options.parking.length === 0 || !options.parking[0]) {
-        options.parking = [true, false];
-    }
-    else {
-        options.parking = [true];
-    }
-    if (!options.elevator ||
-        options.elevator.length === 0 ||
-        !options.elevator[0]) {
-        options.elevator = [true, false];
+    if (options.microwave) {
+        microwave = [true];
     }
     else {
-        options.elevator = [true];
+        microwave = [true, false];
+    }
+    if (options.washingmachine) {
+        washingmachine = [true];
+    }
+    else {
+        washingmachine = [true, false];
+    }
+    if (options.cctv) {
+        cctv = [true];
+    }
+    else {
+        cctv = [true, false];
+    }
+    if (options.wifi) {
+        wifi = [true];
+    }
+    else {
+        wifi = [true, false];
+    }
+    if (options.parking) {
+        parking = [true];
+    }
+    else {
+        parking = [true, false];
+    }
+    if (options.elevator) {
+        elevator = [true];
+    }
+    else {
+        elevator = [true, false];
     }
     if (!conditions.gender || conditions.gender.length === 0) {
         conditions.gender = ["남성", "여성", "무관"];
@@ -640,20 +627,21 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
                 model: models_1.RoomOption,
                 attributes: [],
                 where: {
-                    bed: { [sequelize_1.Op.in]: options.bed },
-                    table: { [sequelize_1.Op.in]: options.table },
-                    chair: { [sequelize_1.Op.in]: options.chair },
-                    closet: { [sequelize_1.Op.in]: options.closet },
-                    airconditioner: { [sequelize_1.Op.in]: options.airconditioner },
-                    induction: { [sequelize_1.Op.in]: options.induction },
-                    refrigerator: { [sequelize_1.Op.in]: options.refrigerator },
-                    tv: { [sequelize_1.Op.in]: options.tv },
-                    doorlock: { [sequelize_1.Op.in]: options.doorlock },
-                    washingmachine: { [sequelize_1.Op.in]: options.washingmachine },
-                    cctv: { [sequelize_1.Op.in]: options.cctv },
-                    wifi: { [sequelize_1.Op.in]: options.wifi },
-                    parking: { [sequelize_1.Op.in]: options.parking },
-                    elevator: { [sequelize_1.Op.in]: options.elevator },
+                    bed: { [sequelize_1.Op.in]: bed },
+                    table: { [sequelize_1.Op.in]: table },
+                    chair: { [sequelize_1.Op.in]: chair },
+                    closet: { [sequelize_1.Op.in]: closet },
+                    airconditioner: { [sequelize_1.Op.in]: airconditioner },
+                    induction: { [sequelize_1.Op.in]: induction },
+                    refrigerator: { [sequelize_1.Op.in]: refrigerator },
+                    tv: { [sequelize_1.Op.in]: tv },
+                    doorlock: { [sequelize_1.Op.in]: doorlock },
+                    microwave: { [sequelize_1.Op.in]: microwave },
+                    washingmachine: { [sequelize_1.Op.in]: washingmachine },
+                    cctv: { [sequelize_1.Op.in]: cctv },
+                    wifi: { [sequelize_1.Op.in]: wifi },
+                    parking: { [sequelize_1.Op.in]: parking },
+                    elevator: { [sequelize_1.Op.in]: elevator },
                 },
             },
             {
