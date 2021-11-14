@@ -363,25 +363,12 @@ const POSTroomService = async (
 
 /**
  *  @모든_방_보기
- *  @route GET api/v1/room?offset=@&limit=
+ *  @route GET api/v1/room
  *  @access private
  *  @error
- *    1. no limit
  */
 
-const GETallRoomService = async (
-  userID: number,
-  offset?: number,
-  limit?: number
-) => {
-  if (!offset) {
-    offset = 0;
-  }
-
-  // 1. No limit
-  if (!limit) {
-    return -1;
-  }
+const GETallRoomService = async (userID: number) => {
   const userCertification = await Certification.findOne({ where: { userID } });
   const university = await userCertification.university;
 
@@ -403,8 +390,6 @@ const GETallRoomService = async (
       { model: Like, where: { userID, isLike: true }, required: false },
     ],
     attributes: ["roomID", "createdAt"],
-    offset,
-    limit,
   });
 
   const totalRoomNum = await Room.count({

@@ -436,7 +436,7 @@ const GETroomDetailService = (userID, roomID) => __awaiter(void 0, void 0, void 
                     "tv",
                     "doorlock",
                     "microwave",
-                    "washingmashine",
+                    "washingmachine",
                     "cctv",
                     "wifi",
                     "parking",
