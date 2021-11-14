@@ -484,7 +484,7 @@ const GETroomDetailService = async (userID: number, roomID: number) => {
           "tv",
           "doorlock",
           "microwave",
-          "washingmashine",
+          "washingmachine",
           "cctv",
           "wifi",
           "parking",
