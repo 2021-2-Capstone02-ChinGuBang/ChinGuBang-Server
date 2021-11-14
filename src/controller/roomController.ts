@@ -264,11 +264,34 @@ const POSTlikeController = async (req: Request, res: Response) => {
     response.basicResponse(res, returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
   }
 };
+
+/**
+ *  @필터링_방_보기
+ *  @route POST api/v1/room/filter
+ *  @access private
+ *  @error
+ */
+const POSTroomFilterController = async (req: Request, res: Response) => {
+  console.log(req.body);
+  try {
+    const data = await roomService.POSTroomFilterService(
+      req.body.userID.userID,
+      req.body
+    );
+
+    response.dataResponse(res, returnCode.OK, "필터링 된 방 보기 성공", data);
+  } catch (err) {
+    console.error(err.message);
+    response.basicResponse(res, returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
+  }
+};
+
 const roomController = {
   POSTroomController,
   GETallRoomController,
   GETroomDetailController,
   POSTlikeController,
+  POSTroomFilterController,
 };
 
 export default roomController;

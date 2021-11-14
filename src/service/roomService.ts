@@ -22,6 +22,7 @@ import { date, cast } from "../library";
 import ejs from "ejs";
 import sequelize from "sequelize";
 import nanoid from "nanoid";
+import { ConnectionTimedOutError, Op, QueryTypes, Sequelize } from "sequelize";
 
 /**
  *  @방_내놓기
@@ -169,7 +170,7 @@ import nanoid from "nanoid";
 //           "tv",
 //           "doorlock",
 //           "microwave",
-//           "washingmashine",
+//           "washingmachine",
 //           "cctv",
 //           "wifi",
 //           "parking",
@@ -326,7 +327,7 @@ const POSTroomService = async (
           "tv",
           "doorlock",
           "microwave",
-          "washingmashine",
+          "washingmachine",
           "cctv",
           "wifi",
           "parking",
@@ -513,25 +514,177 @@ const GETroomDetailService = async (userID: number, roomID: number) => {
  *  @route POST api/v1/room/filter
  *  @access private
  *  @error
- *    1. 요청 바디 부족
- *    2. no user
- *    3. no room
  */
 
-const POSTroomFilterService = async (
-  userID: number,
-  offset?: number,
-  limit?: number
-) => {
-  if (!offset) {
-    offset = 0;
+const POSTroomFilterService = async (userID: number, reqData) => {
+  const { type, price, rentPeriod, options, conditions } = reqData;
+
+  // type이 null이면
+  if (!type.roomType || type.roomType.length === 0) {
+    type.roomType = ["원룸", "투룸 이상", "오피스텔", "아파트"];
   }
 
-  // 1. No limit
-  if (!limit) {
-    return -1;
+  if (!type.category || type.category.length === 0) {
+    type.category = ["단기임대", "양도"];
   }
-  const userCertification = await Certification.findOne({ where: { userID } });
+
+  if (!type.rentType || type.rentType.length === 0) {
+    type.rentType = ["월세", "전세"];
+  }
+  if (!rentPeriod.startDate) {
+    rentPeriod.startDate = new Date("3000-08-22");
+  }
+  if (!rentPeriod.endDate) {
+    rentPeriod.endDate = new Date("1000-12-31");
+  }
+  if (!price.deposit) {
+    price.deposit = 9999999;
+  }
+
+  let bed,
+    table,
+    chair,
+    closet,
+    airconditioner,
+    induction,
+    refrigerator,
+    tv,
+    doorlock,
+    microwave,
+    washingmachine,
+    cctv,
+    wifi,
+    parking,
+    elevator = [true, false];
+  if (options.bed || options.bed.length == 0 || !options.bed[0]) {
+    options.bed = [true, false];
+  } else {
+    options.bed = [true];
+  }
+
+  if (!options.table || options.table.length === 0 || !options.table[0]) {
+    options.table = [true, false];
+  } else {
+    options.table = [true];
+  }
+
+  if (!options.chair || options.chair.length === 0 || !options.chair[0]) {
+    options.chair = [true, false];
+  } else {
+    options.chair = [true];
+  }
+
+  if (!options.closet || options.closet.length === 0 || !options.closet[0]) {
+    options.closet = [true, false];
+  } else {
+    options.closet = [true];
+  }
+
+  if (
+    !options.airconditioner ||
+    options.airconditioner.length === 0 ||
+    !options.airconditioner[0]
+  ) {
+    options.airconditioner = [true, false];
+  } else {
+    options.airconditioner = [true];
+  }
+
+  if (
+    !options.induction ||
+    options.induction.length === 0 ||
+    !options.induction[0]
+  ) {
+    options.induction = [true, false];
+  } else {
+    options.induction = [true];
+  }
+
+  if (
+    !options.refrigerator ||
+    options.refrigerator.length === 0 ||
+    !options.refrigerator[0]
+  ) {
+    options.refrigerator = [true, false];
+  } else {
+    options.refrigerator = [true];
+  }
+
+  if (!options.tv || options.tv.length === 0 || !options.tv[0]) {
+    options.tv = [true, false];
+  } else {
+    options.tv = [true];
+  }
+
+  if (
+    !options.doorlock ||
+    options.doorlock.length === 0 ||
+    !options.doorlock[0]
+  ) {
+    options.doorlock = [true, false];
+  } else {
+    options.doorlock = [true];
+  }
+
+  if (
+    !options.microwave ||
+    options.microwave.length === 0 ||
+    !options.microwave[0]
+  ) {
+    options.microwave = [true, false];
+  } else {
+    options.microwave = [true];
+  }
+
+  if (
+    !options.washingmachine ||
+    options.washingmachine.length === 0 ||
+    !options.washingmachine[0]
+  ) {
+    options.washingmachine = [true, false];
+  } else {
+    options.washingmachine = [true];
+  }
+
+  if (!options.cctv || options.cctv.length === 0 || !options.cctv[0]) {
+    options.cctv = [true, false];
+  } else {
+    options.cctv = [true];
+  }
+
+  if (!options.wifi || options.wifi.length === 0 || !options.wifi[0]) {
+    options.wifi = [true, false];
+  } else {
+    options.wifi = [true];
+  }
+
+  if (!options.parking || options.parking.length === 0 || !options.parking[0]) {
+    options.parking = [true, false];
+  } else {
+    options.parking = [true];
+  }
+
+  if (
+    !options.elevator ||
+    options.elevator.length === 0 ||
+    !options.elevator[0]
+  ) {
+    options.elevator = [true, false];
+  } else {
+    options.elevator = [true];
+  }
+
+  if (!conditions.gender || conditions.gender.length === 0) {
+    conditions.gender = ["남성", "여성", "무관"];
+  }
+
+  if (!conditions.smoking || conditions.smoking.length === 0) {
+    conditions.smoking = ["비흡연", "무관"];
+  }
+
+  const userCertification = await Certification.findOne({
+    where: { userID },
+  });
   const university = await userCertification.university;
 
   const rooms = await Room.findAll({
@@ -544,22 +697,65 @@ const POSTroomFilterService = async (
         attributes: [],
         required: true,
       },
-      { model: RoomType, attributes: ["roomType", "category"] },
-      { model: RoomPrice, attributes: ["monthly", "deposit"] },
-      { model: RoomPeriod, attributes: ["startDate", "endDate"] },
+      {
+        model: RoomType,
+        attributes: ["roomType", "category"],
+        where: {
+          roomType: { [Op.in]: type.roomType },
+          category: { [Op.in]: type.category },
+          rentType: { [Op.in]: type.rentType },
+        },
+      },
+      {
+        model: RoomPrice,
+        attributes: ["monthly", "deposit"],
+        where: { deposit: { [Op.lte]: price.deposit } },
+      },
+      {
+        model: RoomPeriod,
+        attributes: ["startDate", "endDate"],
+        where: {
+          startDate: { [Op.lte]: rentPeriod.startDate },
+          endDate: { [Op.gte]: rentPeriod.endDate },
+        },
+      },
       { model: RoomInformation, attributes: ["area", "floor"] },
       { model: RoomPhoto, attributes: ["main"] },
       { model: Like, where: { userID, isLike: true }, required: false },
+      {
+        model: RoomOption,
+        attributes: [],
+        where: {
+          bed: { [Op.in]: options.bed },
+          table: { [Op.in]: options.table },
+          chair: { [Op.in]: options.chair },
+          closet: { [Op.in]: options.closet },
+          airconditioner: { [Op.in]: options.airconditioner },
+          induction: { [Op.in]: options.induction },
+          refrigerator: { [Op.in]: options.refrigerator },
+          tv: { [Op.in]: options.tv },
+          doorlock: { [Op.in]: options.doorlock },
+          washingmachine: { [Op.in]: options.washingmachine },
+          cctv: { [Op.in]: options.cctv },
+          wifi: { [Op.in]: options.wifi },
+          parking: { [Op.in]: options.parking },
+          elevator: { [Op.in]: options.elevator },
+        },
+      },
+      {
+        model: RoomCondition,
+        attributes: [],
+        where: {
+          gender: { [Op.in]: conditions.gender },
+          smoking: { [Op.in]: conditions.smoking },
+        },
+      },
     ],
     attributes: ["roomID", "createdAt"],
-    offset,
-    limit,
   });
 
-  const totalRoomNum = await Room.count({
-    where: { isDeleted: false, university },
-  });
-  const resData = { rooms, totalRoomNum };
+  const resData = { rooms };
+
   return resData;
 };
 
@@ -610,6 +806,7 @@ const roomService = {
   GETallRoomService,
   GETroomDetailService,
   POSTlikeService,
+  POSTroomFilterService,
 };
 
 export default roomService;

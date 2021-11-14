@@ -201,11 +201,29 @@ const POSTlikeController = (req, res) => __awaiter(void 0, void 0, void 0, funct
         library_1.response.basicResponse(res, library_1.returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
     }
 });
+/**
+ *  @필터링_방_보기
+ *  @route POST api/v1/room/filter
+ *  @access private
+ *  @error
+ */
+const POSTroomFilterController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
+    try {
+        const data = yield service_1.roomService.POSTroomFilterService(req.body.userID.userID, req.body);
+        library_1.response.dataResponse(res, library_1.returnCode.OK, "필터링 된 방 보기 성공", data);
+    }
+    catch (err) {
+        console.error(err.message);
+        library_1.response.basicResponse(res, library_1.returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
+    }
+});
 const roomController = {
     POSTroomController,
     GETallRoomController,
     GETroomDetailController,
     POSTlikeController,
+    POSTroomFilterController,
 };
 exports.default = roomController;
 //# sourceMappingURL=roomController.js.map

@@ -25,7 +25,7 @@ import nanoid from "nanoid";
 
 /**
  *  @
- *  @route POST api/v1/room/like
+ *  @route POST api/v1/message
  *  @access private
  *  @error
  *    1. 요청 바디 부족

@@ -74,7 +74,7 @@ __decorate([
     (0, sequelize_typescript_1.Default)(false),
     sequelize_typescript_1.Column,
     __metadata("design:type", Boolean)
-], RoomOption.prototype, "washingmashine", void 0);
+], RoomOption.prototype, "washingmachine", void 0);
 __decorate([
     (0, sequelize_typescript_1.Default)(false),
     sequelize_typescript_1.Column,

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // models
 const models_1 = require("../models");
 const library_1 = require("../library");
+const sequelize_1 = require("sequelize");
 /**
  *  @방_내놓기
  *  @route Post /api/v1/room
@@ -143,7 +144,7 @@ const library_1 = require("../library");
 //           "tv",
 //           "doorlock",
 //           "microwave",
-//           "washingmashine",
+//           "washingmachine",
 //           "cctv",
 //           "wifi",
 //           "parking",
@@ -291,7 +292,7 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
                     "tv",
                     "doorlock",
                     "microwave",
-                    "washingmashine",
+                    "washingmachine",
                     "cctv",
                     "wifi",
                     "parking",
@@ -464,19 +465,141 @@ const GETroomDetailService = (userID, roomID) => __awaiter(void 0, void 0, void 
  *  @route POST api/v1/room/filter
  *  @access private
  *  @error
- *    1. 요청 바디 부족
- *    2. no user
- *    3. no room
  */
-const POSTroomFilterService = (userID, offset, limit) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!offset) {
-        offset = 0;
+const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, void 0, function* () {
+    const { type, price, rentPeriod, options, conditions } = reqData;
+    // type이 null이면
+    if (!type.roomType || type.roomType.length === 0) {
+        type.roomType = ["원룸", "투룸 이상", "오피스텔", "아파트"];
     }
-    // 1. No limit
-    if (!limit) {
-        return -1;
+    if (!type.category || type.category.length === 0) {
+        type.category = ["단기임대", "양도"];
     }
-    const userCertification = yield models_1.Certification.findOne({ where: { userID } });
+    if (!type.rentType || type.rentType.length === 0) {
+        type.rentType = ["월세", "전세"];
+    }
+    if (!rentPeriod.startDate) {
+        rentPeriod.startDate = new Date("3000-08-22");
+    }
+    if (!rentPeriod.endDate) {
+        rentPeriod.endDate = new Date("1000-12-31");
+    }
+    if (!price.deposit) {
+        price.deposit = 9999999;
+    }
+    if (!options.bed || options.bed.length === 0 || !options.bed[0]) {
+        options.bed = [true, false];
+    }
+    else {
+        options.bed = [true];
+    }
+    if (!options.table || options.table.length === 0 || !options.table[0]) {
+        options.table = [true, false];
+    }
+    else {
+        options.table = [true];
+    }
+    if (!options.chair || options.chair.length === 0 || !options.chair[0]) {
+        options.chair = [true, false];
+    }
+    else {
+        options.chair = [true];
+    }
+    if (!options.closet || options.closet.length === 0 || !options.closet[0]) {
+        options.closet = [true, false];
+    }
+    else {
+        options.closet = [true];
+    }
+    if (!options.airconditioner ||
+        options.airconditioner.length === 0 ||
+        !options.airconditioner[0]) {
+        options.airconditioner = [true, false];
+    }
+    else {
+        options.airconditioner = [true];
+    }
+    if (!options.induction ||
+        options.induction.length === 0 ||
+        !options.induction[0]) {
+        options.induction = [true, false];
+    }
+    else {
+        options.induction = [true];
+    }
+    if (!options.refrigerator ||
+        options.refrigerator.length === 0 ||
+        !options.refrigerator[0]) {
+        options.refrigerator = [true, false];
+    }
+    else {
+        options.refrigerator = [true];
+    }
+    if (!options.tv || options.tv.length === 0 || !options.tv[0]) {
+        options.tv = [true, false];
+    }
+    else {
+        options.tv = [true];
+    }
+    if (!options.doorlock ||
+        options.doorlock.length === 0 ||
+        !options.doorlock[0]) {
+        options.doorlock = [true, false];
+    }
+    else {
+        options.doorlock = [true];
+    }
+    if (!options.microwave ||
+        options.microwave.length === 0 ||
+        !options.microwave[0]) {
+        options.microwave = [true, false];
+    }
+    else {
+        options.microwave = [true];
+    }
+    if (!options.washingmachine ||
+        options.washingmachine.length === 0 ||
+        !options.washingmachine[0]) {
+        options.washingmachine = [true, false];
+    }
+    else {
+        options.washingmachine = [true];
+    }
+    if (!options.cctv || options.cctv.length === 0 || !options.cctv[0]) {
+        options.cctv = [true, false];
+    }
+    else {
+        options.cctv = [true];
+    }
+    if (!options.wifi || options.wifi.length === 0 || !options.wifi[0]) {
+        options.wifi = [true, false];
+    }
+    else {
+        options.wifi = [true];
+    }
+    if (!options.parking || options.parking.length === 0 || !options.parking[0]) {
+        options.parking = [true, false];
+    }
+    else {
+        options.parking = [true];
+    }
+    if (!options.elevator ||
+        options.elevator.length === 0 ||
+        !options.elevator[0]) {
+        options.elevator = [true, false];
+    }
+    else {
+        options.elevator = [true];
+    }
+    if (!conditions.gender || conditions.gender.length === 0) {
+        conditions.gender = ["남성", "여성", "무관"];
+    }
+    if (!conditions.smoking || conditions.smoking.length === 0) {
+        conditions.smoking = ["비흡연", "무관"];
+    }
+    const userCertification = yield models_1.Certification.findOne({
+        where: { userID },
+    });
     const university = yield userCertification.university;
     const rooms = yield models_1.Room.findAll({
         order: [["createdAt", "DESC"]],
@@ -488,21 +611,63 @@ const POSTroomFilterService = (userID, offset, limit) => __awaiter(void 0, void 
                 attributes: [],
                 required: true,
             },
-            { model: models_1.RoomType, attributes: ["roomType", "category"] },
-            { model: models_1.RoomPrice, attributes: ["monthly", "deposit"] },
-            { model: models_1.RoomPeriod, attributes: ["startDate", "endDate"] },
+            {
+                model: models_1.RoomType,
+                attributes: ["roomType", "category"],
+                where: {
+                    roomType: { [sequelize_1.Op.in]: type.roomType },
+                    category: { [sequelize_1.Op.in]: type.category },
+                    rentType: { [sequelize_1.Op.in]: type.rentType },
+                },
+            },
+            {
+                model: models_1.RoomPrice,
+                attributes: ["monthly", "deposit"],
+                where: { deposit: { [sequelize_1.Op.lte]: price.deposit } },
+            },
+            {
+                model: models_1.RoomPeriod,
+                attributes: ["startDate", "endDate"],
+                where: {
+                    startDate: { [sequelize_1.Op.lte]: rentPeriod.startDate },
+                    endDate: { [sequelize_1.Op.gte]: rentPeriod.endDate },
+                },
+            },
             { model: models_1.RoomInformation, attributes: ["area", "floor"] },
             { model: models_1.RoomPhoto, attributes: ["main"] },
             { model: models_1.Like, where: { userID, isLike: true }, required: false },
+            {
+                model: models_1.RoomOption,
+                attributes: [],
+                where: {
+                    bed: { [sequelize_1.Op.in]: options.bed },
+                    table: { [sequelize_1.Op.in]: options.table },
+                    chair: { [sequelize_1.Op.in]: options.chair },
+                    closet: { [sequelize_1.Op.in]: options.closet },
+                    airconditioner: { [sequelize_1.Op.in]: options.airconditioner },
+                    induction: { [sequelize_1.Op.in]: options.induction },
+                    refrigerator: { [sequelize_1.Op.in]: options.refrigerator },
+                    tv: { [sequelize_1.Op.in]: options.tv },
+                    doorlock: { [sequelize_1.Op.in]: options.doorlock },
+                    washingmachine: { [sequelize_1.Op.in]: options.washingmachine },
+                    cctv: { [sequelize_1.Op.in]: options.cctv },
+                    wifi: { [sequelize_1.Op.in]: options.wifi },
+                    parking: { [sequelize_1.Op.in]: options.parking },
+                    elevator: { [sequelize_1.Op.in]: options.elevator },
+                },
+            },
+            {
+                model: models_1.RoomCondition,
+                attributes: [],
+                where: {
+                    gender: { [sequelize_1.Op.in]: conditions.gender },
+                    smoking: { [sequelize_1.Op.in]: conditions.smoking },
+                },
+            },
         ],
         attributes: ["roomID", "createdAt"],
-        offset,
-        limit,
     });
-    const totalRoomNum = yield models_1.Room.count({
-        where: { isDeleted: false, university },
-    });
-    const resData = { rooms, totalRoomNum };
+    const resData = { rooms };
     return resData;
 });
 /**
@@ -549,6 +714,7 @@ const roomService = {
     GETallRoomService,
     GETroomDetailService,
     POSTlikeService,
+    POSTroomFilterService,
 };
 exports.default = roomService;
 //# sourceMappingURL=roomService.js.map

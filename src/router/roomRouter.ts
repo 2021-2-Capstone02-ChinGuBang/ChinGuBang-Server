@@ -23,5 +23,5 @@ router.post(
 router.get("", authMiddleware, roomController.GETallRoomController);
 router.get("/:roomID", authMiddleware, roomController.GETroomDetailController);
 router.post("/like/:roomID", authMiddleware, roomController.POSTlikeController);
-
+router.post("/filter", authMiddleware, roomController.POSTroomFilterController);
 export default router;
