@@ -14,6 +14,10 @@ function stringToNumber(str) {
     else
         return Number(str);
 }
+function stringToDate(str) {
+    if (str === "null" || !str)
+        return null;
+}
 const cast = {
     stringToBoolean,
     stringToNumber,

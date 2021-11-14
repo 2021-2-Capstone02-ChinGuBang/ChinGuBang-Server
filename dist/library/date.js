@@ -1,8 +1,16 @@
 "use strict";
+// function stringToDate(str: String) {
+//   var dateParts = str.split("-");
 Object.defineProperty(exports, "__esModule", { value: true });
+//   return new Date(
+//     parseInt(dateParts[0]),
+//     parseInt(dateParts[1]) - 1,
+//     parseInt(dateParts[2])
+//   );
+// }
 function stringToDate(str) {
-    var dateParts = str.split("-");
-    return new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
+    var dateParts = str.split("/");
+    return new Date(parseInt(dateParts[2]), parseInt(dateParts[0]) - 1, parseInt(dateParts[1]) + 1);
 }
 function stringToEndDate(str) {
     var dateParts = str.split("-");
