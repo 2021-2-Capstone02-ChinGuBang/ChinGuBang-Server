@@ -296,7 +296,6 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
                     "induction",
                     "refrigerator",
                     "tv",
-                    "doorlock",
                     "microwave",
                     "washingmachine",
                     "cctv",
@@ -424,7 +423,6 @@ const GETroomDetailService = (userID, roomID) => __awaiter(void 0, void 0, void 
                     "induction",
                     "refrigerator",
                     "tv",
-                    "doorlock",
                     "microwave",
                     "washingmachine",
                     "cctv",
@@ -480,7 +478,7 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
     if (!price.monthly) {
         price.monthly = 9999999;
     }
-    let bed, table, chair, closet, airconditioner, induction, refrigerator, tv, doorlock, microwave, washingmachine, cctv, wifi, parking, elevator;
+    let bed, table, chair, closet, airconditioner, induction, refrigerator, tv, microwave, washingmachine, cctv, wifi, parking, elevator;
     if (options.bed) {
         bed = [true];
     }

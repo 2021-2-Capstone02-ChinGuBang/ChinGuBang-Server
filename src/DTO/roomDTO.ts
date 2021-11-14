@@ -102,7 +102,6 @@ namespace roomDTO {
     induction: Boolean;
     refrigerator: Boolean;
     tv: Boolean;
-    doorlock: Boolean;
     microwave: Boolean;
     washingmachine: Boolean;
     cctv: Boolean;
@@ -119,7 +118,6 @@ namespace roomDTO {
     induction: string;
     refrigerator: string;
     tv: string;
-    doorlock: string;
     microwave: string;
     washingmachine: string;
     cctv: string;

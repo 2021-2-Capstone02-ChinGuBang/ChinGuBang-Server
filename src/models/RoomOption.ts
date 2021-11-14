@@ -64,10 +64,6 @@ export default class RoomOption extends Model {
 
   @Default(false)
   @Column
-  doorlock: Boolean;
-
-  @Default(false)
-  @Column
   microwave: Boolean;
 
   @Default(false)
