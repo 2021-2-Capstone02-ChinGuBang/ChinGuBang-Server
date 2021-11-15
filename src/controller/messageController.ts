@@ -9,7 +9,7 @@ import { messageDTO } from "../DTO";
 
 /**
  *  @쪽지_보내기
- *  @route POST api/v1/message
+ *  @route POST api/v1/message/:roomID
  *  @access private
  *  @error
  *    1. 요청 바디 부족
@@ -66,8 +66,50 @@ const POSTmessageController = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ *  @쪽지함_조회
+ *  @route GET api/v1/message/:messageRoomID
+ *  @access private
+ *  @error
+ *    1. 요청 바디 부족
+ *    2. 권한이 없는 user
+ */
+
+const GETmessageRoomController = async (req: Request, res: Response) => {
+  console.log(req.body);
+  try {
+    const data = await messageService.GETmessageRoomService(
+      req.body.userID.userID,
+      Number(req.params.messageRoomID)
+    );
+
+    // 1. 요청 바디 부족
+    if (data === -1) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "요청 값이 올바르지 않습니다."
+      );
+    }
+    // 2. 권한이 없는 user
+    else if (data === -2) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "권한이 없는 사용자입니다."
+      );
+    } else {
+      response.dataResponse(res, returnCode.OK, "쪽지함 조회 성공", data);
+    }
+  } catch (err) {
+    console.error(err.message);
+    response.basicResponse(res, returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
+  }
+};
+
 const messageController = {
   POSTmessageController,
+  GETmessageRoomController,
 };
 
 export default messageController;

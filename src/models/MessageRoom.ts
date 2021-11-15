@@ -13,7 +13,7 @@ import {
   HasMany,
   AllowNull,
 } from "sequelize-typescript";
-import { Room, Participant } from ".";
+import { Room, Participant, Message } from ".";
 
 @Table({
   tableName: "MessageRoom",
@@ -45,4 +45,7 @@ export default class MessageRoom extends Model {
 
   @HasMany(() => Participant)
   participants: Participant[];
+
+  @HasMany(() => Message)
+  messages: Message[];
 }

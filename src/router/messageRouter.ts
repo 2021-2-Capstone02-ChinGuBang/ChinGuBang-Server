@@ -11,4 +11,10 @@ router.post(
   messageController.POSTmessageController
 );
 
+router.get(
+  "/:messageRoomID",
+  authMiddleware,
+  messageController.GETmessageRoomController
+);
+
 export default router;

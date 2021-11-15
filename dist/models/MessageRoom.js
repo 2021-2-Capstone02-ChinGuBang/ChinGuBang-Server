@@ -37,6 +37,14 @@ __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => _1.Room),
     __metadata("design:type", _1.Room)
 ], MessageRoom.prototype, "room", void 0);
+__decorate([
+    (0, sequelize_typescript_1.HasMany)(() => _1.Participant),
+    __metadata("design:type", Array)
+], MessageRoom.prototype, "participants", void 0);
+__decorate([
+    (0, sequelize_typescript_1.HasMany)(() => _1.Message),
+    __metadata("design:type", Array)
+], MessageRoom.prototype, "messages", void 0);
 MessageRoom = __decorate([
     (0, sequelize_typescript_1.Table)({
         tableName: "MessageRoom",

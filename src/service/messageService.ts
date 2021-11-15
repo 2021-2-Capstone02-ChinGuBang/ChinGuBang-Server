@@ -28,7 +28,7 @@ import nanoid from "nanoid";
 
 /**
  *  @쪽지_보내기
- *  @route POST api/v1/message
+ *  @route POST api/v1/message/:roomID
  *  @access private
  *  @error
  *    1. 요청 바디 부족
@@ -111,8 +111,78 @@ const POSTmessageService = async (
   return resData;
 };
 
+/**
+ *  @쪽지함_조회
+ *  @route GET api/v1/message/:messageRoomID
+ *  @access private
+ *  @error
+ *    1. 요청 바디 부족
+ *    2. 권한이 없는 user
+ */
+
+const GETmessageRoomService = async (userID: number, messageRoomID: number) => {
+  // 1. 요청 바디 부족
+  if (!userID || !messageRoomID) return -1;
+
+  const user = await User.findOne({ where: { userID, isDeleted: false } });
+  // 2. 권한이 없는 user
+  if (!user.certificated) return -2;
+
+  const messageRoom = await MessageRoom.findOne({
+    where: { messageRoomID },
+    include: [
+      {
+        model: Room,
+        attributes: ["roomID", "createdAt", "uploader"],
+        include: [
+          { model: RoomType, attributes: ["roomType", "category", "rentType"] },
+          { model: RoomPrice, attributes: ["monthly", "deposit"] },
+          { model: RoomPeriod, attributes: ["startDate", "endDate"] },
+          { model: RoomInformation, attributes: ["area", "floor"] },
+          { model: RoomPhoto, attributes: ["main"] },
+        ],
+      },
+      {
+        model: Message,
+        attributes: ["sender", "content"],
+        order: [["createdAt", "DESC"]],
+      },
+      {
+        model: Participant,
+        attributes: ["userID"],
+      },
+    ],
+  });
+
+  const participants = messageRoom.participants;
+  let opponentID, myID;
+  const opponent = participants.map((participant) => {
+    if (participant.userID !== userID) {
+      opponentID = participant.userID;
+    } else {
+      myID = participant.userID;
+    }
+  });
+
+  if (myID !== userID) return -2;
+  const rawMessages = messageRoom.messages;
+
+  const messages = rawMessages.map((message) => {
+    let messageType = "받은 쪽지";
+    if (message.sender === userID) {
+      messageType = "보낸 쪽지";
+    }
+    return { messageType, senderID: message.sender, content: message.content };
+  });
+
+  const resData = { opponentID, room: messageRoom.room, messages };
+
+  return resData;
+};
+
 const messageService = {
   POSTmessageService,
+  GETmessageRoomService,
 };
 
 export default messageService;

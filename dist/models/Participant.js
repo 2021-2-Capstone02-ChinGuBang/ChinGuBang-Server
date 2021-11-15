@@ -18,7 +18,7 @@ __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => _1.MessageRoom),
     sequelize_typescript_1.Column,
     __metadata("design:type", Number)
-], Participant.prototype, "MessageRoomID", void 0);
+], Participant.prototype, "messageRoomID", void 0);
 __decorate([
     sequelize_typescript_1.PrimaryKey,
     (0, sequelize_typescript_1.ForeignKey)(() => _1.User),
@@ -28,7 +28,11 @@ __decorate([
 __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => _1.User),
     __metadata("design:type", _1.User)
-], Participant.prototype, "user", void 0);
+], Participant.prototype, "sender", void 0);
+__decorate([
+    (0, sequelize_typescript_1.BelongsTo)(() => _1.User),
+    __metadata("design:type", _1.User)
+], Participant.prototype, "receiver", void 0);
 __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => _1.MessageRoom),
     __metadata("design:type", _1.MessageRoom)

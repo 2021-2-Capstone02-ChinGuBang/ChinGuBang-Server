@@ -94,7 +94,7 @@ import { ConnectionTimedOutError, Op, QueryTypes, Sequelize } from "sequelize";
 //     control: price.control,
 //   });
 
-//   await RoomPeriod.create({
+//   await RaheoomPeriod.create({
 //     roomID: newRoom.roomID,
 //     startDate: rentPeriod.startDate,
 //     endDate: rentPeriod.endDate,

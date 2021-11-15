@@ -72,7 +72,7 @@ const sequelize_1 = require("sequelize");
 //     monthly: price.monthly,
 //     control: price.control,
 //   });
-//   await RoomPeriod.create({
+//   await RaheoomPeriod.create({
 //     roomID: newRoom.roomID,
 //     startDate: rentPeriod.startDate,
 //     endDate: rentPeriod.endDate,

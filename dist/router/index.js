@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const authRouter_1 = __importDefault(require("./authRouter"));
 const roomRouter_1 = __importDefault(require("./roomRouter"));
+const messageRouter_1 = __importDefault(require("./messageRouter"));
 const library_1 = require("../library");
 const router = express_1.default.Router();
 router.get("", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -27,5 +28,6 @@ router.get("", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 }));
 router.use("/api/v1/auth", authRouter_1.default);
 router.use("/api/v1/room", roomRouter_1.default);
+router.use("/api/v1/message", messageRouter_1.default);
 exports.default = router;
 //# sourceMappingURL=index.js.map
