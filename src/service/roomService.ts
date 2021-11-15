@@ -203,6 +203,7 @@ const POSTroomService = async (
   url?
 ) => {
   const { type, price, information, rentPeriod, options, conditions } = reqData;
+
   // 1. 요청 바디 부족
   if (
     !type ||
