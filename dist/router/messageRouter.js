@@ -10,5 +10,6 @@ const upload = require("../modules/upload");
 const router = express_1.default.Router();
 router.post("/:roomID", middleware_1.authMiddleware, controller_1.messageController.POSTmessageController);
 router.get("/:messageRoomID", middleware_1.authMiddleware, controller_1.messageController.GETmessageRoomController);
+router.get("", middleware_1.authMiddleware, controller_1.messageController.GETmessageController);
 exports.default = router;
 //# sourceMappingURL=messageRouter.js.map

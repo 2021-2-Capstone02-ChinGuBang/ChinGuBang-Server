@@ -148,9 +148,59 @@ const GETmessageRoomService = (userID, messageRoomID) => __awaiter(void 0, void 
     const resData = { opponentID, room: messageRoom.room, messages };
     return resData;
 });
+/**
+ *  @쪽지_알림_조회
+ *  @route GET api/v1/message
+ *  @access private
+ *  @error
+ *    1. 권한이 없는 user
+ */
+const GETmessageService = (userID) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield models_1.User.findOne({ where: { userID, isDeleted: false } });
+    // 1. 권한이 없는 user
+    if (!user.certificated)
+        return -1;
+    const messageRooms = yield models_1.Participant.findAll({
+        where: { userID },
+        include: [
+            {
+                model: models_1.MessageRoom,
+                include: [
+                    {
+                        model: models_1.Participant,
+                        include: [
+                            {
+                                model: models_1.User,
+                                as: "sender",
+                                where: { isDeleted: false },
+                                attributes: ["userID", "nickname"],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+        order: [["updatedAt", "DESC"]],
+    });
+    let messages = [];
+    messageRooms.map((messageRoom) => {
+        const participants = messageRoom.messageRoom.participants;
+        participants.map((participant) => {
+            if (participant.userID !== userID) {
+                messages.push({
+                    messageRoomID: participant.messageRoomID,
+                    nickname: participant.sender.nickname,
+                });
+            }
+        });
+    });
+    const resData = { messages };
+    return resData;
+});
 const messageService = {
     POSTmessageService,
     GETmessageRoomService,
+    GETmessageService,
 };
 exports.default = messageService;
 //# sourceMappingURL=messageService.js.map

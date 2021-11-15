@@ -17,4 +17,5 @@ router.get(
   messageController.GETmessageRoomController
 );
 
+router.get("", authMiddleware, messageController.GETmessageController);
 export default router;

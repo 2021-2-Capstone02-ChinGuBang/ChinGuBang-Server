@@ -41,5 +41,5 @@ export default class Participant extends Model {
   receiver: User;
 
   @BelongsTo(() => MessageRoom)
-  room: MessageRoom;
+  messageRoom: MessageRoom;
 }

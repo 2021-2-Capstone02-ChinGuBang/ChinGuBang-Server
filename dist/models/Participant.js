@@ -36,7 +36,7 @@ __decorate([
 __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => _1.MessageRoom),
     __metadata("design:type", _1.MessageRoom)
-], Participant.prototype, "room", void 0);
+], Participant.prototype, "messageRoom", void 0);
 Participant = __decorate([
     (0, sequelize_typescript_1.Table)({
         tableName: "Participant",

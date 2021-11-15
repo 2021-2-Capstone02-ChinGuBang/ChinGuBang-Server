@@ -180,9 +180,64 @@ const GETmessageRoomService = async (userID: number, messageRoomID: number) => {
   return resData;
 };
 
+/**
+ *  @쪽지_알림_조회
+ *  @route GET api/v1/message
+ *  @access private
+ *  @error
+ *    1. 권한이 없는 user
+ */
+
+const GETmessageService = async (userID: number) => {
+  const user = await User.findOne({ where: { userID, isDeleted: false } });
+  // 1. 권한이 없는 user
+  if (!user.certificated) return -1;
+
+  const messageRooms = await Participant.findAll({
+    where: { userID },
+    include: [
+      {
+        model: MessageRoom,
+        include: [
+          {
+            model: Participant,
+            include: [
+              {
+                model: User,
+                as: "sender",
+                where: { isDeleted: false },
+                attributes: ["userID", "nickname"],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    order: [["updatedAt", "DESC"]],
+  });
+
+  let messages = [];
+  messageRooms.map((messageRoom) => {
+    const participants = messageRoom.messageRoom.participants;
+    participants.map((participant) => {
+      if (participant.userID !== userID) {
+        messages.push({
+          messageRoomID: participant.messageRoomID,
+          nickname: participant.sender.nickname,
+        });
+      }
+    });
+  });
+
+  const resData = { messages };
+
+  return resData;
+};
+
 const messageService = {
   POSTmessageService,
   GETmessageRoomService,
+  GETmessageService,
 };
 
 export default messageService;

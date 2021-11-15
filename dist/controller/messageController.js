@@ -81,9 +81,34 @@ const GETmessageRoomController = (req, res) => __awaiter(void 0, void 0, void 0,
         library_1.response.basicResponse(res, library_1.returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
     }
 });
+/**
+ *  @쪽지_알림_조회
+ *  @route GET api/v1/message
+ *  @access private
+ *  @error
+ *    1. 권한이 없는 user
+ */
+const GETmessageController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
+    try {
+        const data = yield service_1.messageService.GETmessageService(req.body.userID.userID);
+        // 1. 권한이 없는 user
+        if (data === -1) {
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "권한이 없는 사용자입니다.");
+        }
+        else {
+            library_1.response.dataResponse(res, library_1.returnCode.OK, "쪽지 알림 조회 성공", data);
+        }
+    }
+    catch (err) {
+        console.error(err.message);
+        library_1.response.basicResponse(res, library_1.returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
+    }
+});
 const messageController = {
     POSTmessageController,
     GETmessageRoomController,
+    GETmessageController,
 };
 exports.default = messageController;
 //# sourceMappingURL=messageController.js.map
