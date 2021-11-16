@@ -52,7 +52,17 @@ const POSTmessageService = async (
   // 2. 권한이 없는 user
   if (!sender.certificated) return -2;
 
-  const room = await Room.findOne({ where: { roomID, isDeleted: false } });
+  const room = await Room.findOne({
+    where: { roomID, isDeleted: false },
+    attributes: ["roomID", "createdAt", "uploader"],
+    include: [
+      { model: RoomType, attributes: ["roomType", "category", "rentType"] },
+      { model: RoomPrice, attributes: ["monthly", "deposit"] },
+      { model: RoomPeriod, attributes: ["startDate", "endDate"] },
+      { model: RoomInformation, attributes: ["area", "floor"] },
+      { model: RoomPhoto, attributes: ["main"] },
+    ],
+  });
 
   // 3. no room
   if (!room) return -3;
@@ -81,6 +91,7 @@ const POSTmessageService = async (
       },
     ],
   });
+
   if (!messageRoom) {
     messageRoom = await MessageRoom.create({ roomID });
     await Participant.create({
@@ -95,19 +106,31 @@ const POSTmessageService = async (
     messageRoom.save();
   }
 
-  const message = await Message.create({
+  await Message.create({
     sender: userID,
     messageRoomID: messageRoom.messageRoomID,
     content,
   });
 
-  const resData = {
-    messageRoomID: messageRoom.messageRoomID,
-    sender: userID,
-    receiver: receiverID,
-    content,
-  };
+  const rawMessages = await Message.findAll({
+    where: { messageRoomID: messageRoom.messageRoomID },
+    attributes: ["sender", "content"],
+    order: [["createdAt", "DESC"]],
+  });
 
+  const messages = rawMessages.map((message) => {
+    let messageType = "받은 쪽지";
+    if (message.sender === userID) {
+      messageType = "보낸 쪽지";
+    }
+    return { messageType, senderID: message.sender, content: message.content };
+  });
+
+  const resData = {
+    opponentID: receiverID,
+    room,
+    messages,
+  };
   return resData;
 };
 
