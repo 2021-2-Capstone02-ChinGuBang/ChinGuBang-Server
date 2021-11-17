@@ -52,7 +52,7 @@ const POSTmessageService = async (
   // 2. 권한이 없는 user
   if (!sender.certificated) return -2;
 
-  const room = await Room.findOne({
+  const rawRoom = await Room.findOne({
     where: { roomID, isDeleted: false },
     attributes: ["roomID", "createdAt", "uploader"],
     include: [
@@ -65,7 +65,7 @@ const POSTmessageService = async (
   });
 
   // 3. no room
-  if (!room) return -3;
+  if (!rawRoom) return -3;
 
   const receiver = await User.findOne({
     where: { userID: receiverID, isDeleted: false },
@@ -125,6 +125,20 @@ const POSTmessageService = async (
     }
     return { messageType, senderID: message.sender, content: message.content };
   });
+
+  const room = {
+    roomID: rawRoom.roomID,
+    createdAt: date.dateToString(rawRoom.createdAt),
+    uploader: rawRoom.uploader,
+    type: rawRoom.type,
+    prcie: rawRoom.price,
+    rentPeriod: {
+      startDate: date.dateToString(rawRoom.rentPeriod.startDate),
+      endDate: date.dateToString(rawRoom.rentPeriod.endDate),
+    },
+    information: rawRoom.information,
+    photo: rawRoom.photo,
+  };
 
   const resData = {
     opponentID: receiverID,
@@ -198,7 +212,20 @@ const GETmessageRoomService = async (userID: number, messageRoomID: number) => {
     return { messageType, senderID: message.sender, content: message.content };
   });
 
-  const resData = { opponentID, room: messageRoom.room, messages };
+  const room = {
+    roomID: messageRoom.room.roomID,
+    createdAt: date.dateToString(messageRoom.room.createdAt),
+    uploader: messageRoom.room.uploader,
+    type: messageRoom.room.type,
+    prcie: messageRoom.room.price,
+    rentPeriod: {
+      startDate: date.dateToString(messageRoom.room.rentPeriod.startDate),
+      endDate: date.dateToString(messageRoom.room.rentPeriod.endDate),
+    },
+    information: messageRoom.room.information,
+    photo: messageRoom.room.photo,
+  };
+  const resData = { opponentID, room, messages };
 
   return resData;
 };

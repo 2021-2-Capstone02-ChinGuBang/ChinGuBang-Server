@@ -184,7 +184,7 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
 const GETallRoomService = (userID) => __awaiter(void 0, void 0, void 0, function* () {
     const userCertification = yield models_1.Certification.findOne({ where: { userID } });
     const university = yield userCertification.university;
-    const rooms = yield models_1.Room.findAll({
+    const rawRooms = yield models_1.Room.findAll({
         order: [["createdAt", "DESC"]],
         where: { isDeleted: false, university },
         include: [
@@ -202,6 +202,21 @@ const GETallRoomService = (userID) => __awaiter(void 0, void 0, void 0, function
             { model: models_1.Like, where: { userID, isLike: true }, required: false },
         ],
         attributes: ["roomID", "createdAt"],
+    });
+    const rooms = rawRooms.map((room) => {
+        return {
+            roomID: room.roomID,
+            createdAt: library_1.date.dateToString(room.createdAt),
+            type: room.type,
+            prcie: room.price,
+            rentPeriod: {
+                startDate: library_1.date.dateToString(room.rentPeriod.startDate),
+                endDate: library_1.date.dateToString(room.rentPeriod.endDate),
+            },
+            information: room.information,
+            photo: room.photo,
+            isLike: room.likes.length ? true : false,
+        };
     });
     const totalRoomNum = yield models_1.Room.count({
         where: { isDeleted: false, university },

@@ -44,7 +44,7 @@ function period(start: Date, end: Date) {
 
 // Date to String
 function dateToString(dt: Date) {
-  var date = new Date();
+  var date = new Date(dt);
   var year = date.getFullYear();
 
   var month = new String(date.getMonth() + 1);

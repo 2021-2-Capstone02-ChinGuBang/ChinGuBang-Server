@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 // models
 const models_1 = require("../models");
+const library_1 = require("../library");
 /**
  *  @메인페이지
  *  @route GET api/v1/main
@@ -20,7 +21,7 @@ const models_1 = require("../models");
 const GETmainService = (userID) => __awaiter(void 0, void 0, void 0, function* () {
     const userCertification = yield models_1.Certification.findOne({ where: { userID } });
     const university = yield userCertification.university;
-    const rooms = yield models_1.Room.findAll({
+    const rawRooms = yield models_1.Room.findAll({
         order: [["createdAt", "DESC"]],
         where: { isDeleted: false, university },
         include: [
@@ -41,6 +42,21 @@ const GETmainService = (userID) => __awaiter(void 0, void 0, void 0, function* (
             { model: models_1.Like, where: { userID, isLike: true }, required: false },
         ],
         attributes: ["roomID", "createdAt"],
+    });
+    const rooms = rawRooms.map((room) => {
+        return {
+            roomID: room.roomID,
+            createdAt: library_1.date.dateToString(room.createdAt),
+            type: room.type,
+            prcie: room.price,
+            rentPeriod: {
+                startDate: library_1.date.dateToString(room.rentPeriod.startDate),
+                endDate: library_1.date.dateToString(room.rentPeriod.endDate),
+            },
+            information: room.information,
+            photo: room.photo,
+            isLike: room.likes.length ? true : false,
+        };
     });
     const totalRoomNum = yield models_1.Room.count({
         where: { isDeleted: false, university },

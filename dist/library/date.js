@@ -27,7 +27,7 @@ function period(start, end) {
 }
 // Date to String
 function dateToString(dt) {
-    var date = new Date();
+    var date = new Date(dt);
     var year = date.getFullYear();
     var month = new String(date.getMonth() + 1);
     month = Number(month) >= 10 ? month : "0" + month; // month 두자리로 저장

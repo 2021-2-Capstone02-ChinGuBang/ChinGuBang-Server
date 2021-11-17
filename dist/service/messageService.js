@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 // models
 const models_1 = require("../models");
+const library_1 = require("../library");
 /**
  *  @쪽지_보내기
  *  @route POST api/v1/message/:roomID
@@ -30,7 +31,7 @@ const POSTmessageService = (userID, roomID, reqData) => __awaiter(void 0, void 0
     // 2. 권한이 없는 user
     if (!sender.certificated)
         return -2;
-    const room = yield models_1.Room.findOne({
+    const rawRoom = yield models_1.Room.findOne({
         where: { roomID, isDeleted: false },
         attributes: ["roomID", "createdAt", "uploader"],
         include: [
@@ -42,7 +43,7 @@ const POSTmessageService = (userID, roomID, reqData) => __awaiter(void 0, void 0
         ],
     });
     // 3. no room
-    if (!room)
+    if (!rawRoom)
         return -3;
     const receiver = yield models_1.User.findOne({
         where: { userID: receiverID, isDeleted: false },
@@ -98,6 +99,19 @@ const POSTmessageService = (userID, roomID, reqData) => __awaiter(void 0, void 0
         }
         return { messageType, senderID: message.sender, content: message.content };
     });
+    const room = {
+        roomID: rawRoom.roomID,
+        createdAt: library_1.date.dateToString(rawRoom.createdAt),
+        uploader: rawRoom.uploader,
+        type: rawRoom.type,
+        prcie: rawRoom.price,
+        rentPeriod: {
+            startDate: library_1.date.dateToString(rawRoom.rentPeriod.startDate),
+            endDate: library_1.date.dateToString(rawRoom.rentPeriod.endDate),
+        },
+        information: rawRoom.information,
+        photo: rawRoom.photo,
+    };
     const resData = {
         opponentID: receiverID,
         room,
@@ -166,7 +180,20 @@ const GETmessageRoomService = (userID, messageRoomID) => __awaiter(void 0, void 
         }
         return { messageType, senderID: message.sender, content: message.content };
     });
-    const resData = { opponentID, room: messageRoom.room, messages };
+    const room = {
+        roomID: messageRoom.room.roomID,
+        createdAt: library_1.date.dateToString(messageRoom.room.createdAt),
+        uploader: messageRoom.room.uploader,
+        type: messageRoom.room.type,
+        prcie: messageRoom.room.price,
+        rentPeriod: {
+            startDate: library_1.date.dateToString(messageRoom.room.rentPeriod.startDate),
+            endDate: library_1.date.dateToString(messageRoom.room.rentPeriod.endDate),
+        },
+        information: messageRoom.room.information,
+        photo: messageRoom.room.photo,
+    };
+    const resData = { opponentID, room, messages };
     return resData;
 });
 /**

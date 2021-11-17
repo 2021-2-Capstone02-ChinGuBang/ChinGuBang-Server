@@ -34,7 +34,7 @@ const GETmainService = async (userID: number) => {
   const userCertification = await Certification.findOne({ where: { userID } });
   const university = await userCertification.university;
 
-  const rooms = await Room.findAll({
+  const rawRooms = await Room.findAll({
     order: [["createdAt", "DESC"]],
     where: { isDeleted: false, university },
     include: [
@@ -55,6 +55,22 @@ const GETmainService = async (userID: number) => {
       { model: Like, where: { userID, isLike: true }, required: false },
     ],
     attributes: ["roomID", "createdAt"],
+  });
+
+  const rooms = rawRooms.map((room) => {
+    return {
+      roomID: room.roomID,
+      createdAt: date.dateToString(room.createdAt),
+      type: room.type,
+      prcie: room.price,
+      rentPeriod: {
+        startDate: date.dateToString(room.rentPeriod.startDate),
+        endDate: date.dateToString(room.rentPeriod.endDate),
+      },
+      information: room.information,
+      photo: room.photo,
+      isLike: room.likes.length ? true : false,
+    };
   });
 
   const totalRoomNum = await Room.count({
