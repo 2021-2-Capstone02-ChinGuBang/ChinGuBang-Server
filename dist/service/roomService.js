@@ -315,6 +315,7 @@ const GETroomDetailService = (userID, roomID) => __awaiter(void 0, void 0, void 
         roomID: rawRoom.roomID,
         user: rawRoom.user,
         type: rawRoom.type,
+        price: rawRoom.price,
         information: rawRoom.information,
         rentPeriod: {
             startDate: library_1.date.dateToString(rawRoom.rentPeriod.startDate),

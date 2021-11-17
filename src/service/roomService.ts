@@ -343,6 +343,7 @@ const GETroomDetailService = async (userID: number, roomID: number) => {
     roomID: rawRoom.roomID,
     user: rawRoom.user,
     type: rawRoom.type,
+    price: rawRoom.price,
     information: rawRoom.information,
     rentPeriod: {
       startDate: date.dateToString(rawRoom.rentPeriod.startDate),
