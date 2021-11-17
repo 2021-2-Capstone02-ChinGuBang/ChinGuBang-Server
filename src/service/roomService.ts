@@ -272,7 +272,7 @@ const GETroomDetailService = async (userID: number, roomID: number) => {
   const university = await userCertification.university;
 
   // table join
-  const room = await Room.findOne({
+  const rawRoom = await Room.findOne({
     where: {
       roomID,
       isDeleted: false,
@@ -337,7 +337,21 @@ const GETroomDetailService = async (userID: number, roomID: number) => {
     attributes: ["roomID", "createdAt", "updatedAt", "isDeleted"],
   });
   // 3. no room
-  if (!room) return -3;
+  if (!rawRoom) return -3;
+
+  const room = {
+    roomID: rawRoom.roomID,
+    user: rawRoom.user,
+    type: rawRoom.type,
+    information: rawRoom.information,
+    rentPeriod: {
+      startDate: date.dateToString(rawRoom.rentPeriod.startDate),
+      endDate: date.dateToString(rawRoom.rentPeriod.endDate),
+    },
+    options: rawRoom.options,
+    conditions: rawRoom.conditions,
+    photo: rawRoom.photo,
+  };
 
   const resData = room;
   return resData;
@@ -489,7 +503,7 @@ const POSTroomFilterService = async (userID: number, reqData) => {
   });
   const university = await userCertification.university;
 
-  const rooms = await Room.findAll({
+  const rawRooms = await Room.findAll({
     order: [["createdAt", "DESC"]],
     where: { isDeleted: false, university },
     include: [
@@ -557,6 +571,21 @@ const POSTroomFilterService = async (userID: number, reqData) => {
       },
     ],
     attributes: ["roomID", "createdAt"],
+  });
+  const rooms = rawRooms.map((room) => {
+    return {
+      roomID: room.roomID,
+      createdAt: date.dateToString(room.createdAt),
+      type: room.type,
+      prcie: room.price,
+      rentPeriod: {
+        startDate: date.dateToString(room.rentPeriod.startDate),
+        endDate: date.dateToString(room.rentPeriod.endDate),
+      },
+      information: room.information,
+      photo: room.photo,
+      isLike: room.likes.length ? true : false,
+    };
   });
 
   const resData = { rooms };

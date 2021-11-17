@@ -244,7 +244,7 @@ const GETroomDetailService = (userID, roomID) => __awaiter(void 0, void 0, void 
     const userCertification = yield models_1.Certification.findOne({ where: { userID } });
     const university = yield userCertification.university;
     // table join
-    const room = yield models_1.Room.findOne({
+    const rawRoom = yield models_1.Room.findOne({
         where: {
             roomID,
             isDeleted: false,
@@ -309,8 +309,21 @@ const GETroomDetailService = (userID, roomID) => __awaiter(void 0, void 0, void 
         attributes: ["roomID", "createdAt", "updatedAt", "isDeleted"],
     });
     // 3. no room
-    if (!room)
+    if (!rawRoom)
         return -3;
+    const room = {
+        roomID: rawRoom.roomID,
+        user: rawRoom.user,
+        type: rawRoom.type,
+        information: rawRoom.information,
+        rentPeriod: {
+            startDate: library_1.date.dateToString(rawRoom.rentPeriod.startDate),
+            endDate: library_1.date.dateToString(rawRoom.rentPeriod.endDate),
+        },
+        options: rawRoom.options,
+        conditions: rawRoom.conditions,
+        photo: rawRoom.photo,
+    };
     const resData = room;
     return resData;
 });
@@ -439,7 +452,7 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
         where: { userID },
     });
     const university = yield userCertification.university;
-    const rooms = yield models_1.Room.findAll({
+    const rawRooms = yield models_1.Room.findAll({
         order: [["createdAt", "DESC"]],
         where: { isDeleted: false, university },
         include: [
@@ -507,6 +520,21 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
             },
         ],
         attributes: ["roomID", "createdAt"],
+    });
+    const rooms = rawRooms.map((room) => {
+        return {
+            roomID: room.roomID,
+            createdAt: library_1.date.dateToString(room.createdAt),
+            type: room.type,
+            prcie: room.price,
+            rentPeriod: {
+                startDate: library_1.date.dateToString(room.rentPeriod.startDate),
+                endDate: library_1.date.dateToString(room.rentPeriod.endDate),
+            },
+            information: room.information,
+            photo: room.photo,
+            isLike: room.likes.length ? true : false,
+        };
     });
     const resData = { rooms };
     return resData;
