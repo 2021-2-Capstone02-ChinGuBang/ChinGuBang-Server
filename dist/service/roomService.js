@@ -208,7 +208,7 @@ const GETallRoomService = (userID) => __awaiter(void 0, void 0, void 0, function
             roomID: room.roomID,
             createdAt: library_1.date.dateToString(room.createdAt),
             type: room.type,
-            prcie: room.price,
+            price: room.price,
             rentPeriod: {
                 startDate: library_1.date.dateToString(room.rentPeriod.startDate),
                 endDate: library_1.date.dateToString(room.rentPeriod.endDate),
@@ -526,7 +526,7 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
             roomID: room.roomID,
             createdAt: library_1.date.dateToString(room.createdAt),
             type: room.type,
-            prcie: room.price,
+            price: room.price,
             rentPeriod: {
                 startDate: library_1.date.dateToString(room.rentPeriod.startDate),
                 endDate: library_1.date.dateToString(room.rentPeriod.endDate),

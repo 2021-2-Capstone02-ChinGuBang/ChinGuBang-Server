@@ -131,7 +131,7 @@ const POSTmessageService = async (
     createdAt: date.dateToString(rawRoom.createdAt),
     uploader: rawRoom.uploader,
     type: rawRoom.type,
-    prcie: rawRoom.price,
+    price: rawRoom.price,
     rentPeriod: {
       startDate: date.dateToString(rawRoom.rentPeriod.startDate),
       endDate: date.dateToString(rawRoom.rentPeriod.endDate),
@@ -217,7 +217,7 @@ const GETmessageRoomService = async (userID: number, messageRoomID: number) => {
     createdAt: date.dateToString(messageRoom.room.createdAt),
     uploader: messageRoom.room.uploader,
     type: messageRoom.room.type,
-    prcie: messageRoom.room.price,
+    price: messageRoom.room.price,
     rentPeriod: {
       startDate: date.dateToString(messageRoom.room.rentPeriod.startDate),
       endDate: date.dateToString(messageRoom.room.rentPeriod.endDate),

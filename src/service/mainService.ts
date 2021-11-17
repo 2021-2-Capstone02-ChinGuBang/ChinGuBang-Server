@@ -62,7 +62,7 @@ const GETmainService = async (userID: number) => {
       roomID: room.roomID,
       createdAt: date.dateToString(room.createdAt),
       type: room.type,
-      prcie: room.price,
+      price: room.price,
       rentPeriod: {
         startDate: date.dateToString(room.rentPeriod.startDate),
         endDate: date.dateToString(room.rentPeriod.endDate),

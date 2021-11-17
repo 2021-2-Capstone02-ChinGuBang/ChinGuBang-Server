@@ -104,7 +104,7 @@ const POSTmessageService = (userID, roomID, reqData) => __awaiter(void 0, void 0
         createdAt: library_1.date.dateToString(rawRoom.createdAt),
         uploader: rawRoom.uploader,
         type: rawRoom.type,
-        prcie: rawRoom.price,
+        price: rawRoom.price,
         rentPeriod: {
             startDate: library_1.date.dateToString(rawRoom.rentPeriod.startDate),
             endDate: library_1.date.dateToString(rawRoom.rentPeriod.endDate),
@@ -185,7 +185,7 @@ const GETmessageRoomService = (userID, messageRoomID) => __awaiter(void 0, void 
         createdAt: library_1.date.dateToString(messageRoom.room.createdAt),
         uploader: messageRoom.room.uploader,
         type: messageRoom.room.type,
-        prcie: messageRoom.room.price,
+        price: messageRoom.room.price,
         rentPeriod: {
             startDate: library_1.date.dateToString(messageRoom.room.rentPeriod.startDate),
             endDate: library_1.date.dateToString(messageRoom.room.rentPeriod.endDate),
