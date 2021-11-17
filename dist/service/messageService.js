@@ -51,6 +51,8 @@ const POSTmessageService = (userID, roomID, reqData) => __awaiter(void 0, void 0
     // 4. 잘못된 수신인
     if (!receiver)
         return -4;
+    if (receiverID !== rawRoom.uploader && userID !== rawRoom.uploader)
+        return -4;
     let messageRoom = yield models_1.MessageRoom.findOne({
         where: { roomID },
         include: [

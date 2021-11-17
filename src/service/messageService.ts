@@ -73,7 +73,7 @@ const POSTmessageService = async (
 
   // 4. 잘못된 수신인
   if (!receiver) return -4;
-
+  if (receiverID !== rawRoom.uploader && userID !== rawRoom.uploader) return -4;
   let messageRoom = await MessageRoom.findOne({
     where: { roomID },
     include: [
