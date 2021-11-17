@@ -123,6 +123,7 @@ const GETmessageRoomService = (userID, messageRoomID) => __awaiter(void 0, void 
         return -2;
     const messageRoom = yield models_1.MessageRoom.findOne({
         where: { messageRoomID },
+        order: [["messages", "createdAt", "DESC"]],
         include: [
             {
                 model: models_1.Room,
@@ -134,6 +135,11 @@ const GETmessageRoomService = (userID, messageRoomID) => __awaiter(void 0, void 
                     { model: models_1.RoomInformation, attributes: ["area", "floor"] },
                     { model: models_1.RoomPhoto, attributes: ["main"] },
                 ],
+            },
+            {
+                model: models_1.Message,
+                attributes: ["sender", "content"],
+                order: [["createdAt", "DESC"]],
             },
             {
                 model: models_1.Participant,
@@ -153,12 +159,7 @@ const GETmessageRoomService = (userID, messageRoomID) => __awaiter(void 0, void 
     });
     if (myID !== userID)
         return -2;
-    const rawMessages = yield models_1.Message.findAll({
-        where: { messageRoomID: messageRoom.messageRoomID },
-        attributes: ["sender", "content"],
-        order: [["createdAt", "DESC"]],
-    });
-    const messages = rawMessages.map((message) => {
+    const messages = messageRoom.messages.map((message) => {
         let messageType = "받은 쪽지";
         if (message.sender === userID) {
             messageType = "보낸 쪽지";

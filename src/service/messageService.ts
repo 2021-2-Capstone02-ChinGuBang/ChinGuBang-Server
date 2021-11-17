@@ -153,6 +153,7 @@ const GETmessageRoomService = async (userID: number, messageRoomID: number) => {
 
   const messageRoom = await MessageRoom.findOne({
     where: { messageRoomID },
+    order: [["messages", "createdAt", "DESC"]],
     include: [
       {
         model: Room,
@@ -164,6 +165,11 @@ const GETmessageRoomService = async (userID: number, messageRoomID: number) => {
           { model: RoomInformation, attributes: ["area", "floor"] },
           { model: RoomPhoto, attributes: ["main"] },
         ],
+      },
+      {
+        model: Message,
+        attributes: ["sender", "content"],
+        order: [["createdAt", "DESC"]],
       },
       {
         model: Participant,
@@ -183,13 +189,8 @@ const GETmessageRoomService = async (userID: number, messageRoomID: number) => {
   });
 
   if (myID !== userID) return -2;
-  const rawMessages = await Message.findAll({
-    where: { messageRoomID: messageRoom.messageRoomID },
-    attributes: ["sender", "content"],
-    order: [["createdAt", "DESC"]],
-  });
 
-  const messages = rawMessages.map((message) => {
+  const messages = messageRoom.messages.map((message) => {
     let messageType = "받은 쪽지";
     if (message.sender === userID) {
       messageType = "보낸 쪽지";
