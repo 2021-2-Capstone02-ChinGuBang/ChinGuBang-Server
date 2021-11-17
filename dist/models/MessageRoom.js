@@ -42,6 +42,14 @@ __decorate([
     __metadata("design:type", Array)
 ], MessageRoom.prototype, "participants", void 0);
 __decorate([
+    (0, sequelize_typescript_1.HasMany)(() => _1.Participant),
+    __metadata("design:type", Array)
+], MessageRoom.prototype, "participant1", void 0);
+__decorate([
+    (0, sequelize_typescript_1.HasMany)(() => _1.Participant),
+    __metadata("design:type", Array)
+], MessageRoom.prototype, "participant2", void 0);
+__decorate([
     (0, sequelize_typescript_1.HasMany)(() => _1.Message),
     __metadata("design:type", Array)
 ], MessageRoom.prototype, "messages", void 0);

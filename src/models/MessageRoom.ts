@@ -46,6 +46,12 @@ export default class MessageRoom extends Model {
   @HasMany(() => Participant)
   participants: Participant[];
 
+  @HasMany(() => Participant)
+  participant1: Participant[];
+
+  @HasMany(() => Participant)
+  participant2: Participant[];
+
   @HasMany(() => Message)
   messages: Message[];
 }

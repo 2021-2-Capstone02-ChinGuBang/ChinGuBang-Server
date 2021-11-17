@@ -25,6 +25,7 @@ import { date, cast } from "../library";
 import ejs from "ejs";
 import sequelize from "sequelize";
 import nanoid from "nanoid";
+import { ConnectionTimedOutError, Op, QueryTypes, Sequelize } from "sequelize";
 
 /**
  *  @쪽지_보내기
@@ -81,13 +82,15 @@ const POSTmessageService = async (
         model: Participant,
         where: { userID: receiverID },
         required: true,
-        attributes: [],
+        as: "participant1",
+        attributes: ["userID"],
       },
       {
         model: Participant,
-        where: { userID },
+        where: { userID: receiverID },
         required: true,
-        attributes: [],
+        as: "participant2",
+        attributes: ["userID"],
       },
     ],
   });
@@ -188,6 +191,7 @@ const GETmessageRoomService = async (userID: number, messageRoomID: number) => {
       {
         model: Participant,
         attributes: ["userID"],
+        as: "participants",
       },
     ],
   });
@@ -259,6 +263,7 @@ const GETmessageService = async (userID: number) => {
                 attributes: ["userID", "nickname"],
               },
             ],
+            as: "participants",
           },
         ],
       },

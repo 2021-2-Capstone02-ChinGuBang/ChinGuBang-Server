@@ -60,13 +60,15 @@ const POSTmessageService = (userID, roomID, reqData) => __awaiter(void 0, void 0
                 model: models_1.Participant,
                 where: { userID: receiverID },
                 required: true,
-                attributes: [],
+                as: "participant1",
+                attributes: ["userID"],
             },
             {
                 model: models_1.Participant,
-                where: { userID },
+                where: { userID: receiverID },
                 required: true,
-                attributes: [],
+                as: "participant2",
+                attributes: ["userID"],
             },
         ],
     });
@@ -160,6 +162,7 @@ const GETmessageRoomService = (userID, messageRoomID) => __awaiter(void 0, void 
             {
                 model: models_1.Participant,
                 attributes: ["userID"],
+                as: "participants",
             },
         ],
     });
@@ -226,6 +229,7 @@ const GETmessageService = (userID) => __awaiter(void 0, void 0, void 0, function
                                 attributes: ["userID", "nickname"],
                             },
                         ],
+                        as: "participants",
                     },
                 ],
             },
