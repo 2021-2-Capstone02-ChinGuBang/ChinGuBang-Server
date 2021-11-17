@@ -136,11 +136,6 @@ const GETmessageRoomService = (userID, messageRoomID) => __awaiter(void 0, void 
                 ],
             },
             {
-                model: models_1.Message,
-                attributes: ["sender", "content"],
-                order: [["createdAt", "DESC"]],
-            },
-            {
                 model: models_1.Participant,
                 attributes: ["userID"],
             },
@@ -158,7 +153,11 @@ const GETmessageRoomService = (userID, messageRoomID) => __awaiter(void 0, void 
     });
     if (myID !== userID)
         return -2;
-    const rawMessages = messageRoom.messages;
+    const rawMessages = yield models_1.Message.findAll({
+        where: { messageRoomID: messageRoom.messageRoomID },
+        attributes: ["sender", "content"],
+        order: [["createdAt", "DESC"]],
+    });
     const messages = rawMessages.map((message) => {
         let messageType = "받은 쪽지";
         if (message.sender === userID) {
