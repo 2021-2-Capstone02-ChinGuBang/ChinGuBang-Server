@@ -8,28 +8,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const authRouter_1 = __importDefault(require("./authRouter"));
-const roomRouter_1 = __importDefault(require("./roomRouter"));
-const messageRouter_1 = __importDefault(require("./messageRouter"));
-const mainRouter_1 = __importDefault(require("./mainRouter"));
+// libraries
 const library_1 = require("../library");
-const router = express_1.default.Router();
-router.get("", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// services
+const service_1 = require("../service");
+//DTO
+// import { roomDTO } from "../DTO";
+/**
+ *  @메인페이지
+ *  @route GET api/v1/main
+ *  @access private
+ *  @error
+ */
+const GETmainController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("메인페이지 (GET /main) api 호출");
+    console.log(req.body);
     try {
-        library_1.response.basicResponse(res, library_1.returnCode.OK, "chingubang api");
+        const data = yield service_1.mainService.GETmainService(req.body.userID.userID);
+        library_1.response.dataResponse(res, library_1.returnCode.OK, "메인페이지 보기 성공", data);
     }
     catch (err) {
+        console.error(err.message);
         library_1.response.basicResponse(res, library_1.returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
     }
-}));
-router.use("/api/v1/auth", authRouter_1.default);
-router.use("/api/v1/room", roomRouter_1.default);
-router.use("/api/v1/message", messageRouter_1.default);
-router.use("/api/v1/main", mainRouter_1.default);
-exports.default = router;
-//# sourceMappingURL=index.js.map
+});
+const mainController = {
+    GETmainController,
+};
+exports.default = mainController;
+//# sourceMappingURL=mainController.js.map

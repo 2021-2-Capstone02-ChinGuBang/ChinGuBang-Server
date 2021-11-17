@@ -19,6 +19,7 @@ import { messageDTO } from "../DTO";
  */
 
 const POSTmessageController = async (req: Request, res: Response) => {
+  console.log("쪽지 보내기 (POST /message/:roomID) api 호출");
   console.log(req.body);
   try {
     const reqData: messageDTO.postMessageReqDTO = req.body;
@@ -76,6 +77,7 @@ const POSTmessageController = async (req: Request, res: Response) => {
  */
 
 const GETmessageRoomController = async (req: Request, res: Response) => {
+  console.log("쪽지함 조회 (GET /message/:messageRoomID) api 호출");
   console.log(req.body);
   try {
     const data = await messageService.GETmessageRoomService(
@@ -116,6 +118,7 @@ const GETmessageRoomController = async (req: Request, res: Response) => {
  */
 
 const GETmessageController = async (req: Request, res: Response) => {
+  console.log("쪽지 알림 조회 (GET /message) api 호출");
   console.log(req.body);
   try {
     const data = await messageService.GETmessageService(req.body.userID.userID);

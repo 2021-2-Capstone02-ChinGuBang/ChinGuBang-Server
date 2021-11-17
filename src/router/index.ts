@@ -4,6 +4,7 @@ import express, { Request, Response } from "express";
 import authRouter from "./authRouter";
 import roomRouter from "./roomRouter";
 import messageRouter from "./messageRouter";
+import mainRouter from "./mainRouter";
 
 import { response, returnCode } from "../library";
 
@@ -20,4 +21,6 @@ router.get("", async (req: Request, res: Response) => {
 router.use("/api/v1/auth", authRouter);
 router.use("/api/v1/room", roomRouter);
 router.use("/api/v1/message", messageRouter);
+router.use("/api/v1/main", mainRouter);
+
 export default router;

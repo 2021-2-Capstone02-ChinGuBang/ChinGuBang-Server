@@ -22,48 +22,8 @@ const service_1 = require("../service");
  *      2. 유저 id 잘못됨
  *      3. 유저 권한 없음
  */
-// const POSTroomController = async (req: Request, res: Response) => {
-//   try {
-//     console.log(req.body);
-//     const reqData: roomDTO.postRoomReqDTO = req.body;
-//     const resData = await roomService.POSTroomService(
-//       req.body.userID.userID,
-//       reqData
-//     );
-//     // 요청 바디가 부족할 경우
-//     if (resData === -1) {
-//       response.basicResponse(
-//         res,
-//         returnCode.BAD_REQUEST,
-//         "요청 값이 올바르지 않습니다."
-//       );
-//     }
-//     // 유저 id 잘못된 경우
-//     else if (resData === -2) {
-//       response.basicResponse(
-//         res,
-//         returnCode.BAD_REQUEST,
-//         "존재하지 않는 사용자입니다"
-//       );
-//     }
-//     // 권한이 없는 유저의 경우
-//     else if (resData === -3) {
-//       response.basicResponse(
-//         res,
-//         returnCode.BAD_REQUEST,
-//         "방 등록 권한이 없는 유저입니다"
-//       );
-//     }
-//     // 방 등록 성공
-//     else {
-//       response.dataResponse(res, returnCode.CREATED, "방 내놓기 성공", resData);
-//     }
-//   } catch (err) {
-//     console.error(err.message);
-//     response.basicResponse(res, returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
-//   }
-// };
 const POSTroomController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("방내놓기 api 호출");
     console.log(req.body);
     try {
         const url = {
@@ -114,6 +74,7 @@ const POSTroomController = (req, res) => __awaiter(void 0, void 0, void 0, funct
  *  @error
  */
 const GETallRoomController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("모든방보기 api 호출");
     console.log(req.body);
     try {
         const data = yield service_1.roomService.GETallRoomService(req.body.userID.userID);
@@ -134,6 +95,7 @@ const GETallRoomController = (req, res) => __awaiter(void 0, void 0, void 0, fun
  *    3. no room
  */
 const GETroomDetailController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("방보기 detail api 호출");
     console.log(req.body);
     try {
         const data = yield service_1.roomService.GETroomDetailService(req.body.userID.userID, Number(req.params.roomID));
@@ -166,6 +128,7 @@ const GETroomDetailController = (req, res) => __awaiter(void 0, void 0, void 0, 
  *    3. no room
  */
 const POSTlikeController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("방 좋아요 api 호출");
     console.log(req.body);
     try {
         const data = yield service_1.roomService.POSTlikeService(req.body.userID.userID, Number(req.params.roomID));

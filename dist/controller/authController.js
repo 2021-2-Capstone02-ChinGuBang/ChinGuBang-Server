@@ -25,6 +25,7 @@ const service_1 = require("../service");
  *      3. 이메일 전송 실패
  */
 const POSTemailController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("이메일 인증번호 전송(POST /auth/email) api 호출");
     console.log(req.body);
     // 이메일 형식이 잘못된 경우
     const errors = (0, express_validator_1.validationResult)(req);
@@ -71,6 +72,7 @@ const POSTemailController = (req, res) => __awaiter(void 0, void 0, void 0, func
  *      3. 인증번호 인증 실패
  */
 const POSTcodeController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("인증번호 인증(POST /auth/code) api 호출");
     console.log(req.body);
     // 이메일 형식이 잘못된 경우
     const errors = (0, express_validator_1.validationResult)(req);
@@ -118,6 +120,7 @@ const POSTcodeController = (req, res) => __awaiter(void 0, void 0, void 0, funct
  *      1. 요청 바디 부족
  */
 const POSTsignupController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("회원가입 (POST /auth/signup) api 호출");
     console.log(req.body);
     // 이메일 형식이 잘못된 경우
     const errors = (0, express_validator_1.validationResult)(req);
@@ -159,6 +162,7 @@ const POSTsignupController = (req, res) => __awaiter(void 0, void 0, void 0, fun
  *
  */
 const POSTsigninController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("로그인 (POST /auth/signin) api 호출");
     console.log(req.body);
     // 이메일 형식이 잘못된 경우
     const errors = (0, express_validator_1.validationResult)(req);
@@ -199,6 +203,7 @@ const POSTsigninController = (req, res) => __awaiter(void 0, void 0, void 0, fun
  *      1. 요청 바디 부족
  */
 const POSTpublicController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("인증없이 보러가기 (POST /auth/public) api 호출");
     console.log(req.body);
     try {
         const reqData = req.body;

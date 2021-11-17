@@ -19,6 +19,7 @@ import { authDTO } from "../DTO";
  */
 
 const POSTemailController = async (req: Request, res: Response) => {
+  console.log("이메일 인증번호 전송(POST /auth/email) api 호출");
   console.log(req.body);
   // 이메일 형식이 잘못된 경우
   const errors = validationResult(req);
@@ -86,6 +87,7 @@ const POSTemailController = async (req: Request, res: Response) => {
  */
 
 const POSTcodeController = async (req: Request, res: Response) => {
+  console.log("인증번호 인증(POST /auth/code) api 호출");
   console.log(req.body);
   // 이메일 형식이 잘못된 경우
   const errors = validationResult(req);
@@ -152,6 +154,7 @@ const POSTcodeController = async (req: Request, res: Response) => {
  */
 
 const POSTsignupController = async (req: Request, res: Response) => {
+  console.log("회원가입 (POST /auth/signup) api 호출");
   console.log(req.body);
   // 이메일 형식이 잘못된 경우
   const errors = validationResult(req);
@@ -208,6 +211,7 @@ const POSTsignupController = async (req: Request, res: Response) => {
  */
 
 const POSTsigninController = async (req: Request, res: Response) => {
+  console.log("로그인 (POST /auth/signin) api 호출");
   console.log(req.body);
   // 이메일 형식이 잘못된 경우
   const errors = validationResult(req);
@@ -272,6 +276,7 @@ const POSTsigninController = async (req: Request, res: Response) => {
  *      1. 요청 바디 부족
  */
 const POSTpublicController = async (req: Request, res: Response) => {
+  console.log("인증없이 보러가기 (POST /auth/public) api 호출");
   console.log(req.body);
 
   try {

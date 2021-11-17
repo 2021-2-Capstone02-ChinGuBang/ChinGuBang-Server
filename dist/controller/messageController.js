@@ -24,6 +24,7 @@ const service_1 = require("../service");
  *    4. 잘못된 수신인
  */
 const POSTmessageController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("쪽지 보내기 (POST /message/:roomID) api 호출");
     console.log(req.body);
     try {
         const reqData = req.body;
@@ -61,6 +62,7 @@ const POSTmessageController = (req, res) => __awaiter(void 0, void 0, void 0, fu
  *    2. 권한이 없는 user
  */
 const GETmessageRoomController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("쪽지함 조회 (GET /message/:messageRoomID) api 호출");
     console.log(req.body);
     try {
         const data = yield service_1.messageService.GETmessageRoomService(req.body.userID.userID, Number(req.params.messageRoomID));
@@ -89,6 +91,7 @@ const GETmessageRoomController = (req, res) => __awaiter(void 0, void 0, void 0,
  *    1. 권한이 없는 user
  */
 const GETmessageController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("쪽지 알림 조회 (GET /message) api 호출");
     console.log(req.body);
     try {
         const data = yield service_1.messageService.GETmessageService(req.body.userID.userID);
