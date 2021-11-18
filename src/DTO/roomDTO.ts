@@ -46,6 +46,8 @@ namespace roomDTO {
     query: string;
     post: string;
     address: string;
+    lat: string;
+    lng: string;
   }
 
   export interface roomInfoReqDTO {
@@ -59,6 +61,8 @@ namespace roomDTO {
     query: string;
     post: string;
     address: string;
+    lat: string;
+    lng: string;
   }
 
   export interface roomPriceDTO {

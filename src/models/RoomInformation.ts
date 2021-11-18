@@ -51,6 +51,12 @@ export default class RoomInformation extends Model {
   @Column
   address: string;
 
+  @Column
+  lat: string;
+
+  @Column
+  lng: string;
+
   @AllowNull
   @Column
   description!: string;

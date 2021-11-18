@@ -48,6 +48,14 @@ __decorate([
     __metadata("design:type", String)
 ], RoomInformation.prototype, "address", void 0);
 __decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], RoomInformation.prototype, "lat", void 0);
+__decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", String)
+], RoomInformation.prototype, "lng", void 0);
+__decorate([
     sequelize_typescript_1.AllowNull,
     sequelize_typescript_1.Column,
     __metadata("design:type", String)

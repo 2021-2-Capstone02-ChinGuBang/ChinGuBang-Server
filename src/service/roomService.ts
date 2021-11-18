@@ -81,6 +81,8 @@ const POSTroomService = async (
     query: information.query,
     post: information.post,
     address: information.address,
+    lat: information.lat,
+    lng: information.lng,
     description: information.description,
   });
   await RoomPrice.create({
@@ -151,6 +153,8 @@ const POSTroomService = async (
           "query",
           "post",
           "address",
+          "lat",
+          "lng",
           "description",
         ],
       },
@@ -299,6 +303,8 @@ const GETroomDetailService = async (userID: number, roomID: number) => {
           "query",
           "post",
           "address",
+          "lat",
+          "lng",
           "description",
         ],
       },

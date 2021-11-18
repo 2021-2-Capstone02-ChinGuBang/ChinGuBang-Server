@@ -36,7 +36,7 @@ const GETmainService = (userID) => __awaiter(void 0, void 0, void 0, function* (
             { model: models_1.RoomPeriod, attributes: ["startDate", "endDate"] },
             {
                 model: models_1.RoomInformation,
-                attributes: ["area", "floor", "query", "post", "address"],
+                attributes: ["area", "floor", "query", "post", "address", "lat", "lng"],
             },
             { model: models_1.RoomPhoto, attributes: ["main"] },
             { model: models_1.Like, where: { userID, isLike: true }, required: false },

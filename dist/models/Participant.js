@@ -26,6 +26,10 @@ __decorate([
     __metadata("design:type", Number)
 ], Participant.prototype, "userID", void 0);
 __decorate([
+    sequelize_typescript_1.Column,
+    __metadata("design:type", Boolean)
+], Participant.prototype, "new", void 0);
+__decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => _1.User),
     __metadata("design:type", _1.User)
 ], Participant.prototype, "sender", void 0);

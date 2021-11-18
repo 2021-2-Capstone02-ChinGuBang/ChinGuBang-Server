@@ -62,6 +62,8 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
         query: information.query,
         post: information.post,
         address: information.address,
+        lat: information.lat,
+        lng: information.lng,
         description: information.description,
     });
     yield models_1.RoomPrice.create({
@@ -132,6 +134,8 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
                     "query",
                     "post",
                     "address",
+                    "lat",
+                    "lng",
                     "description",
                 ],
             },
@@ -271,6 +275,8 @@ const GETroomDetailService = (userID, roomID) => __awaiter(void 0, void 0, void 
                     "query",
                     "post",
                     "address",
+                    "lat",
+                    "lng",
                     "description",
                 ],
             },

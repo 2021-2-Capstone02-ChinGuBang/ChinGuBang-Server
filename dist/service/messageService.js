@@ -78,10 +78,12 @@ const POSTmessageService = (userID, roomID, reqData) => __awaiter(void 0, void 0
         yield models_1.Participant.create({
             messageRoomID: messageRoom.messageRoomID,
             userID: userID,
+            new: false,
         });
         yield models_1.Participant.create({
             messageRoomID: messageRoom.messageRoomID,
             userID: receiverID,
+            new: true,
         });
     }
     else {
@@ -162,21 +164,25 @@ const GETmessageRoomService = (userID, messageRoomID) => __awaiter(void 0, void 
             },
             {
                 model: models_1.Participant,
-                attributes: ["userID"],
                 as: "participants",
             },
         ],
     });
     const participants = messageRoom.participants;
     let opponentID, myID;
+    let isNew = false;
     const opponent = participants.map((participant) => {
         if (participant.userID !== userID) {
             opponentID = participant.userID;
         }
         else {
             myID = participant.userID;
+            if (participant.new)
+                isNew = true;
         }
     });
+    if (isNew)
+        yield models_1.Participant.update({ new: false }, { where: { userID: myID } });
     if (myID !== userID)
         return -2;
     const messages = messageRoom.messages.map((message) => {
@@ -245,6 +251,7 @@ const GETmessageService = (userID) => __awaiter(void 0, void 0, void 0, function
                 messages.push({
                     messageRoomID: participant.messageRoomID,
                     nickname: participant.sender.nickname,
+                    new: messageRoom.new,
                 });
             }
         });

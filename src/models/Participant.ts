@@ -34,6 +34,9 @@ export default class Participant extends Model {
   @Column
   userID: number;
 
+  @Column
+  new: Boolean;
+
   @BelongsTo(() => User)
   sender: User;
 

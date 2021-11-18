@@ -49,7 +49,7 @@ const GETmainService = async (userID: number) => {
       { model: RoomPeriod, attributes: ["startDate", "endDate"] },
       {
         model: RoomInformation,
-        attributes: ["area", "floor", "query", "post", "address"],
+        attributes: ["area", "floor", "query", "post", "address", "lat", "lng"],
       },
       { model: RoomPhoto, attributes: ["main"] },
       { model: Like, where: { userID, isLike: true }, required: false },

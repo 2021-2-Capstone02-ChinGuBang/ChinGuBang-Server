@@ -103,10 +103,12 @@ const POSTmessageService = async (
     await Participant.create({
       messageRoomID: messageRoom.messageRoomID,
       userID: userID,
+      new: false,
     });
     await Participant.create({
       messageRoomID: messageRoom.messageRoomID,
       userID: receiverID,
+      new: true,
     });
   } else {
     messageRoom.save();
@@ -193,21 +195,26 @@ const GETmessageRoomService = async (userID: number, messageRoomID: number) => {
       },
       {
         model: Participant,
-        attributes: ["userID"],
         as: "participants",
       },
     ],
   });
 
   const participants = messageRoom.participants;
+
   let opponentID, myID;
+  let isNew = false;
   const opponent = participants.map((participant) => {
     if (participant.userID !== userID) {
       opponentID = participant.userID;
     } else {
       myID = participant.userID;
+      if (participant.new) isNew = true;
     }
   });
+
+  if (isNew)
+    await Participant.update({ new: false }, { where: { userID: myID } });
 
   if (myID !== userID) return -2;
 
@@ -282,6 +289,7 @@ const GETmessageService = async (userID: number) => {
         messages.push({
           messageRoomID: participant.messageRoomID,
           nickname: participant.sender.nickname,
+          new: messageRoom.new,
         });
       }
     });
