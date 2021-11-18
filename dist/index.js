@@ -16,6 +16,8 @@ const express_1 = __importDefault(require("express"));
 const models_1 = require("./models");
 const router_1 = __importDefault(require("./router"));
 const app = (0, express_1.default)();
+var cors = require("cors");
+app.use(cors());
 models_1.sequelize.sync({ force: false }).catch((error) => {
     console.error(error);
 });

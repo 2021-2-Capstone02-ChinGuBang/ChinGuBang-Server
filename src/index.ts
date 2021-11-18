@@ -4,6 +4,9 @@ import router from "./router";
 
 const app = express();
 
+var cors = require("cors");
+app.use(cors());
+
 sequelize.sync({ force: false }).catch((error) => {
   console.error(error);
 });

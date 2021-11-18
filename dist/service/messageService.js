@@ -65,13 +65,14 @@ const POSTmessageService = (userID, roomID, reqData) => __awaiter(void 0, void 0
             },
             {
                 model: models_1.Participant,
-                where: { userID: receiverID },
+                where: { userID },
                 required: true,
                 as: "participant2",
                 attributes: ["userID"],
             },
         ],
     });
+    console.log(messageRoom);
     if (!messageRoom) {
         messageRoom = yield models_1.MessageRoom.create({ roomID });
         yield models_1.Participant.create({
