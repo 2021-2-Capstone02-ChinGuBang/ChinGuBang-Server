@@ -96,8 +96,6 @@ const POSTmessageService = async (
     ],
   });
 
-  console.log(messageRoom);
-
   if (!messageRoom) {
     messageRoom = await MessageRoom.create({ roomID });
     await Participant.create({
@@ -112,6 +110,12 @@ const POSTmessageService = async (
     });
   } else {
     messageRoom.save();
+    await Participant.update(
+      { new: true },
+      {
+        where: { userID: receiverID, messageRoomID: messageRoom.messageRoomID },
+      }
+    );
   }
 
   await Message.create({

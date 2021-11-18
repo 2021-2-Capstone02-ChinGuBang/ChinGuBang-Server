@@ -58,10 +58,13 @@ const GETmainService = (userID) => __awaiter(void 0, void 0, void 0, function* (
             isLike: room.likes.length ? true : false,
         };
     });
+    const newMessageNum = yield models_1.Participant.count({
+        where: { userID, new: true },
+    });
     const totalRoomNum = yield models_1.Room.count({
         where: { isDeleted: false, university },
     });
-    const resData = { rooms, totalRoomNum };
+    const resData = { newMessageNum, rooms, totalRoomNum };
     return resData;
 });
 const mainService = {

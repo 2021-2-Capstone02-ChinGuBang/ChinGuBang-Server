@@ -72,7 +72,6 @@ const POSTmessageService = (userID, roomID, reqData) => __awaiter(void 0, void 0
             },
         ],
     });
-    console.log(messageRoom);
     if (!messageRoom) {
         messageRoom = yield models_1.MessageRoom.create({ roomID });
         yield models_1.Participant.create({
@@ -88,6 +87,9 @@ const POSTmessageService = (userID, roomID, reqData) => __awaiter(void 0, void 0
     }
     else {
         messageRoom.save();
+        yield models_1.Participant.update({ new: true }, {
+            where: { userID: receiverID, messageRoomID: messageRoom.messageRoomID },
+        });
     }
     yield models_1.Message.create({
         sender: userID,

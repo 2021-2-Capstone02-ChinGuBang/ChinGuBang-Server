@@ -11,6 +11,7 @@ import {
   RoomPeriod,
   RoomPrice,
   Like,
+  Participant,
 } from "../models";
 
 // library
@@ -73,10 +74,15 @@ const GETmainService = async (userID: number) => {
     };
   });
 
+  const newMessageNum = await Participant.count({
+    where: { userID, new: true },
+  });
+
   const totalRoomNum = await Room.count({
     where: { isDeleted: false, university },
   });
-  const resData = { rooms, totalRoomNum };
+
+  const resData = { newMessageNum, rooms, totalRoomNum };
   return resData;
 };
 
