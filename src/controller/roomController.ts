@@ -172,6 +172,7 @@ const POSTlikeController = async (req: Request, res: Response) => {
       req.body.userID.userID,
       Number(req.params.roomID)
     );
+    console.log(10);
 
     // 1. 요청 바디 부족
     if (data === -1) {

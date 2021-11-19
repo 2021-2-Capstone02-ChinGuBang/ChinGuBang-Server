@@ -611,23 +611,26 @@ const POSTroomFilterService = async (userID: number, reqData) => {
  */
 
 const POSTlikeService = async (userID: number, roomID: number) => {
+  console.log(1);
   // 1. 요청 바디 부족
   if (!userID || !roomID) return -1;
-
+  console.log(2);
   const user = await User.findOne({ where: { userID, isDeleted: false } });
-
+  console.log(3);
   // 2. 권한이 없는 user
   if (!user.certificated) return -2;
-
+  console.log(4);
   const userCertification = await Certification.findOne({ where: { userID } });
+  console.log(5);
   const university = await userCertification.university;
-
+  console.log(6);
   const room = await Room.findOne({ where: { roomID, isDeleted: false } });
+  console.log(7);
   // 3. no room
   if (!room) return -3;
-
+  console.log(8);
   let like = await Like.findOne({ where: { userID, roomID } });
-
+  console.log(9);
   if (!like) {
     await Like.create({ roomID, userID, isLike: true });
     return 1;
@@ -640,6 +643,7 @@ const POSTlikeService = async (userID: number, roomID: number) => {
       return 2;
     }
   }
+  return undefined;
 };
 
 const roomService = {
