@@ -201,8 +201,10 @@ const POSTlikeController = async (req: Request, res: Response) => {
         "존재하지 않는 방입니다."
       );
     } else if (data === 1) {
+      console.log("좋아요 성공");
       response.basicResponse(res, returnCode.OK, "좋아요 성공");
     } else {
+      console.log("좋아요 취소");
       response.basicResponse(res, returnCode.OK, "좋아요 취소 성공");
     }
   } catch (err) {
