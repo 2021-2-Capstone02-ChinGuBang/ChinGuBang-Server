@@ -130,18 +130,22 @@ const GETroomDetailController = (req, res) => __awaiter(void 0, void 0, void 0, 
 const POSTlikeController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("방 좋아요 api 호출");
     console.log(req.body);
+    console.log(req.params);
     try {
         const data = yield service_1.roomService.POSTlikeService(req.body.userID.userID, Number(req.params.roomID));
         // 1. 요청 바디 부족
         if (data === -1) {
+            console.log("요청 바디 부족");
             library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "요청 값이 올바르지 않습니다.");
         }
         // 2. 권한이 없는 user
         else if (data === -2) {
+            console.log("권한이 없는 user");
             library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "권한이 없는 사용자입니다.");
         }
         // 3. no room
         else if (data === -3) {
+            console.log("존재하지 않는 방");
             library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "존재하지 않는 방입니다.");
         }
         else if (data === 1) {

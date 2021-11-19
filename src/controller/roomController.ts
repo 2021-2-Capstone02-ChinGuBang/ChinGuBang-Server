@@ -166,6 +166,7 @@ const GETroomDetailController = async (req: Request, res: Response) => {
 const POSTlikeController = async (req: Request, res: Response) => {
   console.log("방 좋아요 api 호출");
   console.log(req.body);
+  console.log(req.params);
   try {
     const data: -1 | -2 | -3 | 1 | 2 = await roomService.POSTlikeService(
       req.body.userID.userID,
@@ -174,6 +175,7 @@ const POSTlikeController = async (req: Request, res: Response) => {
 
     // 1. 요청 바디 부족
     if (data === -1) {
+      console.log("요청 바디 부족");
       response.basicResponse(
         res,
         returnCode.BAD_REQUEST,
@@ -182,6 +184,7 @@ const POSTlikeController = async (req: Request, res: Response) => {
     }
     // 2. 권한이 없는 user
     else if (data === -2) {
+      console.log("권한이 없는 user");
       response.basicResponse(
         res,
         returnCode.BAD_REQUEST,
@@ -190,6 +193,7 @@ const POSTlikeController = async (req: Request, res: Response) => {
     }
     // 3. no room
     else if (data === -3) {
+      console.log("존재하지 않는 방");
       response.basicResponse(
         res,
         returnCode.BAD_REQUEST,
