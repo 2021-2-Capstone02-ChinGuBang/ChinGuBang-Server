@@ -494,7 +494,10 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
                     endDate: { [sequelize_1.Op.gte]: rentPeriod.endDate },
                 },
             },
-            { model: models_1.RoomInformation, attributes: ["area", "floor"] },
+            {
+                model: models_1.RoomInformation,
+                attributes: ["area", "floor", "query", "post", "address", "lat", "lng"],
+            },
             { model: models_1.RoomPhoto, attributes: ["main"] },
             { model: models_1.Like, where: { userID, isLike: true }, required: false },
             {
@@ -584,6 +587,7 @@ const POSTlikeService = (userID, roomID) => __awaiter(void 0, void 0, void 0, fu
             return 2;
         }
     }
+    return undefined;
 });
 const roomService = {
     POSTroomService,

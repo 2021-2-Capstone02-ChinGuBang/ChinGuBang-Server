@@ -133,6 +133,7 @@ const POSTlikeController = (req, res) => __awaiter(void 0, void 0, void 0, funct
     console.log(req.params);
     try {
         const data = yield service_1.roomService.POSTlikeService(req.body.userID.userID, Number(req.params.roomID));
+        console.log(10);
         // 1. 요청 바디 부족
         if (data === -1) {
             console.log("요청 바디 부족");
@@ -149,9 +150,11 @@ const POSTlikeController = (req, res) => __awaiter(void 0, void 0, void 0, funct
             library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "존재하지 않는 방입니다.");
         }
         else if (data === 1) {
+            console.log("좋아요 성공");
             library_1.response.basicResponse(res, library_1.returnCode.OK, "좋아요 성공");
         }
         else {
+            console.log("좋아요 취소");
             library_1.response.basicResponse(res, library_1.returnCode.OK, "좋아요 취소 성공");
         }
     }
