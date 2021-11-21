@@ -5,6 +5,7 @@ import authRouter from "./authRouter";
 import roomRouter from "./roomRouter";
 import messageRouter from "./messageRouter";
 import mainRouter from "./mainRouter";
+import userRouter from "./userRouter";
 
 import { response, returnCode } from "../library";
 
@@ -22,5 +23,6 @@ router.use("/api/v1/auth", authRouter);
 router.use("/api/v1/room", roomRouter);
 router.use("/api/v1/message", messageRouter);
 router.use("/api/v1/main", mainRouter);
+router.use("/api/v1/user", userRouter);
 
 export default router;
