@@ -200,6 +200,198 @@ const POSTroomService = async (
 };
 
 /**
+ *  @방_수정하기
+ *  @route Post /api/v1/room/:roomID
+ *  @body
+ *  @error
+ *      1. 요청 바디 부족
+ *      2. 유저 id 잘못됨
+ *      3. 유저 권한 없음
+ */
+
+const PATCHroomService = async (
+  userID: number,
+  roomID: number,
+  reqData: roomDTO.postRoomReqDTO,
+  url?
+) => {
+  const { type, price, information, rentPeriod, options, conditions } = reqData;
+
+  // 1. 요청 바디 부족
+  if (
+    !type ||
+    !price ||
+    !information ||
+    !rentPeriod ||
+    !options ||
+    !conditions
+  ) {
+    return -1;
+  }
+  const user = await User.findOne({ where: { userID } });
+  // 2. 유저 id 잘못됨
+  if (!user) {
+    return -2;
+  }
+  // 3. 유저 권한 없음
+  const certification = await Certification.findOne({ where: { userID } });
+  if (!certification) {
+    return -3;
+  }
+  const alreadyRoom = await Room.findOne({ where: { roomID } });
+  if (alreadyRoom.uploader !== userID) return -3;
+
+  await RoomType.update(
+    {
+      roomType: type.roomType,
+      category: type.category,
+      rentType: type.rentType,
+    },
+    { where: { roomID } }
+  );
+
+  await RoomInformation.update(
+    {
+      area: cast.stringToNumber(information.area),
+      floor: cast.stringToNumber(information.floor),
+      construction: cast.stringToNumber(information.construction),
+      query: information.query,
+      post: information.post,
+      address: information.address,
+      lat: information.lat,
+      lng: information.lng,
+      description: information.description,
+    },
+    { where: { roomID } }
+  );
+
+  await RoomPrice.update(
+    {
+      deposit: cast.stringToNumber(price.deposit),
+      monthly: cast.stringToNumber(price.monthly),
+      control: cast.stringToNumber(price.control),
+    },
+    { where: { roomID } }
+  );
+
+  await RoomPeriod.update(
+    {
+      startDate: date.stringToDate(rentPeriod.startDate),
+      endDate: date.stringToDate(rentPeriod.endDate),
+    },
+    { where: { roomID } }
+  );
+  await RoomCondition.update(
+    {
+      gender: conditions.gender,
+      smoking: conditions.smoking,
+    },
+    { where: { roomID } }
+  );
+
+  await RoomPhoto.update(
+    {
+      main: url.main,
+      restroom: url.restroom,
+      kitchen: url.kitchen,
+      photo1: url.photo1,
+      photo2: url.photo2,
+    },
+    { where: { roomID } }
+  );
+
+  await RoomOption.update(
+    {
+      bed: cast.stringToBoolean(options.bed),
+      table: cast.stringToBoolean(options.table),
+      chair: cast.stringToBoolean(options.chair),
+      closet: cast.stringToBoolean(options.closet),
+      airconditioner: cast.stringToBoolean(options.airconditioner),
+      induction: cast.stringToBoolean(options.induction),
+      refrigerator: cast.stringToBoolean(options.refrigerator),
+      tv: cast.stringToBoolean(options.tv),
+      microwave: cast.stringToBoolean(options.microwave),
+      washingmachine: cast.stringToBoolean(options.washingmachine),
+      cctv: cast.stringToBoolean(options.cctv),
+      wifi: cast.stringToBoolean(options.wifi),
+      parking: cast.stringToBoolean(options.parking),
+      elevator: cast.stringToBoolean(options.elevator),
+    },
+    { where: { roomID } }
+  );
+
+  // table join
+  const room = await Room.findOne({
+    where: { roomID },
+    include: [
+      {
+        model: User,
+        attributes: ["userID", "nickname"],
+      },
+      {
+        model: RoomType,
+        attributes: ["roomType", "category", "rentType"],
+      },
+      {
+        model: RoomPrice,
+        attributes: ["deposit", "monthly", "control"],
+      },
+      {
+        model: RoomInformation,
+        attributes: [
+          "area",
+          "floor",
+          "construction",
+          "query",
+          "post",
+          "address",
+          "lat",
+          "lng",
+          "description",
+        ],
+      },
+      { model: RoomPeriod, attributes: ["startDate", "endDate"] },
+      {
+        model: RoomOption,
+        attributes: [
+          "bed",
+          "table",
+          "chair",
+          "closet",
+          "airconditioner",
+          "induction",
+          "refrigerator",
+          "tv",
+          "microwave",
+          "washingmachine",
+          "cctv",
+          "wifi",
+          "parking",
+          "elevator",
+        ],
+      },
+      {
+        model: RoomCondition,
+        attributes: ["gender", "smoking"],
+      },
+      {
+        model: RoomPhoto,
+        attributes: ["main", "restroom", "kitchen", "photo1", "photo2"],
+      },
+    ],
+    attributes: ["roomID", "createdAt", "updatedAt", "isDeleted"],
+  });
+  const resData = room;
+  // // data 형식에 맞게 변경
+  // const resData: roomDTO.postRoomResDTO = {
+  //   roomID: room.roomID,
+  //   createdAt: room.createdAt,
+  //   uploader: room.upl
+  // };
+  return resData;
+};
+
+/**
  *  @모든_방_보기
  *  @route GET api/v1/room
  *  @access private
@@ -650,6 +842,7 @@ const POSTlikeService = async (userID: number, roomID: number) => {
 
 const roomService = {
   POSTroomService,
+  PATCHroomService,
   GETallRoomService,
   GETroomDetailService,
   POSTlikeService,
