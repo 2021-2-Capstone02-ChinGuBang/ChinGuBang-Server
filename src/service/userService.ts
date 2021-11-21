@@ -135,9 +135,31 @@ const GETprofileService = async (userID: number) => {
   return resData;
 };
 
+/**
+ *  @프로필_수정
+ *  @route PATCH api/v1/user
+ *  @access private
+ *  @error
+ *      1. 요청 바디 부족
+ *      2. 존재하지 않는 유저
+ */
+
+const PATCHuserService = async (userID: number, nickname: string) => {
+  if (!nickname) return -1;
+  const user = await User.findOne({
+    where: { userID, isDeleted: false },
+  });
+  if (!user) return -2;
+
+  await User.update({ nickname }, { where: { userID } });
+
+  return undefined;
+};
+
 const userService = {
   GETmyRoomService,
   GETprofileService,
+  PATCHuserService,
 };
 
 export default userService;
