@@ -20,7 +20,7 @@ const GETmyRoomController = async (req: Request, res: Response) => {
   try {
     const data = await userService.GETmyRoomService(req.body.userID.userID);
 
-    response.dataResponse(res, returnCode.OK, "나의 방 방 보기 성공", data);
+    response.dataResponse(res, returnCode.OK, "나의 방 보기 성공", data);
   } catch (err) {
     console.error(err.message);
     response.basicResponse(res, returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
