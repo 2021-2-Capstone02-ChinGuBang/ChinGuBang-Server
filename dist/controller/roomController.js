@@ -68,6 +68,60 @@ const POSTroomController = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 /**
+ *  @방_수정하기
+ *  @route Patch /api/v1/room/:roomID
+ *  @body
+ *  @error
+ *      1. 요청 바디 부족
+ *      2. 유저 id 잘못됨
+ *      3. 유저 권한 없음
+ */
+const PATCHroomController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("방 수정하기 api 호출");
+    console.log(req.body);
+    try {
+        const url = {
+            main: req.files.main
+                ? req.files.main[0].location
+                : null,
+            restroom: req.files.restroom
+                ? req.files.restroom[0].location
+                : null,
+            kitchen: req.files.kitchen
+                ? req.files.kitchen[0].location
+                : null,
+            photo1: req.files.photo1
+                ? req.files.photo1[0].location
+                : null,
+            photo2: req.files.photo2
+                ? req.files.photo2[0].location
+                : null,
+        };
+        const reqData = req.body;
+        const resData = yield service_1.roomService.PATCHroomService(req.body.userID.userID, Number(req.params.roomID), reqData, url);
+        // 요청 바디가 부족할 경우
+        if (resData === -1) {
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "요청 값이 올바르지 않습니다");
+        }
+        // 유저 id 잘못된 경우
+        else if (resData === -2) {
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "존재하지 않는 사용자입니다");
+        }
+        // 권한이 없는 유저의 경우
+        else if (resData === -3) {
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "방 등록 권한이 없는 유저입니다");
+        }
+        // 방 등록 성공
+        else {
+            library_1.response.dataResponse(res, library_1.returnCode.CREATED, "방 수정하기 성공", resData);
+        }
+    }
+    catch (err) {
+        console.error(err.message);
+        library_1.response.basicResponse(res, library_1.returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
+    }
+});
+/**
  *  @모든_방_보기
  *  @route GET api/v1/room
  *  @access private
@@ -182,6 +236,7 @@ const POSTroomFilterController = (req, res) => __awaiter(void 0, void 0, void 0,
 });
 const roomController = {
     POSTroomController,
+    PATCHroomController,
     GETallRoomController,
     GETroomDetailController,
     POSTlikeController,

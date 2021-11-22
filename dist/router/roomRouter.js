@@ -15,6 +15,13 @@ router.post("", upload.fields([
     { name: "photo1", maxCount: 1 },
     { name: "photo2", maxCount: 1 },
 ]), middleware_1.authMiddleware, controller_1.roomController.POSTroomController);
+router.patch("/:roomID", upload.fields([
+    { name: "main", maxCount: 1 },
+    { name: "restroom", maxCount: 1 },
+    { name: "kitchen", maxCount: 1 },
+    { name: "photo1", maxCount: 1 },
+    { name: "photo2", maxCount: 1 },
+]), middleware_1.authMiddleware, controller_1.roomController.PATCHroomController);
 // router.post("", authMiddleware, roomController.POSTroomController);
 router.get("", middleware_1.authMiddleware, controller_1.roomController.GETallRoomController);
 router.get("/:roomID", middleware_1.authMiddleware, controller_1.roomController.GETroomDetailController);

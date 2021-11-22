@@ -180,6 +180,161 @@ const POSTroomService = (userID, reqData, url) => __awaiter(void 0, void 0, void
     return resData;
 });
 /**
+ *  @방_수정하기
+ *  @route Post /api/v1/room/:roomID
+ *  @body
+ *  @error
+ *      1. 요청 바디 부족
+ *      2. 유저 id 잘못됨
+ *      3. 유저 권한 없음
+ */
+const PATCHroomService = (userID, roomID, reqData, url) => __awaiter(void 0, void 0, void 0, function* () {
+    const { type, price, information, rentPeriod, options, conditions } = reqData;
+    // 1. 요청 바디 부족
+    if (!type ||
+        !price ||
+        !information ||
+        !rentPeriod ||
+        !options ||
+        !conditions) {
+        return -1;
+    }
+    const user = yield models_1.User.findOne({ where: { userID } });
+    // 2. 유저 id 잘못됨
+    if (!user) {
+        return -2;
+    }
+    // 3. 유저 권한 없음
+    const certification = yield models_1.Certification.findOne({ where: { userID } });
+    if (!certification) {
+        return -3;
+    }
+    const alreadyRoom = yield models_1.Room.findOne({ where: { roomID } });
+    if (alreadyRoom.uploader !== userID)
+        return -3;
+    yield models_1.RoomType.update({
+        roomType: type.roomType,
+        category: type.category,
+        rentType: type.rentType,
+    }, { where: { roomID } });
+    yield models_1.RoomInformation.update({
+        area: library_1.cast.stringToNumber(information.area),
+        floor: library_1.cast.stringToNumber(information.floor),
+        construction: library_1.cast.stringToNumber(information.construction),
+        query: information.query,
+        post: information.post,
+        address: information.address,
+        lat: information.lat,
+        lng: information.lng,
+        description: information.description,
+    }, { where: { roomID } });
+    yield models_1.RoomPrice.update({
+        deposit: library_1.cast.stringToNumber(price.deposit),
+        monthly: library_1.cast.stringToNumber(price.monthly),
+        control: library_1.cast.stringToNumber(price.control),
+    }, { where: { roomID } });
+    yield models_1.RoomPeriod.update({
+        startDate: library_1.date.stringToDate(rentPeriod.startDate),
+        endDate: library_1.date.stringToDate(rentPeriod.endDate),
+    }, { where: { roomID } });
+    yield models_1.RoomCondition.update({
+        gender: conditions.gender,
+        smoking: conditions.smoking,
+    }, { where: { roomID } });
+    yield models_1.RoomPhoto.update({
+        main: url.main,
+        restroom: url.restroom,
+        kitchen: url.kitchen,
+        photo1: url.photo1,
+        photo2: url.photo2,
+    }, { where: { roomID } });
+    yield models_1.RoomOption.update({
+        bed: library_1.cast.stringToBoolean(options.bed),
+        table: library_1.cast.stringToBoolean(options.table),
+        chair: library_1.cast.stringToBoolean(options.chair),
+        closet: library_1.cast.stringToBoolean(options.closet),
+        airconditioner: library_1.cast.stringToBoolean(options.airconditioner),
+        induction: library_1.cast.stringToBoolean(options.induction),
+        refrigerator: library_1.cast.stringToBoolean(options.refrigerator),
+        tv: library_1.cast.stringToBoolean(options.tv),
+        microwave: library_1.cast.stringToBoolean(options.microwave),
+        washingmachine: library_1.cast.stringToBoolean(options.washingmachine),
+        cctv: library_1.cast.stringToBoolean(options.cctv),
+        wifi: library_1.cast.stringToBoolean(options.wifi),
+        parking: library_1.cast.stringToBoolean(options.parking),
+        elevator: library_1.cast.stringToBoolean(options.elevator),
+    }, { where: { roomID } });
+    // table join
+    const room = yield models_1.Room.findOne({
+        where: { roomID },
+        include: [
+            {
+                model: models_1.User,
+                attributes: ["userID", "nickname"],
+            },
+            {
+                model: models_1.RoomType,
+                attributes: ["roomType", "category", "rentType"],
+            },
+            {
+                model: models_1.RoomPrice,
+                attributes: ["deposit", "monthly", "control"],
+            },
+            {
+                model: models_1.RoomInformation,
+                attributes: [
+                    "area",
+                    "floor",
+                    "construction",
+                    "query",
+                    "post",
+                    "address",
+                    "lat",
+                    "lng",
+                    "description",
+                ],
+            },
+            { model: models_1.RoomPeriod, attributes: ["startDate", "endDate"] },
+            {
+                model: models_1.RoomOption,
+                attributes: [
+                    "bed",
+                    "table",
+                    "chair",
+                    "closet",
+                    "airconditioner",
+                    "induction",
+                    "refrigerator",
+                    "tv",
+                    "microwave",
+                    "washingmachine",
+                    "cctv",
+                    "wifi",
+                    "parking",
+                    "elevator",
+                ],
+            },
+            {
+                model: models_1.RoomCondition,
+                attributes: ["gender", "smoking"],
+            },
+            {
+                model: models_1.RoomPhoto,
+                attributes: ["main", "restroom", "kitchen", "photo1", "photo2"],
+            },
+        ],
+        attributes: ["roomID", "createdAt", "updatedAt", "isDeleted"],
+    });
+    const resData = room;
+    // // data 형식에 맞게 변경
+    // const resData: roomDTO.postRoomResDTO = {
+    //   roomID: room.roomID,
+    //   createdAt: room.createdAt,
+    //   uploader: room.upl
+    // };
+    return resData;
+});
+/**
  *  @모든_방_보기
  *  @route GET api/v1/room
  *  @access private
@@ -591,6 +746,7 @@ const POSTlikeService = (userID, roomID) => __awaiter(void 0, void 0, void 0, fu
 });
 const roomService = {
     POSTroomService,
+    PATCHroomService,
     GETallRoomService,
     GETroomDetailService,
     POSTlikeService,
