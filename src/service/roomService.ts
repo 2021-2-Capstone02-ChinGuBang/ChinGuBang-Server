@@ -238,7 +238,9 @@ const PATCHroomService = async (
   if (!certification) {
     return -3;
   }
-  const alreadyRoom = await Room.findOne({ where: { roomID } });
+  const alreadyRoom = await Room.findOne({
+    where: { roomID, isDeleted: false },
+  });
   if (alreadyRoom.uploader !== userID) return -3;
 
   await RoomType.update(
@@ -846,7 +848,9 @@ const POSTlikeService = async (userID: number, roomID: number) => {
  *  @body
  *  @error
  *      1. 유저 id 잘못됨
- *      3. 유저 권한 없음
+ *      2. 유저 권한 없음
+ *      3. 존재하지 않는 방
+ *      4. 이미 삭제된 방
  */
 
 const DELETEroomService = async (userID: number, roomID: number) => {
@@ -862,6 +866,8 @@ const DELETEroomService = async (userID: number, roomID: number) => {
   }
   const alreadyRoom = await Room.findOne({ where: { roomID } });
   if (alreadyRoom.uploader !== userID) return -3;
+
+  if (alreadyRoom.isDeleted) return -4;
 
   await Room.update({ isDeleted: true }, { where: { roomID } });
 

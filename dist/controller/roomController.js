@@ -255,6 +255,14 @@ const DELETEroomController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         else if (resData === -2) {
             library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "방 삭제 권한이 없는 유저입니다");
         }
+        // 3. 존재하지 않는 방
+        else if (resData === -3) {
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "존재하지 않는 방 입니다");
+        }
+        //4. 이미 삭제된 방
+        else if (resData === -4) {
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "이미 삭제된 방 입니다");
+        }
         // 방 등록 성공
         else {
             library_1.response.basicResponse(res, library_1.returnCode.OK, "방 삭제하기 성공");

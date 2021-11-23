@@ -209,7 +209,9 @@ const PATCHroomService = (userID, roomID, reqData, url) => __awaiter(void 0, voi
     if (!certification) {
         return -3;
     }
-    const alreadyRoom = yield models_1.Room.findOne({ where: { roomID } });
+    const alreadyRoom = yield models_1.Room.findOne({
+        where: { roomID, isDeleted: false },
+    });
     if (alreadyRoom.uploader !== userID)
         return -3;
     yield models_1.RoomType.update({
@@ -750,7 +752,9 @@ const POSTlikeService = (userID, roomID) => __awaiter(void 0, void 0, void 0, fu
  *  @body
  *  @error
  *      1. 유저 id 잘못됨
- *      3. 유저 권한 없음
+ *      2. 유저 권한 없음
+ *      3. 존재하지 않는 방
+ *      4. 이미 삭제된 방
  */
 const DELETEroomService = (userID, roomID) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield models_1.User.findOne({ where: { userID } });
@@ -766,6 +770,8 @@ const DELETEroomService = (userID, roomID) => __awaiter(void 0, void 0, void 0, 
     const alreadyRoom = yield models_1.Room.findOne({ where: { roomID } });
     if (alreadyRoom.uploader !== userID)
         return -3;
+    if (alreadyRoom.isDeleted)
+        return -4;
     yield models_1.Room.update({ isDeleted: true }, { where: { roomID } });
     return undefined;
 });

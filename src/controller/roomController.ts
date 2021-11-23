@@ -350,6 +350,24 @@ const DELETEroomController = async (req: Request, res: Response) => {
       );
     }
 
+    // 3. 존재하지 않는 방
+    else if (resData === -3) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "존재하지 않는 방 입니다"
+      );
+    }
+
+    //4. 이미 삭제된 방
+    else if (resData === -4) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "이미 삭제된 방 입니다"
+      );
+    }
+
     // 방 등록 성공
     else {
       response.basicResponse(res, returnCode.OK, "방 삭제하기 성공");
