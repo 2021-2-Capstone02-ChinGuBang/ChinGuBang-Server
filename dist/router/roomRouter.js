@@ -27,5 +27,6 @@ router.get("", middleware_1.authMiddleware, controller_1.roomController.GETallRo
 router.get("/:roomID", middleware_1.authMiddleware, controller_1.roomController.GETroomDetailController);
 router.post("/like/:roomID", middleware_1.authMiddleware, controller_1.roomController.POSTlikeController);
 router.post("/filter", middleware_1.authMiddleware, controller_1.roomController.POSTroomFilterController);
+router.delete("/:roomID", middleware_1.authMiddleware, controller_1.roomController.DELETEroomController);
 exports.default = router;
 //# sourceMappingURL=roomRouter.js.map

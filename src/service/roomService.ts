@@ -840,6 +840,33 @@ const POSTlikeService = async (userID: number, roomID: number) => {
   return undefined;
 };
 
+/**
+ *  @방_삭제하기
+ *  @route Delete /api/v1/room/:roomID
+ *  @body
+ *  @error
+ *      1. 유저 id 잘못됨
+ *      3. 유저 권한 없음
+ */
+
+const DELETEroomService = async (userID: number, roomID: number) => {
+  const user = await User.findOne({ where: { userID } });
+  // 1. 유저 id 잘못됨
+  if (!user) {
+    return -1;
+  }
+  // 2. 유저 권한 없음
+  const certification = await Certification.findOne({ where: { userID } });
+  if (!certification) {
+    return -2;
+  }
+  const alreadyRoom = await Room.findOne({ where: { roomID } });
+  if (alreadyRoom.uploader !== userID) return -3;
+
+  await Room.update({ isDeleted: true }, { where: { roomID } });
+
+  return undefined;
+};
 const roomService = {
   POSTroomService,
   PATCHroomService,
@@ -847,6 +874,7 @@ const roomService = {
   GETroomDetailService,
   POSTlikeService,
   POSTroomFilterService,
+  DELETEroomService,
 };
 
 export default roomService;

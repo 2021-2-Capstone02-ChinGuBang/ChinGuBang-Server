@@ -744,6 +744,31 @@ const POSTlikeService = (userID, roomID) => __awaiter(void 0, void 0, void 0, fu
     }
     return undefined;
 });
+/**
+ *  @방_삭제하기
+ *  @route Delete /api/v1/room/:roomID
+ *  @body
+ *  @error
+ *      1. 유저 id 잘못됨
+ *      3. 유저 권한 없음
+ */
+const DELETEroomService = (userID, roomID) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield models_1.User.findOne({ where: { userID } });
+    // 1. 유저 id 잘못됨
+    if (!user) {
+        return -1;
+    }
+    // 2. 유저 권한 없음
+    const certification = yield models_1.Certification.findOne({ where: { userID } });
+    if (!certification) {
+        return -2;
+    }
+    const alreadyRoom = yield models_1.Room.findOne({ where: { roomID } });
+    if (alreadyRoom.uploader !== userID)
+        return -3;
+    yield models_1.Room.update({ isDeleted: true }, { where: { roomID } });
+    return undefined;
+});
 const roomService = {
     POSTroomService,
     PATCHroomService,
@@ -751,6 +776,7 @@ const roomService = {
     GETroomDetailService,
     POSTlikeService,
     POSTroomFilterService,
+    DELETEroomService,
 };
 exports.default = roomService;
 //# sourceMappingURL=roomService.js.map

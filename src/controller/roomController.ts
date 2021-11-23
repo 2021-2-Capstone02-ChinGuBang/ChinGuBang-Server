@@ -314,6 +314,52 @@ const POSTroomFilterController = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ *  @방_삭제하기
+ *  @route Delete /api/v1/room/:roomID
+ *  @body
+ *  @error
+ *      1. 유저 id 잘못됨
+ *      2. 유저 권한 없음
+ */
+
+const DELETEroomController = async (req: Request, res: Response) => {
+  console.log("방 삭제하기 api 호출");
+  console.log(req.body);
+  try {
+    const resData = await roomService.DELETEroomService(
+      req.body.userID.userID,
+      Number(req.params.roomID)
+    );
+
+    // 유저 id 잘못된 경우
+    if (resData === -1) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "존재하지 않는 사용자입니다"
+      );
+    }
+
+    // 권한이 없는 유저의 경우
+    else if (resData === -2) {
+      response.basicResponse(
+        res,
+        returnCode.BAD_REQUEST,
+        "방 삭제 권한이 없는 유저입니다"
+      );
+    }
+
+    // 방 등록 성공
+    else {
+      response.basicResponse(res, returnCode.OK, "방 삭제하기 성공");
+    }
+  } catch (err) {
+    console.error(err.message);
+    response.basicResponse(res, returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
+  }
+};
+
 const roomController = {
   POSTroomController,
   PATCHroomController,
@@ -321,6 +367,7 @@ const roomController = {
   GETroomDetailController,
   POSTlikeController,
   POSTroomFilterController,
+  DELETEroomController,
 };
 
 export default roomController;
