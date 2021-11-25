@@ -575,8 +575,10 @@ const POSTroomFilterService = async (userID: number, reqData) => {
     type.roomType = ["원룸", "투룸 이상", "오피스텔", "아파트"];
   }
 
-  if (!type.category || type.category.length === 0) {
-    type.category = ["단기임대", "양도"];
+  let category = ["단기임대", "양도"];
+  if (type.category || type.category.length !== 0) {
+    category = [];
+    category.push(type.category);
   }
 
   if (!type.rentType || type.rentType.length === 0) {
@@ -733,7 +735,7 @@ const POSTroomFilterService = async (userID: number, reqData) => {
         attributes: ["roomType", "category", "rentType"],
         where: {
           roomType: { [Op.in]: type.roomType },
-          category: { [Op.in]: type.category },
+          category: { [Op.in]: category },
           rentType: { [Op.in]: type.rentType },
         },
       },

@@ -503,8 +503,10 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
     if (!type.roomType || type.roomType.length === 0) {
         type.roomType = ["원룸", "투룸 이상", "오피스텔", "아파트"];
     }
-    if (!type.category || type.category.length === 0) {
-        type.category = ["단기임대", "양도"];
+    let category = ["단기임대", "양도"];
+    if (type.category || type.category.length !== 0) {
+        category = [];
+        category.push(type.category);
     }
     if (!type.rentType || type.rentType.length === 0) {
         type.rentType = ["월세", "전세"];
@@ -639,7 +641,7 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
                 attributes: ["roomType", "category", "rentType"],
                 where: {
                     roomType: { [sequelize_1.Op.in]: type.roomType },
-                    category: { [sequelize_1.Op.in]: type.category },
+                    category: { [sequelize_1.Op.in]: category },
                     rentType: { [sequelize_1.Op.in]: type.rentType },
                 },
             },
