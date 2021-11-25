@@ -582,12 +582,19 @@ const POSTroomFilterService = async (userID: number, reqData) => {
   if (!type.rentType || type.rentType.length === 0) {
     type.rentType = ["월세", "전세"];
   }
-  if (!rentPeriod.startDate) {
-    rentPeriod.startDate = new Date("3000-08-22");
+
+  let startDate = new Date("3000-08-22");
+  if (rentPeriod.startDate) {
+    startDate = date.stringToDate(rentPeriod.startDate);
   }
-  if (!rentPeriod.endDate) {
-    rentPeriod.endDate = new Date("1000-12-31");
+  console.log("startDate:", startDate);
+
+  let endDate = new Date("1000-12-31");
+  if (rentPeriod.endDate) {
+    endDate = date.stringToDate(rentPeriod.endDate);
   }
+  console.log("endDate:", endDate);
+
   if (!price.deposit) {
     price.deposit = 9999999;
   }
@@ -742,8 +749,8 @@ const POSTroomFilterService = async (userID: number, reqData) => {
         model: RoomPeriod,
         attributes: ["startDate", "endDate"],
         where: {
-          startDate: { [Op.lte]: rentPeriod.startDate },
-          endDate: { [Op.gte]: rentPeriod.endDate },
+          startDate: { [Op.lte]: startDate },
+          endDate: { [Op.gte]: endDate },
         },
       },
       {

@@ -509,12 +509,16 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
     if (!type.rentType || type.rentType.length === 0) {
         type.rentType = ["월세", "전세"];
     }
-    if (!rentPeriod.startDate) {
-        rentPeriod.startDate = new Date("3000-08-22");
+    let startDate = new Date("3000-08-22");
+    if (rentPeriod.startDate) {
+        startDate = library_1.date.stringToDate(rentPeriod.startDate);
     }
-    if (!rentPeriod.endDate) {
-        rentPeriod.endDate = new Date("1000-12-31");
+    console.log("startDate:", startDate);
+    let endDate = new Date("1000-12-31");
+    if (rentPeriod.endDate) {
+        endDate = library_1.date.stringToDate(rentPeriod.endDate);
     }
+    console.log("endDate:", endDate);
     if (!price.deposit) {
         price.deposit = 9999999;
     }
@@ -651,8 +655,8 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
                 model: models_1.RoomPeriod,
                 attributes: ["startDate", "endDate"],
                 where: {
-                    startDate: { [sequelize_1.Op.lte]: rentPeriod.startDate },
-                    endDate: { [sequelize_1.Op.gte]: rentPeriod.endDate },
+                    startDate: { [sequelize_1.Op.lte]: startDate },
+                    endDate: { [sequelize_1.Op.gte]: endDate },
                 },
             },
             {
