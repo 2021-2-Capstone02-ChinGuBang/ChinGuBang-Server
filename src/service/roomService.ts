@@ -12,6 +12,7 @@ import {
   RoomPrice,
   Like,
   University,
+  Participant,
 } from "../models";
 // DTO
 import { roomDTO } from "../DTO";
@@ -797,8 +798,11 @@ const POSTroomFilterService = async (userID: number, reqData) => {
       isLike: room.likes.length ? true : false,
     };
   });
+  const newMessageNum = await Participant.count({
+    where: { userID, new: true },
+  });
 
-  const resData = { university, rooms };
+  const resData = { university, newMessageNum, rooms };
 
   return resData;
 };

@@ -707,7 +707,10 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
             isLike: room.likes.length ? true : false,
         };
     });
-    const resData = { university, rooms };
+    const newMessageNum = yield models_1.Participant.count({
+        where: { userID, new: true },
+    });
+    const resData = { university, newMessageNum, rooms };
     return resData;
 });
 /**
