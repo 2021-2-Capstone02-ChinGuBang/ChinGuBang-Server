@@ -12,6 +12,7 @@ import {
   RoomPrice,
   Like,
   Participant,
+  University,
 } from "../models";
 
 // library
@@ -33,11 +34,16 @@ import { ConnectionTimedOutError, Op, QueryTypes, Sequelize } from "sequelize";
 
 const GETmainService = async (userID: number) => {
   const userCertification = await Certification.findOne({ where: { userID } });
-  const university = await userCertification.university;
+  const universityName = userCertification.university;
+
+  const university = await University.findOne({
+    where: { university: universityName },
+    attributes: ["university", "lat", "lng"],
+  });
 
   const rawRooms = await Room.findAll({
     order: [["createdAt", "DESC"]],
-    where: { isDeleted: false, university },
+    where: { isDeleted: false, university: universityName },
     include: [
       {
         model: User,
@@ -79,10 +85,10 @@ const GETmainService = async (userID: number) => {
   });
 
   const totalRoomNum = await Room.count({
-    where: { isDeleted: false, university },
+    where: { isDeleted: false, university: universityName },
   });
 
-  const resData = { newMessageNum, rooms, totalRoomNum };
+  const resData = { university, newMessageNum, rooms, totalRoomNum };
   return resData;
 };
 

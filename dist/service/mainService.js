@@ -20,10 +20,14 @@ const library_1 = require("../library");
  */
 const GETmainService = (userID) => __awaiter(void 0, void 0, void 0, function* () {
     const userCertification = yield models_1.Certification.findOne({ where: { userID } });
-    const university = yield userCertification.university;
+    const universityName = userCertification.university;
+    const university = yield models_1.University.findOne({
+        where: { university: universityName },
+        attributes: ["university", "lat", "lng"],
+    });
     const rawRooms = yield models_1.Room.findAll({
         order: [["createdAt", "DESC"]],
-        where: { isDeleted: false, university },
+        where: { isDeleted: false, university: universityName },
         include: [
             {
                 model: models_1.User,
@@ -62,9 +66,9 @@ const GETmainService = (userID) => __awaiter(void 0, void 0, void 0, function* (
         where: { userID, new: true },
     });
     const totalRoomNum = yield models_1.Room.count({
-        where: { isDeleted: false, university },
+        where: { isDeleted: false, university: universityName },
     });
-    const resData = { newMessageNum, rooms, totalRoomNum };
+    const resData = { university, newMessageNum, rooms, totalRoomNum };
     return resData;
 });
 const mainService = {

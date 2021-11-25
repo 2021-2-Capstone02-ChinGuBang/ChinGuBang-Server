@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RoomPrice = exports.RoomPeriod = exports.RoomType = exports.Code = exports.Participant = exports.MessageRoom = exports.Message = exports.Like = exports.RoomOption = exports.RoomPhoto = exports.RoomCondition = exports.RoomInformation = exports.Room = exports.Certification = exports.User = exports.sequelize = void 0;
+exports.University = exports.RoomPrice = exports.RoomPeriod = exports.RoomType = exports.Code = exports.Participant = exports.MessageRoom = exports.Message = exports.Like = exports.RoomOption = exports.RoomPhoto = exports.RoomCondition = exports.RoomInformation = exports.Room = exports.Certification = exports.User = exports.sequelize = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const dotenv_1 = __importDefault(require("dotenv"));
 const User_1 = __importDefault(require("./User"));
@@ -36,6 +36,8 @@ const RoomPeriod_1 = __importDefault(require("./RoomPeriod"));
 exports.RoomPeriod = RoomPeriod_1.default;
 const RoomPrice_1 = __importDefault(require("./RoomPrice"));
 exports.RoomPrice = RoomPrice_1.default;
+const University_1 = __importDefault(require("./University"));
+exports.University = University_1.default;
 const db = {};
 dotenv_1.default.config();
 exports.sequelize = new sequelize_typescript_1.Sequelize(
@@ -67,6 +69,7 @@ exports.sequelize.addModels([
     RoomType_1.default,
     RoomPeriod_1.default,
     RoomPrice_1.default,
+    University_1.default,
 ]);
 exports.default = exports.sequelize;
 //# sourceMappingURL=index.js.map
