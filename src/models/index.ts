@@ -15,6 +15,7 @@ import Code from "./Code";
 import RoomType from "./RoomType";
 import RoomPeriod from "./RoomPeriod";
 import RoomPrice from "./RoomPrice";
+import University from "./University";
 
 const db: any = {};
 
@@ -51,6 +52,7 @@ sequelize.addModels([
   RoomType,
   RoomPeriod,
   RoomPrice,
+  University,
 ]);
 
 export {
@@ -69,6 +71,7 @@ export {
   RoomType,
   RoomPeriod,
   RoomPrice,
+  University,
 };
 
 export default sequelize;
