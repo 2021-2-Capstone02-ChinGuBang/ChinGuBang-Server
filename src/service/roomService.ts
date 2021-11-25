@@ -11,6 +11,7 @@ import {
   RoomPeriod,
   RoomPrice,
   Like,
+  University,
 } from "../models";
 // DTO
 import { roomDTO } from "../DTO";
@@ -702,11 +703,16 @@ const POSTroomFilterService = async (userID: number, reqData) => {
   const userCertification = await Certification.findOne({
     where: { userID },
   });
-  const university = await userCertification.university;
+  const universityName = userCertification.university;
+
+  const university = await University.findOne({
+    where: { university: universityName },
+    attributes: ["university", "lat", "lng"],
+  });
 
   const rawRooms = await Room.findAll({
     order: [["createdAt", "DESC"]],
-    where: { isDeleted: false, university },
+    where: { isDeleted: false, university: universityName },
     include: [
       {
         model: User,
@@ -792,7 +798,7 @@ const POSTroomFilterService = async (userID: number, reqData) => {
     };
   });
 
-  const resData = { rooms };
+  const resData = { university, rooms };
 
   return resData;
 };

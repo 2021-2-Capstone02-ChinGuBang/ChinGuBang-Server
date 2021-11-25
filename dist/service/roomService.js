@@ -615,10 +615,14 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
     const userCertification = yield models_1.Certification.findOne({
         where: { userID },
     });
-    const university = yield userCertification.university;
+    const universityName = userCertification.university;
+    const university = yield models_1.University.findOne({
+        where: { university: universityName },
+        attributes: ["university", "lat", "lng"],
+    });
     const rawRooms = yield models_1.Room.findAll({
         order: [["createdAt", "DESC"]],
-        where: { isDeleted: false, university },
+        where: { isDeleted: false, university: universityName },
         include: [
             {
                 model: models_1.User,
@@ -703,7 +707,7 @@ const POSTroomFilterService = (userID, reqData) => __awaiter(void 0, void 0, voi
             isLike: room.likes.length ? true : false,
         };
     });
-    const resData = { rooms };
+    const resData = { university, rooms };
     return resData;
 });
 /**
