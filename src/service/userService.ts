@@ -12,8 +12,6 @@ import {
   RoomPrice,
   Like,
 } from "../models";
-// DTO
-import { userDTO } from "../DTO";
 // library
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";

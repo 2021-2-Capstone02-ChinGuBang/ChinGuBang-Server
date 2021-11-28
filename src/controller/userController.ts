@@ -4,8 +4,6 @@ import { validationResult } from "express-validator";
 import { response, returnCode } from "../library";
 // services
 import { userService } from "../service";
-//DTO
-import { userDTO } from "../DTO";
 
 /**
  *  @내방_보기
