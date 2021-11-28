@@ -224,6 +224,7 @@ const POSTlikeController = (req, res) => __awaiter(void 0, void 0, void 0, funct
  *  @error
  */
 const POSTroomFilterController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("필터링 방 보기 api 호출");
     console.log(req.body);
     try {
         const data = yield service_1.roomService.POSTroomFilterService(req.body.userID.userID, req.body);

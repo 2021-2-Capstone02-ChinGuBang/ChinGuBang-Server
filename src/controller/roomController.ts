@@ -300,6 +300,7 @@ const POSTlikeController = async (req: Request, res: Response) => {
  *  @error
  */
 const POSTroomFilterController = async (req: Request, res: Response) => {
+  console.log("필터링 방 보기 api 호출");
   console.log(req.body);
   try {
     const data = await roomService.POSTroomFilterService(
