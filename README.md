@@ -1,5 +1,4 @@
 # ChinGuBang-Server
-![image](https://user-images.githubusercontent.com/71129059/144416670-35772c99-4098-4071-aeb9-55d4c2ca70a3.png)
 ![image](https://user-images.githubusercontent.com/71129059/144416476-e8c55b45-42af-4d56-8996-b14c2f270520.png)
 ![image](https://user-images.githubusercontent.com/71129059/144416558-72ef9af2-0537-4318-a035-4e5114c0dd06.png)
 ![image](https://user-images.githubusercontent.com/71129059/144416564-d07242d5-a64f-451f-9605-81827d405cd5.png)
