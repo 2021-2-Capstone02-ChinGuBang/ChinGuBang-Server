@@ -78,10 +78,36 @@ const PATCHuserController = (req, res) => __awaiter(void 0, void 0, void 0, func
         library_1.response.basicResponse(res, library_1.returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
     }
 });
+/**
+ *  @아이디_삭제
+ *  @route DELETE api/v1/user
+ *  @access private
+ *  @error
+ *      2. 존재하지 않는 유저
+ */
+const DELETEuserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("아이디 삭제 api 호출");
+    console.log(req.body);
+    try {
+        const data = yield service_1.userService.DELETEuserService(req.body);
+        if (data === -1) {
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "요청 바디 부족.");
+        }
+        else if (data === -2) {
+            library_1.response.basicResponse(res, library_1.returnCode.BAD_REQUEST, "존재하지 않는 사용자입니다.");
+        }
+        library_1.response.basicResponse(res, library_1.returnCode.OK, "아이디 삭제 성공");
+    }
+    catch (err) {
+        console.error(err.message);
+        library_1.response.basicResponse(res, library_1.returnCode.INTERNAL_SERVER_ERROR, "서버 오류");
+    }
+});
 const userController = {
     GETmyRoomController,
     GETprofileController,
     PATCHuserController,
+    DELETEuserController,
 };
 exports.default = userController;
 //# sourceMappingURL=userController.js.map

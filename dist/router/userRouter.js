@@ -11,5 +11,6 @@ const router = express_1.default.Router();
 router.get("/room", middleware_1.authMiddleware, controller_1.userController.GETmyRoomController);
 router.get("", middleware_1.authMiddleware, controller_1.userController.GETprofileController);
 router.patch("", middleware_1.authMiddleware, controller_1.userController.PATCHuserController);
+router.delete("", controller_1.userController.DELETEuserController);
 exports.default = router;
 //# sourceMappingURL=userRouter.js.map

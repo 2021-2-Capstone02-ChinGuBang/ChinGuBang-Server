@@ -8,10 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // models
 const models_1 = require("../models");
 const library_1 = require("../library");
+const nanoid_1 = __importDefault(require("nanoid"));
 /**
  *  @내방_보기
  *  @route GET api/v1/user/room
@@ -132,10 +136,34 @@ const PATCHuserService = (userID, nickname) => __awaiter(void 0, void 0, void 0,
     yield models_1.User.update({ nickname }, { where: { userID } });
     return undefined;
 });
+/**
+ *  @아이디_삭제
+ *  @route DELETE api/v1/user
+ *  @access private
+ *  @error
+ *      2. 존재하지 않는 유저
+ */
+const DELETEuserService = (body) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = body;
+    // 1. 요청 바디 부족
+    if (!email) {
+        return -1;
+    }
+    const user = yield models_1.User.findOne({
+        where: { email, isDeleted: false },
+    });
+    if (!user)
+        return -2;
+    // 인증번호를 user에 저장 -> 제한 시간 설정하기!
+    const newEmail = nanoid_1.default.nanoid(15);
+    yield models_1.User.update({ email: newEmail }, { where: { email } });
+    return undefined;
+});
 const userService = {
     GETmyRoomService,
     GETprofileService,
     PATCHuserService,
+    DELETEuserService,
 };
 exports.default = userService;
 //# sourceMappingURL=userService.js.map
